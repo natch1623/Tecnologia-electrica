@@ -1,0 +1,5 @@
+# Material con derechos de autor o del curso: no se publica
+*.pdf
+
+# Configuración local
+.claude/

@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo D · NFPA 70E</title>
+<meta name="description" content="Taller NFPA 70E-2021 — Módulo D: Mantenimiento (Cap. 2), Baterías (Art. 320) y peritaje del Caso 4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main class="stage" id="stage" data-mood="maint">
+
+  <!-- Hilo conductor: una sola línea que se transforma a lo largo de toda la exposición -->
+  <svg id="thread" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="thg-route" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#a58bff"/><stop offset=".6" stop-color="#8fe3ff"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-clear" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#5ef0c8"/><stop offset=".55" stop-color="#a58bff"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-energy" gradientUnits="userSpaceOnUse" x1="1010" y1="900" x2="1769" y2="266">
+        <stop offset="0" stop-color="#5ef0c8"/><stop offset=".42" stop-color="#8fe3ff"/><stop offset=".48" stop-color="#ff4d6d"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-close" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#a58bff" stop-opacity="0"/><stop offset=".3" stop-color="#a58bff"/><stop offset=".7" stop-color="#5ef0c8"/><stop offset="1" stop-color="#5ef0c8" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ============ 01 · Portada · cinemático ============ -->
+  <section class="slide hero" id="s01" data-mood="maint" data-tx="slash" data-thread="hero" data-anchor="1440 540"
+    data-title="Cuando el mantenimiento es una barrera de seguridad" data-who="I1" data-time="0:30" data-ref="NFPA 70E-2021">
+    <svg class="sigil" viewBox="0 0 1100 1100" aria-hidden="true">
+      <defs>
+        <radialGradient id="sg" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#c9b8ff" stop-opacity=".42"/>
+          <stop offset=".5" stop-color="#5b3fd6" stop-opacity=".1"/>
+          <stop offset="1" stop-color="#07060f" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="550" cy="550" r="520" fill="url(#sg)"/>
+      <g class="spin" fill="none" stroke="#a58bff" stroke-opacity=".42">
+        <circle cx="550" cy="550" r="430" stroke-dasharray="2 14"/>
+        <circle cx="550" cy="550" r="330"/>
+        <path d="M550 150 L600 500 L950 550 L600 600 L550 950 L500 600 L150 550 L500 500 Z" stroke-opacity=".55"/>
+      </g>
+      <g class="spin-r" fill="none" stroke="#8fe3ff" stroke-opacity=".32">
+        <circle cx="550" cy="550" r="270" stroke-dasharray="40 10 4 10"/>
+        <path d="M550 300 L585 515 L800 550 L585 585 L550 800 L515 585 L300 550 L515 515 Z" transform="rotate(45 550 550)"/>
+        <circle cx="550" cy="120" r="7" fill="#f4f1ff" stroke="none"/>
+        <circle cx="980" cy="550" r="4" fill="#8fe3ff" stroke="none"/>
+      </g>
+      <path class="core" d="M550 470 L565 535 L630 550 L565 565 L550 630 L535 565 L470 550 L535 535 Z" fill="#f4f1ff"/>
+    </svg>
+    <p class="kicker rv">Módulo D · NFPA 70E-2021</p>
+    <h1>
+      <span class="w"><span>Cuando</span></span> <span class="w"><span>el</span></span> <span class="w"><span>mantenimiento</span></span><br>
+      <span class="w"><span>es</span></span> <span class="w"><span>una</span></span> <span class="w"><span class="accent">barrera</span></span> <span class="w"><span class="accent">de</span></span> <span class="w"><span class="accent">seguridad</span></span>
+    </h1>
+    <div class="meta rv">
+      <div><b>Capítulo 2</b>Mantenimiento · Arts. 200–250</div>
+      <div><b>Capítulo 3</b>Baterías · Art. 320</div>
+      <div><b>Caso 4</b>Peritaje · banco de 250 V CC</div>
+    </div>
+    <div class="team rv">
+      <span>Integrante 1</span><span>Integrante 2</span><span>Integrante 3</span><span>Integrante 4</span><span>Integrante 5</span>
+    </div>
+    <aside class="notes">
+      <p>Presentar tema, grupo y norma (edición 2021, no "2020").</p>
+      <p><em>"Vamos a demostrar que un equipo mal mantenido cambia la energía de un accidente."</em></p>
+    </aside>
+  </section>
+
+  <!-- ============ 02 · Ruta ============ -->
+  <section class="slide" id="s02" data-mood="maint" data-tx="rift" data-thread="route"
+    data-title="Ruta de la exposición" data-who="I1" data-time="0:45" data-ref="Cap. 2 · Art. 320">
+    <p class="kicker rv">Ruta de la exposición</p>
+    <h2 class="title rv">Cinco pasos, <span class="thin">un solo hilo:</span> <em>energía</em>.</h2>
+    <div class="route">
+      <div class="st rv" style="left:250px" data-c="maint"><div class="n">I</div><i class="dot"></i><h3>Mantenimiento</h3><p>Qué entiende la norma por mantener.</p><div class="i">INTEGRANTE 1</div></div>
+      <div class="st rv" style="left:605px" data-c="maint"><div class="n">II</div><i class="dot"></i><h3>Energía</h3><p>Tiempo de despeje y cal/cm².</p><div class="i">INTEGRANTE 2</div></div>
+      <div class="st rv" style="left:960px" data-c="ice"><div class="n">III</div><i class="dot"></i><h3>Corriente continua</h3><p>Choque y arco en baterías.</p><div class="i">INTEGRANTE 3</div></div>
+      <div class="st rv" style="left:1315px" data-c="ice"><div class="n">IV</div><i class="dot"></i><h3>Hidrógeno</h3><p>Electrolito, gas y apagallamas.</p><div class="i">INTEGRANTE 4</div></div>
+      <div class="st rv" style="left:1670px" data-c="danger"><div class="n">V</div><i class="dot"></i><h3>Peritaje</h3><p>Causa raíz y controles.</p><div class="i">INTEGRANTE 5</div></div>
+    </div>
+    <aside class="notes">
+      <p>Anticipar la estructura; al final habrá una pregunta de control para la audiencia.</p>
+      <p>La línea que cruza la pantalla es el hilo de toda la exposición: se irá transformando en cada slide.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 03 · Qué es mantenimiento · tipográfico ============ -->
+  <section class="slide" id="s03" data-states="1" data-mood="maint" data-tx="rift" data-thread="def" data-anchor="960 790"
+    data-title="¿Qué es mantenimiento para NFPA 70E?" data-who="I1" data-time="1:30" data-ref="200.1 · 205.3">
+    <p class="kicker rv">Capítulo 2 · Definición</p>
+    <h2 class="title rv">¿Qué es <em>mantenimiento</em> para NFPA 70E?</h2>
+    <blockquote class="q rv">Preservar o restaurar la condición del equipo <b class="hl">para la seguridad de los empleados</b> expuestos a riesgos eléctricos.<cite>200.1(3) · PARÁFRASIS</cite></blockquote>
+    <ol class="trio a" style="left:1320px; top:330px; width:450px">
+      <li class="rv"><span>205.3</span>Según el fabricante o normas de consenso <small>NFPA 70B · ANSI/NETA MTS · IEEE 3007.2</small></li>
+      <li class="rv"><span>205.3</span>El propietario es responsable <small>o su representante designado</small></li>
+      <li class="rv"><span>205.3 · 205.4</span>Mantener <b>y</b> documentar</li>
+    </ol>
+    <div class="vs">
+      <div class="lose rv"><h4>Confiabilidad</h4><p>Que el equipo dure</p><p>Proteger el activo</p><p>Evitar paradas</p></div>
+      <div class="win rv"><h4>Seguridad</h4><p>Que falle de forma predecible</p><p>Proteger a la persona</p><p>Reducir el riesgo ante fallas</p></div>
+    </div>
+    <aside class="notes">
+      <p>200.1: solo el mantenimiento directamente asociado con la seguridad. 200.1(2): no prescribe métodos.</p>
+      <p><em>No dice "para que el equipo dure": dice "para que quien trabaja expuesto esté seguro".</em> (→ tacha confiabilidad y enciende seguridad)</p>
+    </aside>
+  </section>
+
+  <!-- ============ 04 · Condición normal · radial ============ -->
+  <section class="slide" id="s04" data-mood="maint" data-tx="expand" data-origin="700 640" data-thread="ring" data-anchor="700 640"
+    data-title="Mantenimiento dentro del programa" data-who="I1" data-time="1:30" data-ref="110.4(D) · 110.5(C)">
+    <p class="kicker rv">Capítulo 1 ↔ Capítulo 2</p>
+    <h2 class="title rv" style="font-size:64px">"Condición normal de operación" <span class="thin">exige seis cosas</span></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Las seis condiciones de 110.4(D) en un anillo"></svg>
+    <div class="detail a" style="left:1300px; top:400px; width:470px">
+      <div class="dn">02</div>
+      <h3 class="dh">Adecuadamente mantenido</h3>
+      <div class="dr">110.4(D)(2)</div>
+      <p class="dp"></p>
+    </div>
+    <div class="consq a" data-at="1" style="left:1300px; top:640px; width:470px">
+      <p>Si falla <b>una sola</b>, las estimaciones <b>"No"</b> de la Tabla 130.5(C) <b class="c-danger">dejan de aplicar</b>.</p>
+      <p class="small"><b>110.5(C):</b> el programa de seguridad eléctrica debe considerar la <b>condición de mantenimiento</b> de los equipos.</p>
+    </div>
+    <p class="hint-local a" style="left:150px; top:960px">SELECCIONA UNA CONDICIÓN</p>
+    <aside class="notes">
+      <p>Vincular el Cap. 2 con el programa (110.5(C)) y con la condición normal (110.4(D)). Se puede hacer clic en cada condición.</p>
+      <p>→ rompe la condición 2: si falla una sola, la estimación "No" deja de valer.</p>
+      <p>Ejemplo: operar un interruptor con puertas cerradas es "No" solo si el equipo está en condición normal.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 05 · Sistema de barreras ============ -->
+  <section class="slide" id="s05" data-mood="maint" data-tx="sweep" data-thread="gates" data-anchor="730 470"
+    data-title="Qué se mantiene y por qué" data-who="I1" data-time="1:45" data-ref="205 · 225 · 240 · 250">
+    <p class="kicker rv">El Capítulo 2 como sistema de barreras</p>
+    <h2 class="title rv">Qué se mantiene <span class="thin">y por qué</span></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Cinco barreras de mantenimiento atravesadas por el riesgo"></svg>
+    <div class="gate-lbl rv" style="left:230px"><h4>Protección contra sobrecorriente</h4><span>205.4 · 225</span><p>Mantener y documentar; probar tras fallas severas</p></div>
+    <div class="gate-lbl rv" style="left:480px"><h4>Envolventes y resguardos</h4><span>205.7 · 205.8</span><p>Cubiertas, sujetadores y enclavamientos</p></div>
+    <div class="gate-lbl rv hot" style="left:730px"><h4>Baterías</h4><span>240.1 · 240.2</span><p>Ventilación con prueba funcional de alarma; lavaojos</p></div>
+    <div class="gate-lbl rv" style="left:980px"><h4>EPP y herramientas</h4><span>250.1–250.4</span><p>Inspección ≤ 1 año · aislamiento ≤ 3 años</p></div>
+    <div class="gate-lbl rv" style="left:1230px"><h4>Información</h4><span>205.2 · 205.12</span><p>Unifilar actualizado, rótulos legibles</p></div>
+    <div class="history a" style="left:1480px; top:330px; width:290px">
+      <p class="mono-lbl rv">Caso 4 · historial</p>
+      <div class="h-item" data-at="1"><b>5 meses</b><span>alarma de falla a tierra inhibida</span></div>
+      <div class="h-item" data-at="1"><b>19 días</b><span>extractor disparado, sin orden de trabajo</span></div>
+      <div class="h-item" data-at="1"><b>26 meses</b><span>detector de H₂ sin calibración</span></div>
+    </div>
+    <aside class="notes">
+      <p>Leer el Cap. 2 como barreras que el riesgo tiene que atravesar.</p>
+      <p>→ aparece el historial del banco del Caso 4 y la barrera "Baterías" se agrieta.</p>
+      <p><em>"Si el equipo no está en la condición que la norma supone, ¿qué cambia físicamente cuando ocurre una falla? Eso lo explica mi compañero."</em></p>
+    </aside>
+  </section>
+
+  <!-- ============ 06 · El tiempo · timeline ============ -->
+  <section class="slide" id="s06" data-mood="energy" data-tx="slash" data-thread="clear" data-anchor="1500 300"
+    data-title="La variable que el mantenimiento controla: el tiempo" data-who="I2" data-time="2:00" data-ref="210.5 NI · 130.5(G)">
+    <p class="kicker rv">Nota Informativa de 210.5</p>
+    <h2 class="title rv" style="max-width:1120px">Mantenimiento inadecuado → <em>mayor tiempo de apertura</em> → mayor energía incidente</h2>
+    <div class="formula-big a rv" style="left:1360px; top:170px">E ∝ t<small>MISMA CORRIENTE · MISMA DISTANCIA</small></div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Tiempos típicos de despeje"></svg>
+    <div class="mk rv" style="left:215px"><div class="c">0,5</div><div class="ms">≈ 8 ms</div></div>
+    <div class="mk rv" style="left:555px"><div class="c">1,5</div><div class="ms">≈ 25 ms</div></div>
+    <div class="mk rv" style="left:895px"><div class="c">3</div><div class="ms">≈ 50 ms</div></div>
+    <div class="mk rv" style="left:1235px"><div class="c">5</div><div class="ms">≈ 83 ms</div></div>
+    <div class="mk rv bad" style="left:1608px"><div class="c">20–30</div><div class="ms">≈ 330–500 ms</div></div>
+    <div class="mk-l rv" style="left:215px">Fusible o interruptor limitador</div>
+    <div class="mk-l rv" style="left:555px">Caja moldeada &lt; 1000 V, instantáneo</div>
+    <div class="mk-l rv" style="left:895px">Caja aislada, instantáneo</div>
+    <div class="mk-l rv" style="left:1235px">1–35 kV, relé instantáneo</div>
+    <div class="mk-l rv bad" style="left:1608px">Retardo de tiempo corto</div>
+    <p class="foot a rv" style="left:150px; top:900px">CICLOS A 60 Hz · ESCALA NO LINEAL · NOTA INF. N.º 1, TABLA 130.7(C)(15)(a)</p>
+    <aside class="notes">
+      <p>La energía incidente es prácticamente proporcional a la duración del arco.</p>
+      <p>Modos de deterioro: grasa endurecida (mecanismo trabado), deriva de calibración, fusible no limitador (225.1), interruptor sin prueba tras falla severa (225.3).</p>
+      <p>Al avanzar, este eje de tiempo se inclina y se convierte en la recta de energía.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 07 · Tiempo → energía · cuantitativo ============ -->
+  <section class="slide" id="s07" data-mood="energy" data-tx="dissolve" data-thread="energy" data-anchor="1390 580"
+    data-title="De un mecanismo trabado a 16 cal/cm²" data-who="I2" data-time="2:00" data-ref="130.5(G) · Tabla 130.7(C)(15)(a)">
+    <p class="kicker rv">Ejemplo ilustrativo · tablero de 480 V</p>
+    <div class="a" style="left:150px; top:210px; width:760px">
+      <h2 class="title rv">De un mecanismo trabado a <em>16 cal/cm²</em></h2>
+      <p class="lead rv">Misma corriente, misma distancia (455 mm). Solo cambió <b>quién despejó la falla</b>.</p>
+      <p class="body rv" style="margin-top:40px">El trabajador vestido para <b>8 cal/cm²</b> queda subprotegido <b>y la etiqueta no lo advierte</b>.</p>
+    </div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Energía incidente proporcional al tiempo de despeje"></svg>
+    <div class="pt-lbl a ok" data-at="1" style="left:1100px; top:748px"><b>1,6</b> cal/cm²<span>0,05 s · 3 ciclos · interruptor principal</span></div>
+    <div class="pt-lbl a bad" data-at="2" style="left:1420px; top:236px"><b>16</b> cal/cm²<span>0,5 s · 30 ciclos · respaldo aguas arriba</span></div>
+    <div class="counter a" data-at="2"><b>1,6</b></div>
+    <div class="times a" data-at="2" style="left:1530px; top:505px">×10</div>
+    <aside class="notes">
+      <p>1,6 cal/cm² con despeje en 3 ciclos. Mecanismo trabado → despeja el respaldo en 30 ciclos → ≈ 16 cal/cm² (10×).</p>
+      <p>→ punto del despeje normal. → la energía sube por la recta y cruza la línea de 8 cal/cm².</p>
+      <p>Es un supuesto ilustrativo; decirlo.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 08 · Cadena causal ============ -->
+  <section class="slide" id="s08" data-mood="energy" data-tx="sweep" data-thread="chain" data-anchor="960 480"
+    data-title="Cuando la tabla y la etiqueta dejan de valer" data-who="I2" data-time="2:00" data-ref="110.4(D) · 130.5(H) · 130.7(C)(15)">
+    <p class="kicker rv">Cadena causal</p>
+    <h2 class="title rv">Cuando la tabla y la etiqueta <em>dejan de valer</em></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Cadena causal de siete eslabones"></svg>
+    <div class="lk rv m" style="left:270px"><div class="n">01</div><div class="t">Estado del equipo</div><div class="s">Mecanismo, aislamiento, conexiones</div></div>
+    <div class="lk rv m" style="left:500px"><div class="n">02</div><div class="t">Condición eléctrica</div><div class="s">Calibración, puntos calientes</div></div>
+    <div class="lk rv" style="left:730px"><div class="n">03</div><div class="t">Comportamiento</div><div class="s">¿Dispara? ¿Cuándo?</div></div>
+    <div class="lk rv" style="left:960px"><div class="n">04</div><div class="t">Tiempo de despeje</div><div class="s">Ciclos → segundos</div></div>
+    <div class="lk rv" style="left:1190px"><div class="n">05</div><div class="t">Energía</div><div class="s">cal/cm²</div></div>
+    <div class="lk rv" style="left:1420px"><div class="n">06</div><div class="t">Exposición</div><div class="s">Distancia, EPP</div></div>
+    <div class="lk rv e" style="left:1650px"><div class="n">07</div><div class="t">Consecuencia</div><div class="s">Quemadura, lesión, muerte</div></div>
+    <div class="conseq a" style="left:150px; top:720px; width:1620px">
+      <div class="rv"><b>110.4(D)</b>Sin condición normal, la estimación "No" de la Tabla 130.5(C) no aplica.</div>
+      <div class="rv"><b>130.7(C)(15)</b>Fuera de los tiempos máximos de la tabla, se requiere análisis de energía incidente.</div>
+      <div class="rv"><b>130.5(H)</b>Un despeje más lento es un cambio: la etiqueta debe actualizarse.</div>
+    </div>
+    <p class="teaser a" data-at="1" style="left:150px; top:905px">En un banco de baterías, a veces no hay <b class="hl">ningún</b> interruptor dentro de la cadena.</p>
+    <aside class="notes">
+      <p>Recorrer los 7 eslabones; los dos primeros (violeta) son los que controla el mantenimiento.</p>
+      <p>→ un pulso recorre la cadena: la falla del mantenimiento se propaga hasta la consecuencia.</p>
+      <p><em>"En corriente alterna el interruptor es el protagonista. En un banco de baterías, a veces no hay ninguno. Entremos al Artículo 320."</em></p>
+    </aside>
+  </section>
+
+  <!-- ============ 09 · Art. 320 · números gigantes ============ -->
+  <section class="slide" id="s09" data-mood="dc" data-tx="slash" data-thread="horizon" data-anchor="1500 260"
+    data-title="Artículo 320: umbrales y evaluación obligatoria" data-who="I3" data-time="1:30" data-ref="320.1 · 320.3(A)(1)–(2)">
+    <p class="kicker rv">Capítulo 3 · Artículo 320</p>
+    <h2 class="title rv">Baterías: <span class="thin">umbrales y evaluación obligatoria</span></h2>
+    <div class="mono-n a rv" style="left:150px; top:330px"><div class="big">&gt;50<small>V</small></div><div class="lbl"><b>320.1 · ALCANCE</b>Baterías estacionarias expuestas de más de 50 V nominales.</div></div>
+    <div class="mono-n a rv" style="left:760px; top:395px"><div class="big">100<small>V CC</small></div><div class="lbl"><b>320.3(A)(1) · UMBRAL</b>Por encima, controles apropiados. En CA: 50 V y 5 mA.</div></div>
+    <div class="mono-n a rv" style="left:1360px; top:460px"><div class="big c-ice">Antes</div><div class="lbl"><b>320.3(A)(2) · EVALUACIÓN</b>De riesgos químicos, de choque y de arco, antes de <b>cualquier</b> trabajo.</div></div>
+    <p class="edge-line a rv" style="left:150px; top:872px">Una batería <span>no se puede desenergizar</span>.</p>
+    <aside class="notes">
+      <p>Puedo abrir el interruptor, pero las celdas siguen con tensión en bornes. Solo se aísla de la carga o se secciona la cadena.</p>
+      <p>Pregunta más probable del profesor: "¿por qué no la desenergizaron?".</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10 · CA vs CC · ondas ============ -->
+  <section class="slide" id="s10" data-mood="dc" data-tx="wave" data-thread="waves" data-anchor="960 520"
+    data-title="CA vs. CC: por qué el arco en CC no se apaga" data-who="I3" data-time="1:30" data-ref="Art. 320 · Anexo D.5">
+    <p class="kicker rv">Física del arco</p>
+    <h2 class="title rv">CA vs. CC: <span class="thin">por qué el arco en CC</span> <em>no se apaga</em></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Onda senoidal con cruces por cero frente a corriente continua sin cruces por cero"></svg>
+    <h4 class="wave-h a rv" style="left:150px; top:330px">CORRIENTE ALTERNA · 60 Hz</h4>
+    <h4 class="wave-h a rv c-danger" style="left:1050px; top:330px">CORRIENTE CONTINUA · BATERÍA</h4>
+    <p class="caption a rv" style="left:150px; top:735px; width:720px">120 cruces por cero por segundo: el arco tiende a extinguirse en cada cruce.</p>
+    <p class="caption a rv" style="left:1050px; top:735px; width:720px">Sin cruce por cero: arco sostenido mientras la tensión supere la del arco.</p>
+    <div class="reasons a" style="left:150px; top:840px; width:1620px">
+      <div class="rv"><b>Sin cruce por cero</b>Nada ayuda a extinguir el arco.</div>
+      <div class="rv"><b>Sin dispositivo en la cadena</b>Un corto entre celdas no pasa por el interruptor.</div>
+      <div class="rv"><b>La fuente no se desconecta</b>Abrir el interruptor no quita tensión a las celdas.</div>
+    </div>
+    <aside class="notes">
+      <p>El cursor recorre ambas señales: en CA la intensidad del arco cae a cero en cada cruce; en CC nunca.</p>
+      <p>La corriente de un corto interno solo la limita la resistencia interna de celdas y conectores. Los dispositivos de maniobra deben tener capacidad nominal en CC.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11 · Fronteras en CC ============ -->
+  <section class="slide" id="s11" data-mood="dc" data-tx="expand" data-origin="220 620" data-thread="front" data-anchor="220 620"
+    data-title="Tablas de CC: fronteras, probabilidad y EPP" data-who="I3" data-time="2:00" data-ref="Tablas 130.4(E)(b) · 130.5(C) · 130.7(C)(15)(b)">
+    <p class="kicker rv">Aplicación de tablas al banco</p>
+    <h2 class="title rv">Fronteras, probabilidad <span class="thin">y</span> EPP <span class="thin">en CC</span></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Fronteras de aproximación medidas desde el banco"></svg>
+    <div class="rows a" style="left:900px; top:330px; width:870px">
+      <div class="row rv"><div class="h">Choque<span>Tabla 130.4(E)(b) · 50–300 V CC</span></div><div class="v">1,0 m</div><div class="d">Frontera limitada (parte fija). Restringida: <b>evitar el contacto</b>.</div></div>
+      <div class="row rv"><div class="h">Probabilidad de arco<span>Tabla 130.5(C)</span></div><div class="v danger">SÍ</div><div class="d">Trabajar en conductores de celdas en serie; retirar cubiertas atornilladas de terminales.</div></div>
+      <div class="row rv ppe"><div class="h">EPP de arco<span>Tabla 130.7(C)(15)(b) · <i class="v250">100–250 V</i><i class="v281">&gt; 250–600 V</i> · <i class="v250">7–15 kA</i><i class="v281">7–10 kA</i></span></div><div class="v"><i class="v250">Cat. 3</i><i class="v281 c-danger">Cat. 4</i></div><div class="d">Frontera <b><i class="v250">1,8 m</i><i class="v281">2,5 m</i></b> · arco supuesto de <b>2 s</b> · 455 mm.</div></div>
+    </div>
+    <div class="warn a rv" style="left:900px; top:800px; width:870px">
+      <button class="toggle" type="button" aria-label="Alternar 250 V nominal y 281 V de flotación"><span class="o250">250 V</span><span class="o281">281 V</span></button>
+      <p>Nominal vs. flotación. Con 281 V la fila cambia a <b>&gt; 250 V → Cat. 4, 2,5 m</b>. Posición del grupo: <b>análisis de energía incidente (130.5(G))</b> y documentarlo.</p>
+    </div>
+    <aside class="notes">
+      <p>Las fronteras están dibujadas a escala desde la cara del banco. 2 s porque en baterías frecuentemente no hay dispositivo que despeje (nota de la tabla).</p>
+      <p>→ (o clic en el selector) cambia a 281 V: aparece la frontera de 2,5 m y la categoría 4.</p>
+      <p>Con D.5.1 y datos supuestos: ≈ 11,5 cal/cm² a 455 mm → Cat. 3 con margen. Ver respaldo R1/R2.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12 · Banco de baterías · escena ============ -->
+  <section class="slide" id="s12" data-mood="dc" data-tx="sweep" data-thread="string" data-anchor="1100 480" data-zoom="897 372"
+    data-title="Caso 4: la instalación" data-who="I3" data-time="1:00" data-ref="Caso 4 · 205.2">
+    <p class="kicker rv">Caso 4 · Centro de Datos Alfa · <span class="c-danger">escenario hipotético</span></p>
+    <h2 class="title rv">La instalación</h2>
+    <div class="specs a rv" style="left:760px; top:206px; width:1010px">
+      <div><b>125 celdas</b>plomo-ácido ventiladas · 800 Ah</div>
+      <div><b>250 · 281 · 291 V</b>nominal · flotación · igualación</div>
+      <div><b>≈ 8,5 kA</b>cortocircuito prospectivo</div>
+      <div><b>Bus aislado</b>no puesto a tierra + detector</div>
+    </div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Arquitectura del banco de baterías de 125 celdas"></svg>
+    <ol class="rail a" style="left:150px; top:872px">
+      <li data-k="0">Banco</li><li data-k="1">Tensiones</li><li data-k="2">Punto de falla</li><li data-k="3">Trayectoria</li><li data-k="4">Consecuencia</li>
+    </ol>
+    <div class="cap a" style="left:150px; top:918px; width:1620px">
+      <p data-only="0">Dos niveles de celdas en serie: <b>1 → 62</b> abajo, <b>63 → 125</b> arriba, unidos por un <b>cable puente</b>. El interruptor de 400 A está a 6 m, en la salida hacia la UPS-2.</p>
+      <p data-only="1">La tensión se acumula celda a celda: ≈ 2,25 V por celda en flotación. En el cable puente ya hay ≈ 140 V; en el borne positivo, ≈ 281 V.</p>
+      <p data-only="2">El aislamiento del cable puente está desgastado y toca el bastidor (≈ 0 Ω). En un bus aislado, esa primera falla <b>no produce corriente</b>: el detector debía alarmar, pero estaba inhibido.</p>
+      <p data-only="3">La matraca en el borne + de la celda 118 toca el larguero: se cierra el lazo <b class="c-danger">celda 118 → 63 → cable puente → bastidor → matraca</b>, con ≈ 126 V y varios kA.</p>
+      <p data-only="4">El lazo nunca pasa por el interruptor: <b class="c-danger">el interruptor está fuera de la cadena de falla</b>. Nada lo despeja: solo termina cuando el arco se interrumpe.</p>
+    </div>
+    <aside class="notes">
+      <p>Escena con 5 estados (→): banco, tensiones, punto de falla, trayectoria, consecuencia. La línea que recorre las celdas es el camino real de la corriente en la cadena serie.</p>
+      <p>Dos bastidores de dos niveles; la cadena sube por un cable puente (62/63). Interruptor de 400 A a 6 m, fuera de la cadena.</p>
+      <p><em>"La batería no solo es un peligro eléctrico: también es un reactor químico que produce hidrógeno."</em> (al avanzar, entramos en la celda 119)</p>
+    </aside>
+  </section>
+
+  <!-- ============ 13 · Corte de celda ============ -->
+  <section class="slide" id="s13" data-mood="h2" data-tx="absorb" data-thread="gas" data-anchor="470 600"
+    data-title="El otro peligro: electrolito e hidrógeno" data-who="I4" data-time="2:00" data-ref="320.3(B) · 320.3(D)">
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Corte de una celda ventilada de plomo-ácido"></svg>
+    <div class="a" style="left:980px; top:150px; width:790px">
+      <p class="kicker rv">Peligro químico</p>
+      <h2 class="title rv">El otro peligro: <em>electrolito</em> e <em>hidrógeno</em></h2>
+      <p class="body rv"><b>320.3(B)(1):</b> si se maneja electrolito, gafas <b>y</b> protector facial (eléctrico y químico), guantes y delantal, y <b>lavaojos dentro del área</b>. Leer densidad con hidrómetro de bulbo cuenta como manejo.</p>
+      <div class="facts">
+        <div class="rv"><b>4 %</b><span>Límite inferior de inflamabilidad del H₂</span></div>
+        <div class="rv"><b>&lt; 1 %</b><span>Objetivo de ventilación (≈ 25 % del LII)</span></div>
+        <div class="rv"><b>0,02 mJ</b><span>Energía mínima de ignición</span></div>
+      </div>
+      <p class="teaser rv" style="font-size:28px; margin-top:44px">Carga de igualación → más gas.</p>
+    </div>
+    <aside class="notes">
+      <p>Estados (→): 1) apagallamas: el gas sale, la llama no entra. 2) el H₂ sube y se acumula en el techo; por eso se ventila arriba.</p>
+      <p>Sobrecarga electroliza el agua: H₂ en la placa negativa, O₂ en la positiva. Más gas con igualación, temperatura y celdas defectuosas.</p>
+      <p>Valores de fuente externa (NFPA 1 cap. 52, IEEE/ASHRAE 1635).</p>
+    </aside>
+  </section>
+
+  <!-- ============ 14 · Triángulo del fuego ============ -->
+  <section class="slide" id="s14" data-mood="h2" data-tx="rise" data-thread="tri" data-anchor="540 650"
+    data-title="Barreras contra la explosión" data-who="I4" data-time="1:30" data-ref="240.1 · 320.3(C) · 320.3(D)">
+    <p class="kicker rv">Triángulo del fuego aplicado al H₂</p>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Triángulo del fuego del hidrógeno y sus barreras"></svg>
+    <div class="a" style="left:1060px; top:210px; width:710px">
+      <h2 class="title rv">Barreras contra <em>la explosión</em></h2>
+      <ul class="barrier-list">
+        <li class="rv" data-v="h"><span class="n">1</span><div><h4>Ventilación mantenida y probada</h4><p>Con prueba funcional de detección y alarma. Controla el <b>combustible</b>.</p><span class="r">240.1</span></div></li>
+        <li class="rv" data-v="ig"><span class="n">2</span><div><h4>Apagallamas en cada celda</h4><p>Instalado, sin obstrucción, reemplazado según fabricante. Corta la <b>ignición</b> hacia el interior.</p><span class="r">320.3(D)</span></div></li>
+        <li class="rv" data-v="ig"><span class="n">3</span><div><h4>Sin fuentes de ignición</h4><p>Herramientas aisladas; antichispa si la evaluación lo justifica; no fumar ni llama.</p><span class="r">320.3(C) · 320.3(A)(6)</span></div></li>
+      </ul>
+      <p class="teaser rv" style="font-size:28px">El EPP <b class="c-danger">no</b> protege contra la onda de presión de una celda.</p>
+    </div>
+    <aside class="notes">
+      <p>Triángulo completo = explosión posible. → la ventilación rompe el vértice del combustible. → apagallamas y control de fuentes rompen el de la ignición.</p>
+      <p>El oxígeno no se puede quitar: se controla el combustible (ventilación) y la ignición (apagallamas, herramientas). Por eso el control del H₂ va en ingeniería y mantenimiento, no en EPP.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 15 · Reconstrucción forense ============ -->
+  <section class="slide" id="s15" data-mood="crisis" data-tx="scan" data-thread="tl" data-anchor="1433 600"
+    data-title="Caso 4: línea de tiempo y evidencias" data-who="I4" data-time="2:30" data-ref="Caso 4 · 110.5(J)">
+    <p class="kicker rv">Caso 4 · 14 de agosto de 2026 · <span class="c-danger">hipotético</span></p>
+    <h2 class="title rv">Línea de tiempo <span class="thin">y evidencias</span></h2>
+    <div class="latent a" style="left:150px; top:320px">
+      <div class="rv"><b>−5 meses</b><span>alarma de falla a tierra inhibida</span></div>
+      <div class="rv"><b>−19 días</b><span>extractor detenido</span></div>
+      <div class="rv"><b>−20 h</b><span>fin de carga de igualación</span></div>
+    </div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Línea de tiempo de la noche del accidente"></svg>
+    <div class="boom a" data-at="1" style="left:1180px; top:300px; width:590px"><b>02:38</b>Arco ≈ 0,9 s + detonación en la celda 119</div>
+    <div class="evidence a" style="left:150px; top:800px; width:1620px">
+      <div data-at="3"><b>HERRAMIENTA</b>Matraca de acero con marcas de fusión</div>
+      <div data-at="3"><b>CABLE PUENTE</b>Aislamiento desgastado · ≈ 0 Ω al bastidor</div>
+      <div data-at="3"><b>TAPONES</b>4 no originales, 1 apagallamas obstruido</div>
+      <div data-at="3"><b>LAVAOJOS</b>Vacío y vencido</div>
+      <div data-at="3"><b>BMS</b>Alarma inhibida desde marzo</div>
+    </div>
+    <aside class="notes">
+      <p>Estados (→): 1) 02:38, el arco y la detonación; las condiciones latentes convergen en ese instante. 2) lo que siguió. 3) evidencias.</p>
+      <p>02:38:14 — reapretando C-118/119, la cabeza de la matraca toca el larguero con el dado en el borne + de la celda 118.</p>
+      <p>Tapón genérico en la celda 119 → la mezcla interior se enciende, se fractura la tapa y salta electrolito.</p>
+      <p><em>"Ya sabemos qué pasó. Ahora, como peritos, respondemos por qué pasó."</em></p>
+    </aside>
+  </section>
+
+  <!-- ============ 16 · Barreras espaciales ============ -->
+  <section class="slide" id="s16" data-mood="crisis" data-tx="fracture" data-origin="1433 520" data-thread="vector" data-anchor="880 480"
+    data-title="Cadena causal y barreras que fallaron" data-who="I5" data-time="2:00" data-ref="Análisis de barreras">
+    <p class="kicker rv">Peritaje · análisis de barreras</p>
+    <h2 class="title rv" style="font-size:56px; max-width:1620px">Ocho barreras. <em>Las cuatro primeras eran de mantenimiento.</em></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Ocho barreras atravesadas por el vector del accidente"></svg>
+    <p class="end-l a rv" style="left:150px; top:392px">PELIGRO<br><span>126 V CC + H₂</span></p>
+    <p class="end-l a rv r" style="left:1530px; top:392px">LESIÓN<br><span>arco · electrolito · onda de presión</span></p>
+    <div class="status a" style="left:150px; top:830px; width:780px">
+      <p class="mono-lbl">CLIC EN UNA BARRERA PARA RESTAURARLA</p>
+      <p class="st-txt">Las ocho barreras fallaron y sus aberturas terminaron alineadas.</p>
+    </div>
+    <div class="a" style="left:1010px; top:830px; width:760px">
+      <p class="body rv small"><b>Lazo:</b> celda 118 → 117…63 → cable puente → bastidor → matraca · <span class="mono c-danger">≈ 126 V · varios kA · 0 interruptores</span> · D.5.1: ≈ 2,3 cal/cm² a 45,5 cm · ≈ 7,7 cal/cm² a 25 cm.</p>
+      <p class="teaser rv" style="margin-top:18px; font-size:30px">El EPP fue la <b class="hl">última</b> barrera, no la primera.</p>
+    </div>
+    <aside class="notes">
+      <p>Clic en cada barrera para restaurarla y ver su efecto real: 1, 2, 5 y 7 detienen el accidente; 4 evita la detonación pero no el arco; 3 y 6 reducen; 8 solo mitiga la lesión.</p>
+      <p>→ resalta las barreras de mantenimiento. Si tocar el bastidor en un bus aislado no debería hacer nada, ¿por qué hubo arco? Porque el cable puente ya tocaba el bastidor: falla a tierra preexistente.</p>
+      <p>Barreras 1–2: sin ellas no hay lazo. Barrera 4: sin ella no hay explosión.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 17 · Jerarquía de controles ============ -->
+  <section class="slide" id="s17" data-mood="order" data-tx="reconstruct" data-thread="pyr" data-anchor="590 600"
+    data-title="Causa raíz y jerarquía de controles" data-who="I5" data-time="2:00" data-ref="110.5(H)(3)">
+    <p class="kicker rv">Causa raíz · jerarquía de controles</p>
+    <h2 class="title rv" style="font-size:60px">Controlar en la fuente, <em>no en la persona</em></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-label="Pirámide invertida de la jerarquía de controles"></svg>
+    <div class="lvl a" style="left:1150px; top:330px; width:620px">
+      <p class="mono-lbl">NIVEL SELECCIONADO</p>
+      <h3 class="lh">Selecciona un nivel</h3>
+      <p class="lm"></p>
+      <p class="lf"></p>
+    </div>
+    <div class="roots a" style="left:1150px; top:690px; width:620px">
+      <div class="rt rv"><b>CR1 · 110.5(C)</b>Mantenimiento no tratado como barrera: se permitía inhibir alarmas sin control de cambios.</div>
+      <div class="rt rv"><b>CR2 · 240.1 · 240.2 · 320.3(D)</b>Plan de mantenimiento incompleto: omitía ventilación, detección, apagallamas y lavaojos.</div>
+      <div class="rt rv"><b>CR3 · 320.3(A)(2) · 110.6 · 110.7</b>Sin procedimiento ni competencia: sin evaluación de batería, plan de trabajo ni control del contratista.</div>
+    </div>
+    <aside class="notes">
+      <p>→ recorre los seis niveles de arriba (más eficaz) a abajo (EPP). También se puede hacer clic en cada nivel.</p>
+      <p>Los tres primeros niveles actúan en la fuente y dependen menos del error humano (Nota Inf. n.º 1 de 110.5(H)(3)).</p>
+      <p>No se afirma negligencia ni culpa individual: son calificaciones jurídicas.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 18 · Pregunta de control ============ -->
+  <section class="slide quiz" id="s18" data-mood="order" data-tx="expand" data-origin="1650 230" data-thread="timer" data-anchor="1650 230"
+    data-title="Pregunta de control" data-who="I5" data-time="2:00" data-ref="Pregunta de control">
+    <p class="kicker rv">Pregunta de control · 30 segundos</p>
+    <svg class="timer-ring hit" viewBox="0 0 220 220" aria-label="Temporizador de 30 segundos"><circle class="bg" cx="110" cy="110" r="100"/><circle class="fg" cx="110" cy="110" r="100"/><text x="110" y="110">30</text></svg>
+    <h2 class="quiz-q rv">En el Caso 4, ¿cuál medida habría evitado el arco <em class="hl">con mayor confiabilidad</em>?</h2>
+    <div class="opts">
+      <button class="opt rv" data-k="a"><span class="k">A</span>EPP de categoría 4 para el técnico</button>
+      <button class="opt rv correct" data-k="b"><span class="k">B</span>Detector de falla a tierra operativo y tensión polo–bastidor verificada</button>
+      <button class="opt rv" data-k="c"><span class="k">C</span>Etiqueta de arco en el bastidor</button>
+      <button class="opt rv" data-k="d"><span class="k">D</span>Permiso de trabajo energizado firmado</button>
+    </div>
+    <div class="answer" data-at="1">
+      <div class="v">B</div>
+      <p>Sin la falla a tierra preexistente, tocar el bastidor <b>no cerraba ningún circuito</b>: se elimina el lazo. A solo mitiga; C informa pero no controla; D es administrativo. <b>B está en ingeniería y mantenimiento; A, en el último nivel.</b></p>
+    </div>
+    <aside class="notes">
+      <p>Pulsar T (o clic en el reloj) para iniciar los 30 s. Luego → o clic en una opción para revelar.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 19 · Cierre · minimalista ============ -->
+  <section class="slide closing" id="s19" data-mood="calm" data-tx="dissolve" data-thread="close" data-anchor="960 540"
+    data-title="Conclusiones" data-who="I5" data-time="0:30" data-ref="Módulo D">
+    <p class="kicker rv">Tres ideas para llevarse</p>
+    <div class="idea rv"><span class="n">01</span><span>El mantenimiento controla el <span class="hl">tiempo</span>; el tiempo controla la <span class="hl">energía</span>.</span></div>
+    <div class="idea rv"><span class="n">02</span><span>Una batería <span class="c-ice">nunca</span> está desenergizada.</span></div>
+    <div class="idea rv"><span class="n">03</span><span>La pregunta no es quién se equivocó, sino <span class="c-ctrl">qué barreras fallaron</span>.</span></div>
+    <p class="ask a rv">✦ ¿PREGUNTAS? ✦</p>
+    <aside class="notes">
+      <p>Cierre y apertura del turno de preguntas (10 min). I5 modera y asigna: I1–I2 mantenimiento y energía; I3 CC y tablas; I4 químico e H₂; I5 causa raíz.</p>
+    </aside>
+  </section>
+
+  <!-- ============ Respaldo ============ -->
+  <section class="slide" data-backup="R1" data-mood="calm" data-tx="dissolve" data-thread="rest" data-title="R1 · Cálculo Anexo D.5.1" data-who="Respaldo" data-time="—" data-ref="Anexo D.5.1 · D.5.3">
+    <p class="backup-badge rv">✦ DIAPOSITIVA DE RESPALDO</p>
+    <h2 class="title rv">Método de máxima potencia <span class="thin">(CC ≤ 1000 V)</span></h2>
+    <div class="split" style="grid-template-columns:.9fr 1.1fr; gap:80px">
+      <div class="eq rv">I<sub>arc</sub> = 0,5 · I<sub>bf</sub><br>IE = 0,01 · V · I<sub>arc</sub> · T / D²<span class="dim">IE cal/cm² · V volts · I amperios · T segundos · D cm<br>D.5.3: I<sub>bf</sub> ≈ 10 × capacidad de 1 min (conservador)</span></div>
+      <table class="etable compact">
+        <thead class="rv"><tr><th>Escenario</th><th>V</th><th>T</th><th>IE · 45,5 cm</th><th>Frontera</th></tr></thead>
+        <tbody>
+          <tr class="rv hot"><td>Reconstrucción (tramo)</td><td class="num">126</td><td class="num">0,9 s</td><td class="num">≈ 2,3</td><td class="num">—</td></tr>
+          <tr class="rv"><td>Reconstrucción · mano 25 cm</td><td class="num">126</td><td class="num">0,9 s</td><td class="num">≈ 7,7</td><td class="num">—</td></tr>
+          <tr class="rv"><td>Planificación nominal</td><td class="num">250</td><td class="num">2 s</td><td class="num">≈ 10,3</td><td class="num">1,33 m</td></tr>
+          <tr class="rv"><td>Planificación flotación</td><td class="num">281</td><td class="num">2 s</td><td class="num">≈ 11,5</td><td class="num">1,41 m</td></tr>
+          <tr class="rv"><td>Planificación igualación</td><td class="num">291</td><td class="num">2 s</td><td class="num">≈ 11,9</td><td class="num">1,44 m</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body rv small" style="margin-top:40px">I<sub>bf</sub> ≈ 8,5 kA → I<sub>arc</sub> ≈ 4250 A (supuesto del caso). Método conservador, arco al aire libre.</p>
+    <aside class="notes"><p>Solo si preguntan. Frontera: distancia a la que IE = 1,2 cal/cm².</p></aside>
+  </section>
+
+  <section class="slide" data-backup="R2" data-mood="calm" data-tx="dissolve" data-thread="rest" data-title="R2 · Tabla 130.7(C)(15)(b)" data-who="Respaldo" data-time="—" data-ref="Tabla 130.7(C)(15)(b)">
+    <p class="backup-badge rv">✦ DIAPOSITIVA DE RESPALDO</p>
+    <h2 class="title rv">Tabla 130.7(C)(15)(b) <span class="thin">· baterías y CC</span></h2>
+    <table class="etable compact" style="max-width:1400px">
+      <thead class="rv"><tr><th>Tensión</th><th>Corriente de falla</th><th>Categoría EPP</th><th>Frontera de arco</th></tr></thead>
+      <tbody>
+        <tr class="rv"><td>100–250 V</td><td class="num">&lt; 4 kA</td><td class="num">2</td><td class="num">900 mm</td></tr>
+        <tr class="rv"><td>100–250 V</td><td class="num">4–7 kA</td><td class="num">2</td><td class="num">1,2 m</td></tr>
+        <tr class="rv hot"><td>100–250 V</td><td class="num">7–15 kA</td><td class="num">3</td><td class="num">1,8 m</td></tr>
+        <tr class="rv"><td>&gt; 250–600 V</td><td class="num">&lt; 1,5 kA</td><td class="num">2</td><td class="num">900 mm</td></tr>
+        <tr class="rv"><td>&gt; 250–600 V</td><td class="num">1,5–3 kA</td><td class="num">2</td><td class="num">1,2 m</td></tr>
+        <tr class="rv"><td>&gt; 250–600 V</td><td class="num">3–7 kA</td><td class="num">3</td><td class="num">1,8 m</td></tr>
+        <tr class="rv hot"><td>&gt; 250–600 V</td><td class="num">7–10 kA</td><td class="num">4</td><td class="num">2,5 m</td></tr>
+      </tbody>
+    </table>
+    <p class="body rv small" style="margin-top:30px">Arco máximo 2 s · distancia de trabajo ≥ 455 mm · valores al aire libre · ropa expuesta a electrolito: ASTM F1296 + F1891.</p>
+    <aside class="notes"><p>Las dos filas resaltadas son la ambigüedad 250 V nominal vs. 281 V en flotación.</p></aside>
+  </section>
+
+  <section class="slide" data-backup="R3" data-mood="calm" data-tx="dissolve" data-thread="rest" data-title="R3 · Generación de H₂ (Faraday)" data-who="Respaldo" data-time="—" data-ref="Análisis · Fuente externa">
+    <p class="backup-badge rv">✦ DIAPOSITIVA DE RESPALDO</p>
+    <h2 class="title rv">Hidrógeno: <span class="thin">orden de magnitud por Faraday</span></h2>
+    <div class="eq rv">n = 3600 / (2 × 96 485) ≈ 0,0187 mol H₂ por A·h por celda<br>≈ 0,46 L a 25 °C<span class="dim">125 celdas × 1 A de gasificación (supuesto) ≈ 57 L/h</span></div>
+    <div class="monos">
+      <div class="rv"><div class="big">72<small>m³</small></div><div class="lbl">Volumen de la sala B</div></div>
+      <div class="rv"><div class="big">720<small>L</small></div><div class="lbl">1 % en volumen</div></div>
+      <div class="rv"><div class="big c-danger">≈12<small>h</small></div><div class="lbl">Sin ventilación, hasta el 1 %</div></div>
+    </div>
+    <aside class="notes"><p>La corriente de 1 A es ilustrativa: depende de tecnología, temperatura y régimen de carga.</p></aside>
+  </section>
+
+  <section class="slide" data-backup="R4" data-mood="calm" data-tx="dissolve" data-thread="rest" data-title="R4 · Cinco porqués" data-who="Respaldo" data-time="—" data-ref="Causa raíz">
+    <p class="backup-badge rv">✦ DIAPOSITIVA DE RESPALDO</p>
+    <h2 class="title rv">Cinco porqués · <span class="thin">tres líneas causales</span></h2>
+    <div class="whys">
+      <div class="rv"><h4>A · ¿Por qué hubo arco?</h4><ol><li>La matraca unió borne y bastidor.</li><li>Había falla a tierra en el cable puente.</li><li>No se detectó: alarma inhibida.</li><li>Se inhibió por "falsas alarmas" sin investigar.</li><li>Sin gestión de cambios ni prueba anual.</li></ol><div class="cr">→ CR1 · 110.5(C), 320.3(A)(5)</div></div>
+      <div class="rv"><h4>B · ¿Por qué explotó la celda 119?</h4><ol><li>Se encendió la mezcla H₂/O₂ interior.</li><li>El tapón no tenía apagallamas.</li><li>Reemplazado por uno genérico.</li><li>La inspección no verificaba apagallamas.</li><li>El plan no incluía 240.1 ni 320.3(D).</li></ol><div class="cr">→ CR2 · 240.1, 240.2, 320.3(D)</div></div>
+      <div class="rv"><h4>C · ¿Por qué sin protección?</h4><ol><li>Herramienta no aislada, joyas, algodón.</li><li>Sin evaluación de riesgos ni plan.</li><li>Orden genérica, sin procedimiento.</li><li>El anfitrión no verificó al contratista.</li><li>Sin requisitos de competencia.</li></ol><div class="cr">→ CR3 · 110.6, 110.7</div></div>
+    </div>
+    <aside class="notes"><p>Regla de parada: raíz = fallo del sistema de gestión, bajo control de la organización.</p></aside>
+  </section>
+
+  <section class="slide" data-backup="R5" data-mood="calm" data-tx="dissolve" data-thread="rest" data-title="R5 · Referencias" data-who="Respaldo" data-time="—" data-ref="Referencias">
+    <p class="backup-badge rv">✦ DIAPOSITIVA DE RESPALDO</p>
+    <h2 class="title rv">Referencias</h2>
+    <ul class="refs">
+      <li class="rv"><b>NFPA 70E-2021</b> · Standard for Electrical Safety in the Workplace</li>
+      <li class="rv"><b>NFPA 70B-2023</b> · Standard for Electrical Equipment Maintenance</li>
+      <li class="rv"><b>IEEE 1584</b> · Guide for Performing Arc-Flash Hazard Calculations</li>
+      <li class="rv"><b>IEEE 450</b> · Maintenance of vented lead-acid batteries</li>
+      <li class="rv"><b>IEEE/ASHRAE 1635</b> · Ventilation and thermal management of batteries</li>
+      <li class="rv"><b>IEEE 1657</b> · Battery maintenance personnel competency</li>
+      <li class="rv"><b>IEC TS 60479-1</b> · Effects of current on human beings</li>
+      <li class="rv"><b>NFPA 1, cap. 52</b> · Stationary storage battery systems</li>
+      <li class="rv"><b>ASTM D120 · F1296 · F1891</b> · Guantes y ropa de protección</li>
+      <li class="rv"><b>DOE-NE-STD-1004-92</b> · Root cause analysis guidance</li>
+    </ul>
+    <aside class="notes"><p>Verificar numerales contra el texto oficial en inglés (el PDF es traducción automática).</p></aside>
+  </section>
+
+  <!-- Capas de transición -->
+  <div class="slash" id="slash" aria-hidden="true"></div>
+  <svg class="cracks" id="cracks" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <!-- Cromo -->
+  <div class="chrome" aria-hidden="true">
+    <svg class="ruler" viewBox="0 0 1920 1080"></svg>
+    <div class="brand"><span class="sparkle">✦</span>MÓDULO D · NFPA 70E</div>
+    <div class="ref" id="c-ref"></div>
+    <div class="who" id="c-who"></div>
+    <div class="dots" id="c-dots"></div>
+    <div class="count" id="c-count"></div>
+    <div class="progress"><i id="c-prog"></i></div>
+  </div>
+</main>
+
+<!-- Vista de presentador (se activa con ?presentador) -->
+<div class="pv" id="pv">
+  <section>
+    <div class="lbl">Diapositiva actual</div>
+    <h1 class="cur-title" id="pv-title"></h1>
+    <div class="cur-meta" id="pv-meta"></div>
+    <div class="lbl">Notas</div>
+    <div class="cur-notes" id="pv-notes"></div>
+  </section>
+  <section>
+    <div class="lbl">Tiempo total</div>
+    <div class="clock" id="pv-clock">00:00</div>
+    <div class="slide-clock" id="pv-sclock">en esta: 00:00</div>
+    <div class="lbl">Siguiente</div>
+    <div class="next" id="pv-next"></div>
+    <div class="btns">
+      <button data-cmd="prev">← Anterior</button>
+      <button data-cmd="next">Siguiente →</button>
+      <button data-cmd="reset">Reiniciar reloj</button>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="menu" role="dialog" aria-label="Índice de diapositivas">
+  <div class="panel"><h2>Índice</h2><ul class="menu-list" id="menu-list"></ul></div>
+</div>
+<div class="overlay" id="help" role="dialog" aria-label="Atajos de teclado">
+  <div class="panel">
+    <h2>Controles</h2>
+    <div class="keys">
+      <kbd>→ · Espacio · Clic</kbd><span>Avanzar (primero recorre los estados de la escena)</span>
+      <kbd>← · Retroceso</kbd><span>Retroceder un estado o una diapositiva</span>
+      <kbd>Inicio · Fin</kbd><span>Primera / última</span>
+      <kbd>M</kbd><span>Índice de diapositivas (incluye respaldo)</span>
+      <kbd>N</kbd><span>Notas del orador en esta pantalla</span>
+      <kbd>P</kbd><span>Abrir vista de presentador en otra ventana (sincronizada)</span>
+      <kbd>F</kbd><span>Pantalla completa</span>
+      <kbd>T</kbd><span>Temporizador de 30 s (pregunta de control)</span>
+      <kbd>A · B · C · D</kbd><span>Responder la pregunta de control</span>
+      <kbd>? · H</kbd><span>Esta ayuda</span>
+    </div>
+  </div>
+</div>
+<div class="notes-drawer" id="drawer"><div class="meta" id="d-meta"></div><div class="txt" id="d-txt"></div></div>
+<div class="hint" id="hint">→ AVANZAR · ← RETROCEDER · M ÍNDICE · N NOTAS · P PRESENTADOR · F PANTALLA COMPLETA · ? AYUDA</div>
+
+<script src="js/ambient.js"></script>
+<script src="js/thread.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
