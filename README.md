@@ -6,6 +6,10 @@ Taller NFPA 70E-2021 · **Módulo D**: mantenimiento (Cap. 2), baterías (Art. 3
 
 Experiencia web interactiva en `presentacion/web/` (HTML, CSS y JavaScript, sin dependencias).
 
+**En línea:** https://natch1623.github.io/Tecnologia-electrica/
+
+Para abrirla en local:
+
 ```bash
 python -m http.server 5173 --directory "presentacion/web"
 ```
