@@ -18,6 +18,8 @@
   const fmt = (v, d = 1) => v.toFixed(d).replace('.', ',');
   const diamond = (x, y, r) => `M${x} ${y - r} L${x + r} ${y} L${x} ${y + r} L${x - r} ${y} Z`;
   const deck = () => window.Deck;
+  // Retraso de entrada (ms) para las clases pop · rise · fade · draw · grow
+  const pd = ms => `--pd:${Math.round(ms)}ms`;
 
   const S = {};
 
@@ -35,21 +37,21 @@
     build(slide) {
       const svg = svgOf(slide);
       const { cx, cy, r } = G.ring;
-      el('circle', { cx, cy, r: r - 70, class: 'ring-inner' }, svg);
+      el('circle', { cx, cy, r: r - 70, class: 'ring-inner fade', style: pd(200) }, svg);
       el('text', { x: cx, y: cy - 14, class: 'ring-c' }, svg, 'CONDICIÓN NORMAL');
       el('text', { x: cx, y: cy + 16, class: 'ring-c' }, svg, 'DE OPERACIÓN');
       el('text', { x: cx, y: cy + 56, class: 'ring-ref' }, svg, '110.4(D)');
       COND.forEach((c, i) => {
         const a = ((-60 + i * 60) * Math.PI) / 180;
         const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-        el('line', { x1: cx + (r - 70) * Math.cos(a), y1: cy + (r - 70) * Math.sin(a), x2: x, y2: y, class: 'spoke' }, svg);
+        el('line', { x1: cx + (r - 70) * Math.cos(a), y1: cy + (r - 70) * Math.sin(a), x2: x, y2: y, class: 'spoke draw', pathLength: 1, style: pd(300 + i * 90) }, svg);
         const g = el('g', { class: `node hit${i === 1 ? ' key' : ''}`, 'data-i': i, tabindex: 0, role: 'button', 'aria-label': c[1] }, svg);
         el('circle', { cx: x, cy: y, r: 40, class: 'halo' }, g);
-        el('circle', { cx: x, cy: y, r: i === 1 ? 15 : 10, class: 'core' }, g);
+        el('circle', { cx: x, cy: y, r: i === 1 ? 15 : 10, class: 'core pop', style: pd(620 + i * 90) }, g);
         const cos = Math.cos(a);
         const lx = cx + (r + 40) * Math.cos(a), ly = cy + (r + 40) * Math.sin(a) + 8;
-        el('text', { x: lx, y: ly - 26, class: 'node-n', 'text-anchor': cos > 0.2 ? 'start' : cos < -0.2 ? 'end' : 'middle' }, g, c[0]);
-        el('text', { x: lx, y: ly, class: 'node-l', 'text-anchor': cos > 0.2 ? 'start' : cos < -0.2 ? 'end' : 'middle' }, g, c[4]);
+        el('text', { x: lx, y: ly - 26, class: 'node-n fade', style: pd(760 + i * 90), 'text-anchor': cos > 0.2 ? 'start' : cos < -0.2 ? 'end' : 'middle' }, g, c[0]);
+        el('text', { x: lx, y: ly, class: 'node-l fade', style: pd(760 + i * 90), 'text-anchor': cos > 0.2 ? 'start' : cos < -0.2 ? 'end' : 'middle' }, g, c[4]);
         if (i === 1) {
           const cr = el('g', { class: 'crack', 'data-at': 1 }, svg);
           el('path', { d: `M${x - 6} ${y - 40} l8 14 l-10 10 l12 12 l-6 12 M${x + 20} ${y - 30} l-10 16 l14 6 M${x + 10} ${y + 22} l14 10 l-4 16` }, cr);
@@ -83,15 +85,17 @@
       const { xs, y0, y1, y } = G.gates;
       xs.forEach((x, i) => {
         const g = el('g', { class: `gate${i === 2 ? ' hot' : ''}` }, svg);
+        const t = 300 + i * 110;
+        const ln = { class: 'draw', pathLength: 1, style: pd(t) };
         if (i === 2) {
-          el('line', { x1: x, y1: y0, x2: x, y2: y - 34 }, g);
-          el('line', { x1: x, y1: y + 34, x2: x, y2: y1 }, g);
-          el('line', { x1: x, y1: y - 34, x2: x, y2: y + 34, class: 'mid' }, g);
+          el('line', { x1: x, y1: y0, x2: x, y2: y - 34, ...ln }, g);
+          el('line', { x1: x, y1: y + 34, x2: x, y2: y1, ...ln }, g);
+          el('line', { x1: x, y1: y - 34, x2: x, y2: y + 34, ...ln, class: 'mid draw' }, g);
         } else {
-          el('line', { x1: x, y1: y0, x2: x, y2: y1 }, g);
+          el('line', { x1: x, y1: y0, x2: x, y2: y1, ...ln }, g);
         }
-        el('path', { d: diamond(x, y0, 6), class: 'cap' }, g);
-        el('path', { d: diamond(x, y1, 6), class: 'cap' }, g);
+        el('path', { d: diamond(x, y0, 6), class: 'cap pop', style: pd(t) }, g);
+        el('path', { d: diamond(x, y1, 6), class: 'cap pop', style: pd(t + 700) }, g);
       });
       const x = xs[2];
       const cr = el('g', { class: 'crack', 'data-at': 1 }, svg);
@@ -105,8 +109,8 @@
     build(slide) {
       const svg = svgOf(slide);
       G.clear.xs.forEach((x, i) => {
-        el('path', { d: diamond(x, G.clear.y, i === 4 ? 12 : 9), class: i === 4 ? 'dm bad' : 'dm' }, svg);
-        el('line', { x1: x, y1: G.clear.y - 42, x2: x, y2: G.clear.y - 18, class: 'tick' }, svg);
+        el('path', { d: diamond(x, G.clear.y, i === 4 ? 12 : 9), class: `${i === 4 ? 'dm bad' : 'dm'} pop`, style: pd(500 + i * 130) }, svg);
+        el('line', { x1: x, y1: G.clear.y - 42, x2: x, y2: G.clear.y - 18, class: 'tick draw', pathLength: 1, style: pd(560 + i * 130) }, svg);
       });
       el('text', { x: 1790, y: G.clear.y + 6, class: 'axis-t' }, svg, 't');
     }
@@ -119,12 +123,12 @@
       const svg = svgOf(slide);
       const E = G.energy;
       const xEnd = E.ox + E.tmax * E.sx;
-      el('line', { x1: E.ox, y1: E.oy, x2: xEnd + 20, y2: E.oy, class: 'axis' }, svg);
-      el('line', { x1: E.ox, y1: E.oy, x2: E.ox, y2: 240, class: 'axis' }, svg);
+      el('line', { x1: E.ox, y1: E.oy, x2: xEnd + 20, y2: E.oy, class: 'axis draw', pathLength: 1, style: pd(250) }, svg);
+      el('line', { x1: E.ox, y1: E.oy, x2: E.ox, y2: 240, class: 'axis draw', pathLength: 1, style: pd(250) }, svg);
       [0.1, 0.2, 0.3, 0.4, 0.5].forEach(t => {
         const x = E.ox + t * E.sx;
         el('line', { x1: x, y1: E.oy, x2: x, y2: E.oy + 10, class: 'axis' }, svg);
-        el('line', { x1: x, y1: E.oy, x2: x, y2: 250, class: 'grid' }, svg);
+        el('line', { x1: x, y1: E.oy, x2: x, y2: 250, class: 'grid fade', style: pd(700 + t * 600) }, svg);
         el('text', { x, y: E.oy + 38, class: 'tick-l', 'text-anchor': 'middle' }, svg, fmt(t));
         el('text', { x, y: E.oy + 62, class: 'tick-s', 'text-anchor': 'middle' }, svg, `${Math.round(t * 60)} ciclos`);
       });
@@ -193,12 +197,18 @@
       const svg = svgOf(slide);
       const { xs, y } = G.chain;
       xs.forEach((x, i) => {
-        el('circle', { cx: x, cy: y, r: 11, class: `cn${i < 2 ? ' m' : ''}${i === 6 ? ' e' : ''}`, style: `--i:${i}` }, svg);
+        el('circle', { cx: x, cy: y, r: 11, class: `cn${i < 2 ? ' m' : ''}${i === 6 ? ' e' : ''} pop`, style: `--i:${i}; ${pd(350 + i * 90)}` }, svg);
         el('text', { x, y: y - 40, class: 'cn-n', 'text-anchor': 'middle' }, svg, String(i + 1).padStart(2, '0'));
       });
       el('circle', { cx: xs[0], cy: y, r: 7, class: 'pulse-dot' }, svg);
       slide.querySelectorAll('.lk .n').forEach(n => n.remove());
-    }
+    },
+    state(slide, n, prev) {
+      clearTimeout(this.hit);
+      // Mismo instante en que el pulso alcanza el eslabón 07 (0,2 s + 6 · 0,28 s)
+      if (n >= 1 && prev === 0 && !reduced) this.hit = setTimeout(() => deck().burst(G.chain.xs[6], G.chain.y, [255, 77, 109], 44), 1880);
+    },
+    leave() { clearTimeout(this.hit); }
   };
 
   /* ---------- 10 · CA vs CC ---------- */
@@ -290,7 +300,7 @@
         el('line', { x1: x, y1: F.cy - 6, x2: x, y2: F.cy + 6, class: 'axis' }, svg);
         el('text', { x, y: F.cy - 14, class: 'tick-s', 'text-anchor': 'middle' }, svg, `${fmt(m)} m`);
       });
-      el('path', { d: arcD(1.0 * F.k), class: 'fr ice' }, svg);
+      el('path', { d: arcD(1.0 * F.k), class: 'fr ice grow', style: `${pd(450)}; transform-origin: ${F.cx}px ${F.cy}px` }, svg);
       el('path', { d: arcD(2.5 * F.k), class: 'fr danger', 'data-at': 1 }, svg);
       const lab = (m, t1, t2, cls, at) => {
         const a = (F.a * Math.PI) / 180, r = m * F.k;
@@ -302,7 +312,7 @@
       lab(1.8, '1,8 m', 'FRONTERA DE ARCO · CAT. 3', '');
       lab(2.5, '2,5 m', 'CAT. 4 · SI 281 V', 'danger', 1);
       const wx = F.cx + 0.455 * F.k;
-      el('circle', { cx: wx, cy: F.cy, r: 6, class: 'wd' }, svg);
+      el('circle', { cx: wx, cy: F.cy, r: 6, class: 'wd pop', style: pd(800) }, svg);
       el('text', { x: wx, y: F.cy + 30, class: 'tick-s', 'text-anchor': 'middle' }, svg, '455 mm');
       el('text', { x: F.cx + 12, y: F.cy - 250, class: 'tick-s' }, svg, 'RESTRINGIDA: EVITAR EL CONTACTO');
       slide.querySelector('.toggle').addEventListener('click', e => {
@@ -327,13 +337,15 @@
       el('rect', { x: R.upR - 4, y: R.railTop, width: 8, height: R.shelfLo - R.railTop + 7, class: 'metal' }, base);
       el('text', { x: R.upR + 4, y: R.shelfLo + 40, class: 'tick-s', 'text-anchor': 'end' }, base, 'BASTIDOR METÁLICO');
       // Celdas
+      // Orden serie: abajo 1 → 62 de izquierda a derecha; arriba 63 → 125 de derecha a izquierda
       const row = (labels, up) => labels.forEach((lb, i) => {
         const x = R.x0 + i * R.step, y = up ? R.upY : R.loY;
-        if (lb === '…') { el('text', { x: x + R.w / 2, y: y + R.h - 14, class: 'cell-l dim', 'text-anchor': 'middle' }, base, '···'); return; }
-        el('rect', { x, y, width: R.w, height: R.h, rx: 3, class: 'cell' }, base);
-        el('rect', { x: x + 6, y: y - 7, width: 10, height: 7, class: 'post' }, base);
-        el('rect', { x: x + R.w - 16, y: y - 7, width: 10, height: 7, class: 'post' }, base);
-        el('text', { x: x + R.w / 2, y: y + R.h - 12, class: 'cell-l', 'text-anchor': 'middle' }, base, lb);
+        const g = el('g', { class: 'rise', style: pd(350 + (up ? 25 - i : i) * 34) }, base);
+        if (lb === '…') { el('text', { x: x + R.w / 2, y: y + R.h - 14, class: 'cell-l dim', 'text-anchor': 'middle' }, g, '···'); return; }
+        el('rect', { x, y, width: R.w, height: R.h, rx: 3, class: 'cell' }, g);
+        el('rect', { x: x + 6, y: y - 7, width: 10, height: 7, class: 'post' }, g);
+        el('rect', { x: x + R.w - 16, y: y - 7, width: 10, height: 7, class: 'post' }, g);
+        el('text', { x: x + R.w / 2, y: y + R.h - 12, class: 'cell-l', 'text-anchor': 'middle' }, g, lb);
       });
       row(R.upper, true);
       row(R.lower, false);
@@ -341,7 +353,7 @@
       el('text', { x: R.x0, y: R.loY + R.h + 34, class: 'tick-s' }, base, 'NIVEL INFERIOR · 1 → 62');
       // Cable puente
       const cy0 = R.cy(false), cy1 = R.cy(true);
-      el('path', { d: `M${R.cx(12) + R.w / 2} ${cy0} L${R.cableX} ${cy0} L${R.cableX} 520 L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12) + R.w / 2} ${cy1}`, class: 'bridge' }, base);
+      el('path', { d: `M${R.cx(12) + R.w / 2} ${cy0} L${R.cableX} ${cy0} L${R.cableX} 520 L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12) + R.w / 2} ${cy1}`, class: 'bridge draw', pathLength: 1, style: pd(350 + 12.5 * 34) }, base);
       el('text', { x: R.cableX + 16, y: 420, class: 'tick-s' }, base, 'CABLE');
       el('text', { x: R.cableX + 16, y: 444, class: 'tick-s' }, base, 'PUENTE');
       // Interruptor y UPS
@@ -374,10 +386,9 @@
         el('rect', { x: R.x0 + i * R.step, y: R.upY, width: R.w, height: R.h, rx: 3, class: 'cell hot' }, lp);
       }
       const px = R.x0 + 5 * R.step + 10;
-      this.loop = el('path', {
-        d: `M${px} ${R.upY - 4} L${px} ${R.railTop + 3} L${R.upR} ${R.railTop + 3} L${R.upR} ${R.contact[1]} L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12)} ${cy1} L${R.cx(5)} ${cy1} L${px} ${R.upY - 4}`,
-        class: 'loop'
-      }, lp);
+      const loopD = `M${px} ${R.upY - 4} L${px} ${R.railTop + 3} L${R.upR} ${R.railTop + 3} L${R.upR} ${R.contact[1]} L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12)} ${cy1} L${R.cx(5)} ${cy1} L${px} ${R.upY - 4}`;
+      this.loop = el('path', { d: loopD, class: 'loop', pathLength: 1 }, lp);
+      el('path', { d: loopD, class: 'loop-flow' }, lp);
       el('rect', { x: px - 6, y: R.railTop - 2, width: 12, height: R.upY - R.railTop, rx: 3, class: 'wrench' }, lp);
       el('text', { x: px, y: R.railTop - 16, class: 'f-l', 'text-anchor': 'middle' }, lp, 'matraca · borne + celda 118');
       el('text', { x: 1300, y: R.railTop - 16, class: 'f-l', 'text-anchor': 'middle' }, lp, '≈ 126 V · varios kA');
@@ -465,15 +476,15 @@
       const svg = svgOf(slide);
       const T = G.tri;
       const cx = (T.o[0] + T.h[0] + T.ig[0]) / 3, cy = (T.o[1] + T.h[1] + T.ig[1]) / 3;
-      const node = (p, key, txt) => {
-        const g = el('g', { class: `vtx ${key}`, 'data-v': key }, svg);
+      const node = (p, key, txt, delay) => {
+        const g = el('g', { class: `vtx ${key} pop`, 'data-v': key, style: pd(delay) }, svg);
         el('circle', { cx: p[0], cy: p[1], r: 52, class: 'vtx-c' }, g);
         el('text', { x: p[0], y: p[1] + 12, class: 'vtx-t', 'text-anchor': 'middle' }, g, txt);
         return g;
       };
-      node(T.o, 'o', 'O₂');
-      node(T.h, 'h', 'H₂');
-      node(T.ig, 'ig', 'IGN');
+      node(T.o, 'o', 'O₂', 350);
+      node(T.h, 'h', 'H₂', 500);
+      node(T.ig, 'ig', 'IGN', 650);
       el('text', { x: T.o[0] + 72, y: T.o[1] - 6, class: 'v-name' }, svg, 'OXÍGENO');
       el('text', { x: T.o[0] + 72, y: T.o[1] + 22, class: 'tick-s' }, svg, 'SIEMPRE PRESENTE · NO SE CONTROLA');
       el('text', { x: T.h[0], y: T.h[1] + 90, class: 'v-name', 'text-anchor': 'middle' }, svg, 'COMBUSTIBLE');
@@ -533,7 +544,7 @@
       EVENTS.forEach(([m, h, d, at]) => {
         const x = T.x(m);
         const g = el('g', at ? { 'data-at': at } : {}, svg);
-        el('path', { d: diamond(x, T.y, at === 1 ? 11 : 8), class: at === 1 ? 'dm bad' : 'dm' }, g);
+        el('path', { d: diamond(x, T.y, at === 1 ? 11 : 8), class: at === 1 ? 'dm bad' : 'dm pop', style: at ? '' : pd(900 + m * 12) }, g);
         if (at === 1) return;
         const t = document.createElement('div');
         t.className = at ? 'ev' : 'ev rv';
@@ -580,8 +591,8 @@
         const x = B.xs[i];
         const g = el('g', { class: `plane hit${b[1] ? ' m' : ''}`, transform: `translate(${x} ${B.y}) skewY(-26)`, tabindex: 0, role: 'button', 'aria-label': `Barrera ${i + 1}: ${b[0]}` }, svg);
         el('rect', { x: -40, y: -170, width: 80, height: 330, class: 'hitbox' }, g);
-        const p = el('path', { 'fill-rule': 'evenodd' }, g);
-        el('text', { x: 0, y: -150, class: 'pl-n', 'text-anchor': 'middle' }, g, i + 1);
+        const p = el('path', { 'fill-rule': 'evenodd', class: 'rise', style: pd(450 + i * 80) }, g);
+        el('text', { x: 0, y: -150, class: 'pl-n fade', style: pd(600 + i * 80), 'text-anchor': 'middle' }, g, i + 1);
         const lbl = document.createElement('div');
         lbl.className = `plane-lbl rv${b[1] ? ' m' : ''}`;
         lbl.style.left = `${x}px`;
@@ -659,7 +670,7 @@
       const alpha = [0.34, 0.27, 0.2, 0.13, 0.09, 0.3];
       this.lv = LEVELS.map((L, k) => {
         const y0 = P.top + k * h + 3, y1 = P.top + (k + 1) * h - 3;
-        const g = el('g', { class: `lv hit ${L[3]}`, style: `--a:${alpha[k]}; --k:${k}`, tabindex: 0, role: 'button', 'aria-label': L[0] }, svg);
+        const g = el('g', { class: `lv hit ${L[3]} rise`, style: `--a:${alpha[k]}; --k:${k}; ${pd(350 + k * 110)}`, tabindex: 0, role: 'button', 'aria-label': L[0] }, svg);
         el('polygon', { points: `${mid - hw(y0)},${y0} ${mid + hw(y0)},${y0} ${mid + hw(y1)},${y1} ${mid - hw(y1)},${y1}` }, g);
         el('text', { x: mid, y: k === 5 ? y0 + 36 : (y0 + y1) / 2 + 9, class: 'lv-t', 'text-anchor': 'middle' }, g, k === 5 ? '6 · EPP' : `${k + 1} · ${L[0]}`);
         g.addEventListener('click', e => { e.stopPropagation(); this.select(slide, k); });

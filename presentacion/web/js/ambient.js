@@ -29,8 +29,8 @@
 
   function resize() {
     dpr = Math.min(1.75, devicePixelRatio || 1);
-    W = cv.width = innerWidth * dpr;
-    H = cv.height = innerHeight * dpr;
+    W = cv.width = Math.max(1, innerWidth * dpr);
+    H = cv.height = Math.max(1, innerHeight * dpr);
     neb.width = Math.ceil(W / 8);
     neb.height = Math.ceil(H / 8);
     const n = Math.round((innerWidth * innerHeight) / 4200);

@@ -63,9 +63,15 @@ Técnicamente correctos primero, animados después. Interactivos: se seleccionan
 | `absorb` | Zoom dentro de la celda 119 (banco → corte de celda) |
 | `rise` | Emerge desde abajo, como el gas |
 | `scan` | Reconstrucción por franjas (forense) |
-| `fracture` | Estallido desde el punto del arco (accidente → barreras) |
+| `fracture` | La slide saliente se parte en fragmentos reales (con su contenido) que salen despedidos desde el punto del arco (accidente → barreras) |
 | `reconstruct` | Las franjas se reordenan (vuelve el orden) |
 | `dissolve` | Fundido sereno |
+
+Reglas de las transiciones:
+
+- En los barridos (`slash`, `rift`, `sweep`, `wave`, `rise`) la slide saliente se recorta con la forma complementaria: el corte es un borde real entre dos escenas, y una línea de luz del color del bloque viaja sobre él (`#fx`). `slash` añade el filo.
+- Retroceder rebobina la transición de la slide que se abandona; si no es reversible, fundido corto.
+- Los diagramas entran con significado: el banco se arma en el orden de la cadena serie, la pirámide de la fuente a la persona, el pulso de la cadena causal llega a cada eslabón cuando este cambia de color.
 
 ## 9. El contenido se transforma: el hilo conductor
 

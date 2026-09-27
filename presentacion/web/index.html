@@ -555,7 +555,23 @@
   </section>
 
   <!-- Capas de transición -->
-  <div class="slash" id="slash" aria-hidden="true"></div>
+  <svg class="fx" id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="fxv-acc" gradientUnits="userSpaceOnUse" x1="0" y1="-40" x2="0" y2="1120">
+        <stop offset="0" style="stop-color:var(--acc);stop-opacity:0"/><stop offset=".18" style="stop-color:var(--acc)"/><stop offset=".82" style="stop-color:var(--acc)"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="fxv-star" gradientUnits="userSpaceOnUse" x1="0" y1="-40" x2="0" y2="1120">
+        <stop offset="0" stop-color="#f4f1ff" stop-opacity="0"/><stop offset=".18" stop-color="#f4f1ff"/><stop offset=".82" stop-color="#f4f1ff"/><stop offset="1" stop-color="#f4f1ff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fxh-acc" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="1960" y2="0">
+        <stop offset="0" style="stop-color:var(--acc);stop-opacity:0"/><stop offset=".15" style="stop-color:var(--acc)"/><stop offset=".85" style="stop-color:var(--acc)"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="fxh-star" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="1960" y2="0">
+        <stop offset="0" stop-color="#f4f1ff" stop-opacity="0"/><stop offset=".15" stop-color="#f4f1ff"/><stop offset=".85" stop-color="#f4f1ff"/><stop offset="1" stop-color="#f4f1ff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g id="fx-g"></g>
+  </svg>
   <svg class="cracks" id="cracks" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
   <div class="flash" id="flash" aria-hidden="true"></div>
 
