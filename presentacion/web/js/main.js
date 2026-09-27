@@ -33,11 +33,16 @@
   addEventListener('resize', fit);
 
   /* ---------- Parallax del cursor ---------- */
+  // Solo el sigilo de la portada usa --mx/--my: se fijan en él y no en el escenario,
+  // para no invalidar el estilo de todo el árbol en cada movimiento del cursor
+  const sigil = stage.querySelector('.hero .sigil');
   let pointer = null;
   addEventListener('mousemove', e => {
     if (!pointer) requestAnimationFrame(() => {
-      stage.style.setProperty('--mx', ((pointer.clientX / innerWidth) * 2 - 1).toFixed(3));
-      stage.style.setProperty('--my', ((pointer.clientY / innerHeight) * 2 - 1).toFixed(3));
+      if (slides[idx].classList.contains('hero')) {
+        sigil.style.setProperty('--mx', ((pointer.clientX / innerWidth) * 2 - 1).toFixed(3));
+        sigil.style.setProperty('--my', ((pointer.clientY / innerHeight) * 2 - 1).toFixed(3));
+      }
       pointer = null;
     });
     pointer = e;
@@ -328,54 +333,69 @@
     return [P(-len / 2, 0), P(len * (-0.15 + Math.random() * 0.35), -wid * (0.55 + Math.random() * 0.45)),
       P(len / 2, 0), P(len * (-0.3 + Math.random() * 0.35), wid * (0.25 + Math.random() * 0.45))];
   };
-  const svgShard = (pts, cls, [cx, cy]) => {
-    const NS = 'http://www.w3.org/2000/svg';
-    const g = document.createElementNS(NS, 'g');
-    g.dataset.cut = '';
-    g.setAttribute('class', `fx-sl ${cls}`);
-    g.style.transformOrigin = `${cx.toFixed(0)}px ${cy.toFixed(0)}px`;
-    const layer = (tag, c, p) => { const e = document.createElementNS(NS, tag); e.setAttribute('class', c); e.setAttribute('points', pts2(p)); g.appendChild(e); };
-    if (cls !== 'wedge') {
-      if (cls === 'void') { layer('polygon', 'fx-void', pts); layer('polygon', 'fx-sheen', pts); }
-      if (cls === 'ice') layer('polygon', 'fx-ice', pts);
-      layer('polygon', 'fx-facet', [pts[0], pts[1], pts[2]]);
-    }
-    layer('polygon', 'fx-rim', pts);
-    fxG.appendChild(g);
-    return g;
-  };
-
-
-  /* Efectos de luz de las rupturas (referencias: luz cegadora, paneles de vidrio que giran,
-     destellos de cuatro puntas y picos de luz verticales). Todo vive en #fx y se retira
-     junto con las esquirlas ([data-cut]). */
+  /* Cada efecto de luz o cristal vive en su propia capa SVG del tamaño justo: su viewBox es
+     su caja en coordenadas del escenario, así el dibujo no cambia. Se anima la capa entera
+     (transform/opacity): el navegador la pinta una vez y la GPU solo la mueve, en vez de
+     repintar un SVG a pantalla completa —con sus desenfoques— en cada cuadro. */
   const SVGNS = 'http://www.w3.org/2000/svg';
-  const fxEl = (tag, attrs, parent = fxG) => {
+  const fxLayers = document.getElementById('fx-layers');
+  const bboxOf = (pts, m) => {
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const x0 = Math.min(...xs) - m, y0 = Math.min(...ys) - m;
+    return [x0, y0, Math.max(...xs) + m - x0, Math.max(...ys) + m - y0];
+  };
+  function fxLayer([x, y, w, h], cls, [ox, oy]) {
+    x = Math.floor(x); y = Math.floor(y); w = Math.ceil(w); h = Math.ceil(h);
+    const l = document.createElementNS(SVGNS, 'svg');
+    l.setAttribute('viewBox', `${x} ${y} ${w} ${h}`);
+    l.setAttribute('class', `fxl ${cls}`);
+    l.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform-origin:${(ox - x).toFixed(0)}px ${(oy - y).toFixed(0)}px`;
+    l.dataset.cut = '';
+    fxLayers.appendChild(l);
+    return l;
+  }
+  const fxEl = (tag, attrs, parent) => {
     const e = document.createElementNS(SVGNS, tag);
     for (const k in attrs) e.setAttribute(k, attrs[k]);
     parent.appendChild(e);
     return e;
   };
+  const svgShard = (pts, cls, c) => {
+    const l = fxLayer(bboxOf(pts, 8), `fx-sl ${cls}`, c);
+    const layer = (cl, p) => fxEl('polygon', { class: cl, points: pts2(p) }, l);
+    if (cls !== 'wedge') {
+      if (cls === 'void') { layer('fx-void', pts); layer('fx-sheen', pts); }
+      if (cls === 'ice') layer('fx-ice', pts);
+      layer('fx-facet', [pts[0], pts[1], pts[2]]);
+    }
+    layer('fx-rim-glow', pts);
+    layer('fx-rim', pts);
+    return l;
+  };
+
+  /* Efectos de luz de las rupturas (referencias: luz cegadora, paneles de vidrio que giran,
+     destellos de cuatro puntas y picos de luz verticales). Se retiran junto con las
+     esquirlas ([data-cut]). */
   // Resplandor: blanco en el centro, vira al color del bloque hacia el borde
   function bloom(cx, cy, rx, ry, rot, delay, dur) {
-    const g = fxEl('g', { transform: `rotate(${rot.toFixed(1)} ${cx.toFixed(0)} ${cy.toFixed(0)})` });
-    g.dataset.cut = '';
-    const e = fxEl('ellipse', { cx: cx.toFixed(0), cy: cy.toFixed(0), rx: rx.toFixed(0), ry: ry.toFixed(0), class: 'fx-bloom' }, g);
-    e.animate([
-      { transform: 'scale(.12, .04)', opacity: 0 },
-      { transform: 'scale(1, 1)', opacity: 1, offset: 0.18 },
-      { transform: 'scale(1.2, 1.45)', opacity: 0 }
+    const l = fxLayer([cx - rx, cy - ry, 2 * rx, 2 * ry], '', [cx, cy]);
+    fxEl('ellipse', { cx: cx.toFixed(0), cy: cy.toFixed(0), rx: rx.toFixed(0), ry: ry.toFixed(0), class: 'fx-bloom' }, l);
+    const r = `rotate(${rot.toFixed(1)}deg)`;
+    l.animate([
+      { transform: `${r} scale(.12, .04)`, opacity: 0 },
+      { transform: `${r} scale(1, 1)`, opacity: 1, offset: 0.18 },
+      { transform: `${r} scale(1.2, 1.45)`, opacity: 0 }
     ], { duration: dur, delay, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' });
     return delay + dur;
   }
   // Destello de cuatro puntas; 'tall' = pico vertical de luz
   function glint(x, y, size, delay, dur, tall) {
-    const hy = tall ? size * 1.9 : size, hx = tall ? size * 0.42 : size, w = size * 0.16;
-    const g = fxEl('g', { transform: `translate(${x.toFixed(0)} ${y.toFixed(0)})` });
-    g.dataset.cut = '';
-    const p = fxEl('path', { class: 'fx-glint', d: `M0 ${-hy} L${w} ${-w} L${hx} 0 L${w} ${w} L0 ${hy} L${-w} ${w} L${-hx} 0 L${-w} ${-w} Z` }, g);
+    const hy = tall ? size * 1.9 : size, hx = tall ? size * 0.42 : size, w = size * 0.16, m = 24;
+    const l = fxLayer([x - hx - m, y - hy - m, 2 * (hx + m), 2 * (hy + m)], '', [x, y]);
+    const g = fxEl('g', { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)})` }, l);
+    fxEl('path', { class: 'fx-glint', d: `M0 ${-hy} L${w} ${-w} L${hx} 0 L${w} ${w} L0 ${hy} L${-w} ${w} L${-hx} 0 L${-w} ${-w} Z` }, g);
     const r = tall ? 0 : 35;
-    p.animate([
+    l.animate([
       { transform: `scale(0) rotate(${-r}deg)`, opacity: 0 },
       { transform: 'scale(1) rotate(0deg)', opacity: 1, offset: 0.3 },
       { transform: 'scale(.85) rotate(0deg)', opacity: 1, offset: 0.6 },
@@ -388,31 +408,38 @@
     const ca = Math.cos(ang), sa = Math.sin(ang), k = (Math.random() - 0.5) * 0.5 * w;
     const P = (a, b) => [cx + ca * a - sa * b, cy + sa * a + ca * b];
     const pts = [P(-w / 2 + k, -h / 2), P(w / 2 + k, -h / 2), P(w / 2 - k, h / 2), P(-w / 2 - k, h / 2)];
-    const g = fxEl('g', { class: 'fx-pane-g' });
-    g.dataset.cut = '';
-    g.style.transformOrigin = `${cx.toFixed(0)}px ${cy.toFixed(0)}px`;
-    fxEl('polygon', { class: 'fx-pane', points: pts2(pts) }, g);
-    fxEl('polygon', { class: 'fx-rim', points: pts2(pts) }, g);
+    const l = fxLayer(bboxOf(pts, 8), '', [cx, cy]);
+    fxEl('polygon', { class: 'fx-pane', points: pts2(pts) }, l);
+    fxEl('polygon', { class: 'fx-rim-glow', points: pts2(pts) }, l);
+    fxEl('polygon', { class: 'fx-rim', points: pts2(pts) }, l);
     const spin = (Math.random() - 0.5) * 300;
     const F = [0, 0.5, 0.78, 0.92, 1], S = [1, 0.12, -0.85, 0.3, 0.9];
-    g.animate(F.map((f, i) => ({
+    l.animate(F.map((f, i) => ({
       offset: i / 4,
       transform: `translate(${(tx * f).toFixed(1)}px, ${(ty * f).toFixed(1)}px) rotate(${((spin * i) / 4).toFixed(0)}deg) scaleX(${S[i]})`
     })), { duration: dur, delay, easing: 'linear', fill: 'both' });
-    g.animate([{ opacity: 0 }, { opacity: 1, offset: 0.06 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }], { duration: dur, delay, fill: 'both' });
+    l.animate([{ opacity: 0 }, { opacity: 1, offset: 0.06 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }], { duration: dur, delay, fill: 'both' });
     return delay + dur;
   }
 
   // Copia de la slide recortada a un polígono (fragmento real, con su contenido)
+  // Va dentro de un marco del tamaño de la caja del polígono: la capa que se anima es
+  // pequeña en vez de una pantalla completa por fragmento
   function fragment(el, pts, box, [ox, oy]) {
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const x0 = Math.floor(Math.max(-40, Math.min(...xs))), y0 = Math.floor(Math.max(-40, Math.min(...ys)));
+    const x1 = Math.ceil(Math.min(W + 40, Math.max(...xs))), y1 = Math.ceil(Math.min(H + 40, Math.max(...ys)));
+    const frame = document.createElement('div');
+    frame.className = 'shard';
+    frame.style.cssText = `left:${x0}px;top:${y0}px;width:${Math.max(1, x1 - x0)}px;height:${Math.max(1, y1 - y0)}px;transform-origin:${(ox - x0).toFixed(0)}px ${(oy - y0).toFixed(0)}px`;
     const c = el.cloneNode(true);
     c.removeAttribute('id');
     c.classList.remove('is-active');
-    c.classList.add('is-leaving', 'shard');
-    c.style.clipPath = poly(pts);
-    c.style.transformOrigin = `${ox.toFixed(0)}px ${oy.toFixed(0)}px`;
-    box.appendChild(c);
-    return c;
+    c.classList.add('is-leaving');
+    c.style.cssText = `inset:auto;left:${-x0}px;top:${-y0}px;width:${W}px;height:${H}px;clip-path:${poly(pts.map(([x, y]) => [x, y]))}`;
+    frame.appendChild(c);
+    box.appendChild(frame);
+    return frame;
   }
 
   /* Tajo (02 → 03): un corte diagonal de luz cruza la pantalla; la slide se parte en
@@ -421,7 +448,6 @@
   function cleave(el) {
     const { L, u, n, at, open, easing } = CUT;
     const delay = CUT.delay * SLOW, dur = CUT.dur * SLOW;
-    const NS = 'http://www.w3.org/2000/svg';
     const draw = 260 * SLOW, total = delay + dur;
     const box = document.createElement('div');
     box.className = 'shards';
@@ -435,35 +461,23 @@
       const c = fragment(el, [at(-2000, 0), at(L + 2000, 0), at(L + 2000, side * 4000), at(-2000, side * 4000)], box, pivot);
       const tx = n[0] * open * side + u[0] * 150 * side, ty = n[1] * open * side + u[1] * 150 * side;
       const move = [{ transform: 'none' }, { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px)` }];
-      c.animate([{ transform: 'none', filter: 'brightness(1)' }, { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${side * 1.5}deg)`, filter: 'brightness(.5) blur(2px)' }],
+      c.animate([{ transform: 'none' }, { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${side * 1.5}deg)` }],
         { duration: dur, delay, easing, fill: 'both' });
       c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.45, delay: delay + dur * 0.5, easing: 'ease-in', fill: 'both' });
-      // Filo luminoso de cada mitad, que viaja con ella
-      const g = document.createElementNS(NS, 'g');
-      g.dataset.cut = '';
-      fxG.appendChild(g);
-      ['fx-glow', 'fx-core'].forEach(cls => {
-        const p = document.createElementNS(NS, 'path');
-        p.setAttribute('class', `${cls} c`);
-        p.setAttribute('d', line([at(-2000, 0), at(L + 2000, 0)]));
-        g.appendChild(p);
-      });
+      // Filo luminoso de cada mitad, que viaja con ella (capa propia: el desenfoque se pinta una vez)
+      const edge = [at(-400, 0), at(L + 400, 0)];
+      const g = fxLayer(bboxOf(edge, 24), '', pivot);
+      ['fx-glow', 'fx-core'].forEach(cls => fxEl('path', { class: `${cls} c`, d: line(edge) }, g));
       g.animate(move, { duration: dur, delay, easing, fill: 'both' });
       g.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }], { duration: dur * 0.8, delay: delay - 40, easing: 'ease-out', fill: 'both' });
     });
 
     // El tajo: se traza de un extremo a otro y se apaga mientras se abre la brecha
-    const blade = document.createElementNS(NS, 'g');
-    blade.setAttribute('class', 'blade');
-    blade.dataset.cut = '';
-    fxG.appendChild(blade);
+    const cutLine = [at(0, 0), at(L, 0)];
+    const blade = fxLayer(bboxOf(cutLine, 90), 'blade', at(L / 2, 0));
     ['fx-halo', 'fx-glow', 'fx-core'].forEach(cls => {
-      const p = document.createElementNS(NS, 'path');
-      p.setAttribute('class', `${cls} c`);
-      p.setAttribute('d', line([at(0, 0), at(L, 0)]));
-      p.setAttribute('pathLength', 1);
+      const p = fxEl('path', { class: `${cls} c`, d: line(cutLine), pathLength: 1 }, blade);
       p.style.strokeDasharray = 1;
-      blade.appendChild(p);
       p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: draw, easing: 'cubic-bezier(.7,0,.3,1)', fill: 'both' });
     });
     blade.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: delay + 600 * SLOW, fill: 'both' });
@@ -475,53 +489,55 @@
     // Salen disparadas casi en la dirección de su eje mayor, en el sentido del tajo, con
     // brillo constante; se desvanecen por completo antes de retirarse (sin parpadeo).
     const axis = Math.atan2(u[1], u[0]);
-    let last = total;
-    const kinds = [...Array(12).fill('frag'), ...Array(14).fill('void'), ...Array(9).fill('ice')];
-    kinds.forEach((kind, i) => {
-      const s = L * (0.03 + 0.94 * Math.random()), side = i % 2 ? -1 : 1;
-      const big = kind === 'frag' ? 1 : kind === 'void' ? 0.8 : 0.45;
-      const len = (180 + Math.random() * 280) * big, wid = (26 + Math.random() * 38) * big;
-      const ang = axis + side * (0.12 + Math.random() * 0.5) + (Math.random() - 0.5) * 0.3;
-      const [cx, cy] = at(s, side * (8 + Math.random() * 40));
-      const pts = sliver(cx, cy, len, wid, ang);
-      // Vuelo a lo largo del eje de la astilla, abriéndose hacia su lado del corte
-      const v = 520 + Math.random() * 760, vn = side * (90 + Math.random() * 260);
-      const tx = Math.cos(ang) * v + n[0] * vn, ty = Math.sin(ang) * v + n[1] * vn + 60;
-      const spin = (Math.random() - 0.5) * (kind === 'ice' ? 160 : 50);
-      const move = [
-        { transform: kind === 'frag' ? 'none' : 'scale(.35)' },
-        { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${spin.toFixed(0)}deg) scale(${kind === 'frag' ? 0.75 : 1})` }
-      ];
-      const t0 = (draw * s) / L;
-      const timing = { duration: (1300 + Math.random() * 500) * SLOW, delay: t0, easing: 'cubic-bezier(.1,.7,.3,1)', fill: 'both' };
-      const fade = [{ opacity: kind === 'frag' ? 1 : 0 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }];
-      const targets = [svgShard(pts, kind, [cx, cy])];
-      if (kind === 'frag') {
-        const c = fragment(el, pts, box, [cx, cy]);
-        c.style.filter = 'brightness(1.3) saturate(1.2)';
-        targets.push(c);
-      }
-      targets.forEach(e => { e.animate(move, timing); e.animate(fade, { ...timing, easing: 'linear' }); });
-      last = Math.max(last, t0 + timing.duration);
-    });
+    // Esquirlas y luz se crean en el cuadro siguiente: el primero solo lleva las mitades y la hoja
+    requestAnimationFrame(() => {
+      let last = total;
+      const kinds = [...Array(12).fill('frag'), ...Array(14).fill('void'), ...Array(9).fill('ice')];
+      kinds.forEach((kind, i) => {
+        const s = L * (0.03 + 0.94 * Math.random()), side = i % 2 ? -1 : 1;
+        const big = kind === 'frag' ? 1 : kind === 'void' ? 0.8 : 0.45;
+        const len = (180 + Math.random() * 280) * big, wid = (26 + Math.random() * 38) * big;
+        const ang = axis + side * (0.12 + Math.random() * 0.5) + (Math.random() - 0.5) * 0.3;
+        const [cx, cy] = at(s, side * (8 + Math.random() * 40));
+        const pts = sliver(cx, cy, len, wid, ang);
+        // Vuelo a lo largo del eje de la astilla, abriéndose hacia su lado del corte
+        const v = 520 + Math.random() * 760, vn = side * (90 + Math.random() * 260);
+        const tx = Math.cos(ang) * v + n[0] * vn, ty = Math.sin(ang) * v + n[1] * vn + 60;
+        const spin = (Math.random() - 0.5) * (kind === 'ice' ? 160 : 50);
+        const move = [
+          { transform: kind === 'frag' ? 'none' : 'scale(.35)' },
+          { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${spin.toFixed(0)}deg) scale(${kind === 'frag' ? 0.75 : 1})` }
+        ];
+        const t0 = (draw * s) / L;
+        const timing = { duration: (1300 + Math.random() * 500) * SLOW, delay: t0, easing: 'cubic-bezier(.1,.7,.3,1)', fill: 'both' };
+        const fade = [{ opacity: kind === 'frag' ? 1 : 0 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }];
+        const targets = [svgShard(pts, kind, [cx, cy])];
+        if (kind === 'frag') {
+          const c = fragment(el, pts, box, [cx, cy]);
+          targets.push(c);
+        }
+        targets.forEach(e => { e.animate(move, timing); e.animate(fade, { ...timing, easing: 'linear' }); });
+        last = Math.max(last, t0 + timing.duration);
+      });
 
-    // Luz cegadora que se abre a lo largo del tajo, paneles de vidrio y destellos del filo
-    const deg = (axis * 180) / Math.PI;
-    last = Math.max(last, bloom(...at(L / 2, 0), L / 2 + 260, 190, deg, draw * 0.35, 1150 * SLOW));
-    for (let i = 0; i < 10; i++) {
-      const s = L * (0.06 + 0.88 * Math.random()), side = i % 2 ? -1 : 1;
-      const v = 300 + Math.random() * 500, vn = side * (160 + Math.random() * 380);
-      last = Math.max(last, pane(...at(s, side * Math.random() * 40), 70 + Math.random() * 90, 45 + Math.random() * 70, axis + (Math.random() - 0.5) * 1.2,
-        [u[0] * v + n[0] * vn, u[1] * v + n[1] * vn + 90], (draw * s) / L, (1500 + Math.random() * 600) * SLOW));
-    }
-    for (let i = 0; i < 16; i++) {
-      const s = L * (0.04 + 0.92 * Math.random());
-      last = Math.max(last, glint(...at(s, (Math.random() - 0.5) * 300), 14 + Math.random() * 22, (draw * s) / L + Math.random() * 500 * SLOW, 900 * SLOW, i % 3 === 0));
-    }
-    for (let k = 0; k <= 6; k++) {
-      setTimeout(() => window.Ambient?.burst(...toWin(...at((L * k) / 6, 0)), k % 2 ? [143, 227, 255] : [201, 184, 255], 16), (draw * k) / 6);
-    }
-    setTimeout(() => { box.remove(); fxG.querySelectorAll('[data-cut]').forEach(e => e.remove()); }, last + 80);
+      // Luz cegadora que se abre a lo largo del tajo, paneles de vidrio y destellos del filo
+      const deg = (axis * 180) / Math.PI;
+      last = Math.max(last, bloom(...at(L / 2, 0), L / 2 + 260, 190, deg, draw * 0.35, 1150 * SLOW));
+      for (let i = 0; i < 10; i++) {
+        const s = L * (0.06 + 0.88 * Math.random()), side = i % 2 ? -1 : 1;
+        const v = 300 + Math.random() * 500, vn = side * (160 + Math.random() * 380);
+        last = Math.max(last, pane(...at(s, side * Math.random() * 40), 70 + Math.random() * 90, 45 + Math.random() * 70, axis + (Math.random() - 0.5) * 1.2,
+          [u[0] * v + n[0] * vn, u[1] * v + n[1] * vn + 90], (draw * s) / L, (1500 + Math.random() * 600) * SLOW));
+      }
+      for (let i = 0; i < 16; i++) {
+        const s = L * (0.04 + 0.92 * Math.random());
+        last = Math.max(last, glint(...at(s, (Math.random() - 0.5) * 300), 14 + Math.random() * 22, (draw * s) / L + Math.random() * 500 * SLOW, 900 * SLOW, i % 3 === 0));
+      }
+      for (let k = 0; k <= 6; k++) {
+        setTimeout(() => window.Ambient?.burst(...toWin(...at((L * k) / 6, 0)), k % 2 ? [143, 227, 255] : [201, 184, 255], 16), (draw * k) / 6);
+      }
+      setTimeout(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
+    });
     return total;
   }
 
@@ -562,68 +578,73 @@
       const rot = (Math.random() - 0.5) * (inner ? 70 : 30);
       const nx = (dx / L) * 8, ny = (dy / L) * 8;
       // Tensión (se abren las juntas) → estallido: sale rápido y frena, con algo de caída
-      c.animate([
-        { transform: 'none', filter: 'brightness(1)', easing: 'cubic-bezier(.5,0,.9,.5)' },
-        { transform: `translate(${nx}px, ${ny}px)`, filter: 'brightness(1.6)', offset: hold / total, easing: 'cubic-bezier(.12,.75,.3,1)' },
-        { transform: `translate(${(dx / L) * push}px, ${(dy / L) * push + 160}px) rotate(${rot}deg) scale(${inner ? 0.62 : 0.85})`, filter: 'brightness(.5) blur(4px)' }
-      ], { duration: total, fill: 'forwards' });
+      const flight = [
+        { transform: 'none', easing: 'cubic-bezier(.5,0,.9,.5)' },
+        { transform: `translate(${nx}px, ${ny}px)`, offset: hold / total, easing: 'cubic-bezier(.12,.75,.3,1)' },
+        { transform: `translate(${(dx / L) * push}px, ${(dy / L) * push + 160}px) rotate(${rot}deg) scale(${inner ? 0.62 : 0.85})` }
+      ];
+      c.animate(flight, { duration: total, fill: 'forwards' });
       c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fly * 0.45, delay: hold + fly * 0.45, easing: 'ease-in', fill: 'forwards' });
       // Arista de vidrio que viaja con el fragmento
       const rim = svgShard(pts, 'wedge', [cx, cy]);
-      rim.animate(c.getAnimations()[0].effect.getKeyframes().map(({ transform, offset, easing }) => ({ transform, offset, easing })), { duration: total, fill: 'forwards' });
+      rim.animate(flight, { duration: total, fill: 'forwards' });
       rim.animate([{ opacity: 0 }, { opacity: 1, offset: hold / total }, { opacity: 1, offset: (hold + fly * 0.45) / total }, { opacity: 0, offset: (hold + fly * 0.9) / total }, { opacity: 0 }], { duration: total, fill: 'forwards' });
     });
 
-    // Astillas radiales desde el punto del arco, en el instante del estallido. La mayoría
-    // son trozos reales de la 15 tomados de toda la slide; vacío y cristal solo como acento.
-    let last = total;
-    [...Array(18).fill('frag'), ...Array(6).fill('void'), ...Array(6).fill('ice')].forEach((kind, i) => {
-      const a = kind === 'frag' ? (i / 18) * Math.PI * 2 + Math.random() * 0.3 : Math.random() * Math.PI * 2;
-      const r0 = kind === 'frag' ? 120 + Math.random() * 520 : 20 + Math.random() * 180;
-      const big = kind === 'frag' ? 1.15 : kind === 'void' ? 0.85 : 0.5;
-      const len = (190 + Math.random() * 260) * big, wid = (34 + Math.random() * 44) * big;
-      const ang = a + (Math.random() - 0.5) * 0.35;
-      const cx = ox + Math.cos(a) * r0, cy = oy + Math.sin(a) * r0;
-      const pts = sliver(cx, cy, len, wid, ang);
-      const v = kind === 'frag' ? 420 + Math.random() * 520 : 650 + Math.random() * 800;
-      const move = [
-        { transform: kind === 'frag' ? 'none' : 'scale(.3)' },
-        { transform: `translate(${(Math.cos(a) * v).toFixed(1)}px, ${(Math.sin(a) * v + 120).toFixed(1)}px) rotate(${((Math.random() - 0.5) * (kind === 'ice' ? 200 : 60)).toFixed(0)}deg) scale(${kind === 'frag' ? 0.7 : 1})` }
-      ];
-      const timing = { duration: (1300 + Math.random() * 500) * SLOW, delay: hold - 20 + Math.random() * 60, easing: 'cubic-bezier(.08,.75,.3,1)', fill: 'both' };
-      const fade = [{ opacity: kind === 'frag' ? 1 : 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: kind === 'frag' ? 0.62 : 0.5 }, { opacity: 0 }];
-      const targets = [svgShard(pts, kind, [cx, cy])];
-      if (kind === 'frag') {
-        const c = fragment(el, pts, box, [cx, cy]);
-        c.style.filter = 'brightness(1.3) saturate(1.2)';
-        targets.push(c);
+    // Astillas, paneles y destellos en el cuadro siguiente: el primero solo lleva los fragmentos grandes
+    requestAnimationFrame(() => {
+      // Astillas radiales desde el punto del arco, en el instante del estallido. La mayoría
+      // son trozos reales de la 15 tomados de toda la slide; vacío y cristal solo como acento.
+      let last = total;
+      [...Array(18).fill('frag'), ...Array(6).fill('void'), ...Array(6).fill('ice')].forEach((kind, i) => {
+        const a = kind === 'frag' ? (i / 18) * Math.PI * 2 + Math.random() * 0.3 : Math.random() * Math.PI * 2;
+        const r0 = kind === 'frag' ? 120 + Math.random() * 520 : 20 + Math.random() * 180;
+        const big = kind === 'frag' ? 1.15 : kind === 'void' ? 0.85 : 0.5;
+        const len = (190 + Math.random() * 260) * big, wid = (34 + Math.random() * 44) * big;
+        const ang = a + (Math.random() - 0.5) * 0.35;
+        const cx = ox + Math.cos(a) * r0, cy = oy + Math.sin(a) * r0;
+        const pts = sliver(cx, cy, len, wid, ang);
+        const v = kind === 'frag' ? 420 + Math.random() * 520 : 650 + Math.random() * 800;
+        const move = [
+          { transform: kind === 'frag' ? 'none' : 'scale(.3)' },
+          { transform: `translate(${(Math.cos(a) * v).toFixed(1)}px, ${(Math.sin(a) * v + 120).toFixed(1)}px) rotate(${((Math.random() - 0.5) * (kind === 'ice' ? 200 : 60)).toFixed(0)}deg) scale(${kind === 'frag' ? 0.7 : 1})` }
+        ];
+        const timing = { duration: (1300 + Math.random() * 500) * SLOW, delay: hold - 20 + Math.random() * 60, easing: 'cubic-bezier(.08,.75,.3,1)', fill: 'both' };
+        const fade = [{ opacity: kind === 'frag' ? 1 : 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: kind === 'frag' ? 0.62 : 0.5 }, { opacity: 0 }];
+        const targets = [svgShard(pts, kind, [cx, cy])];
+        if (kind === 'frag') {
+          const c = fragment(el, pts, box, [cx, cy]);
+          targets.push(c);
+        }
+        targets.forEach(e => { e.animate(move, timing); e.animate(fade, { ...timing, easing: 'linear' }); });
+        last = Math.max(last, timing.delay + timing.duration);
+      });
+      // Luz cegadora en el punto del arco, paneles de vidrio y destellos alrededor
+      last = Math.max(last, bloom(ox, oy, 460, 460, 0, hold * 0.7, 1300 * SLOW));
+      for (let i = 0; i < 12; i++) {
+        const a = Math.random() * Math.PI * 2, r0 = 30 + Math.random() * 200, v = 450 + Math.random() * 600;
+        last = Math.max(last, pane(ox + Math.cos(a) * r0, oy + Math.sin(a) * r0, 70 + Math.random() * 100, 45 + Math.random() * 80, a + (Math.random() - 0.5),
+          [Math.cos(a) * v, Math.sin(a) * v + 110], hold, (1500 + Math.random() * 600) * SLOW));
       }
-      targets.forEach(e => { e.animate(move, timing); e.animate(fade, { ...timing, easing: 'linear' }); });
-      last = Math.max(last, timing.delay + timing.duration);
+      for (let i = 0; i < 16; i++) {
+        const a = Math.random() * Math.PI * 2, r = 60 + Math.random() * 560;
+        last = Math.max(last, glint(ox + Math.cos(a) * r, oy + Math.sin(a) * r, 14 + Math.random() * 24, hold + Math.random() * 800 * SLOW, 900 * SLOW, i % 3 === 0));
+      }
+      setTimeout(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
     });
-    // Luz cegadora en el punto del arco, paneles de vidrio y destellos alrededor
-    last = Math.max(last, bloom(ox, oy, 460, 460, 0, hold * 0.7, 1300 * SLOW));
-    for (let i = 0; i < 12; i++) {
-      const a = Math.random() * Math.PI * 2, r0 = 30 + Math.random() * 200, v = 450 + Math.random() * 600;
-      last = Math.max(last, pane(ox + Math.cos(a) * r0, oy + Math.sin(a) * r0, 70 + Math.random() * 100, 45 + Math.random() * 80, a + (Math.random() - 0.5),
-        [Math.cos(a) * v, Math.sin(a) * v + 110], hold, (1500 + Math.random() * 600) * SLOW));
-    }
-    for (let i = 0; i < 16; i++) {
-      const a = Math.random() * Math.PI * 2, r = 60 + Math.random() * 560;
-      last = Math.max(last, glint(ox + Math.cos(a) * r, oy + Math.sin(a) * r, 14 + Math.random() * 24, hold + Math.random() * 800 * SLOW, 900 * SLOW, i % 3 === 0));
-    }
-    setTimeout(() => { box.remove(); fxG.querySelectorAll('[data-cut]').forEach(e => e.remove()); }, last + 80);
 
     // Grietas sobre las juntas: aparecen en el instante del arco y se apagan al separarse
     cracks.innerHTML = '';
     [...spokes.map(s => s.slice(0, 4)), ...ring].forEach((pts, i) => {
-      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      p.setAttribute('d', line(pts));
-      cracks.appendChild(p);
-      const len = p.getTotalLength();
-      p.style.strokeDasharray = len;
-      p.animate([{ strokeDashoffset: len, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, offset: 0.35 }, { strokeDashoffset: 0, opacity: 0 }],
-        { duration: hold + 500 * SLOW, delay: i < n ? 0 : 60, easing: 'ease-out', fill: 'both' });
+      ['glow', 'core'].forEach(cls => {
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', line(pts));
+        p.setAttribute('class', cls);
+        p.setAttribute('pathLength', 1);
+        cracks.appendChild(p);
+        p.animate([{ strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, offset: 0.35 }, { strokeDashoffset: 0, opacity: 0 }],
+          { duration: hold + 500 * SLOW, delay: i < n ? 0 : 60, easing: 'ease-out', fill: 'both' });
+      });
     });
     window.Ambient?.burst(...toWin(ox, oy), [255, 77, 109], 80);
     flash();

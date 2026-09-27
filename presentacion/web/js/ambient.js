@@ -28,7 +28,8 @@
   let anchorSet = false;
 
   function resize() {
-    dpr = Math.min(1.75, devicePixelRatio || 1);
+    // El fondo es difuso: 1,25× basta y reduce a la mitad los píxeles por cuadro frente a 1,75×
+    dpr = Math.min(1.25, devicePixelRatio || 1);
     W = cv.width = Math.max(1, innerWidth * dpr);
     H = cv.height = Math.max(1, innerHeight * dpr);
     neb.width = Math.ceil(W / 8);
@@ -40,7 +41,7 @@
       z: 0.15 + Math.random() * 0.85,
       a: Math.random() * Math.PI * 2, tw: 0.3 + Math.random() * 1.4,
       hue: Math.random() < 0.25 ? 1 : Math.random() < 0.3 ? 2 : 0
-    }));
+    })).sort((a, b) => a.hue - b.hue); // agrupadas por color: un solo fillStyle por grupo
     if (!anchorSet) { anchor.x = anchor.tx = W * 0.78; anchor.y = anchor.ty = H * 0.3; }
     if (reduced) draw(0);
   }
@@ -93,8 +94,11 @@
   });
 
   /* ---------- Dibujo ---------- */
-  let frameN = 0;
+  let frameN = 0, lastT = -1e9;
   function draw(t) {
+    // Como máximo 60 cuadros por segundo: en pantallas de 120/144 Hz el fondo no corre el doble
+    if (!reduced && t - lastT < 15) { requestAnimationFrame(draw); return; }
+    lastT = t;
     frameN++;
     for (const k of ['a', 'b', 'c']) for (let i = 0; i < 3; i++) pal[k][i] = lerp(pal[k][i], mood[k][i], 0.02);
     pal.glow = lerp(pal.glow, mood.glow, 0.02);
@@ -105,13 +109,12 @@
     anchor.y = lerp(anchor.y, anchor.ty, 0.03);
 
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#07060f';
-    ctx.fillRect(0, 0, W, H);
 
-    // Nebulosa (baja resolución, escalada)
+    // Nebulosa (baja resolución, escalada): lleva el color del vacío de fondo, así cubre todo el lienzo
     if (frameN % 2 === 1 || reduced) {
       const w = neb.width, h = neb.height, s = t * 0.00005;
-      nctx.clearRect(0, 0, w, h);
+      nctx.fillStyle = '#07060f';
+      nctx.fillRect(0, 0, w, h);
       const blob = (x, y, r, c, a) => {
         const g = nctx.createRadialGradient(x, y, 0, x, y, r);
         g.addColorStop(0, rgba(c, a)); g.addColorStop(1, rgba(c, 0));
@@ -127,22 +130,27 @@
 
     // Estrellas con parallax
     const px = mouse.x * 16 * dpr, py = mouse.y * 12 * dpr;
+    // Color fijo por grupo y transparencia con globalAlpha (evita crear un rgba() por estrella y cuadro)
     const cols = [[244, 241, 255], pal.a, pal.b];
+    let hue = -1;
+    ctx.lineWidth = 0.6 * dpr;
     for (const st of stars) {
+      if (st.hue !== hue) { hue = st.hue; ctx.fillStyle = ctx.strokeStyle = rgba(cols[hue], 1); }
       if (!reduced) { st.x -= 0.04 * st.z * dpr * pal.speed; if (st.x < -5) st.x = W + 5; }
       const x = st.x - px * st.z, y = st.y - py * st.z;
       const al = 0.3 + 0.7 * Math.abs(Math.sin(st.a + t * 0.001 * st.tw));
-      ctx.fillStyle = rgba(cols[st.hue], al * (0.4 + st.z * 0.6));
-      ctx.beginPath(); ctx.arc(x, y, st.r, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = al * (0.4 + st.z * 0.6);
+      if (st.r < 1.1 * dpr) ctx.fillRect(x - st.r, y - st.r, st.r * 2, st.r * 2);
+      else { ctx.beginPath(); ctx.arc(x, y, st.r, 0, 6.283); ctx.fill(); }
       if (st.r > 1.45 * dpr) {
-        ctx.strokeStyle = rgba(cols[st.hue], al * 0.35);
-        ctx.lineWidth = 0.6 * dpr;
+        ctx.globalAlpha = al * 0.35;
         ctx.beginPath();
         ctx.moveTo(x - st.r * 4, y); ctx.lineTo(x + st.r * 4, y);
         ctx.moveTo(x, y - st.r * 4); ctx.lineTo(x, y + st.r * 4);
         ctx.stroke();
       }
     }
+    ctx.globalAlpha = 1;
 
     // Geometría: anillos que respiran alrededor del ancla
     const ax = anchor.x - px * 0.4, ay = anchor.y - py * 0.4;

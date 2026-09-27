@@ -50,7 +50,6 @@ html, body {
   width: 1920px; height: 1080px;
   transform: translate(-50%, -50%) scale(var(--s, 0.5));
   transform-origin: center;
-  --mx: 0; --my: 0;
 }
 .stage[data-mood="energy"] { --acc: var(--violet-hi); }
 .stage[data-mood="dc"], .stage[data-mood="h2"] { --acc: var(--ice); }
@@ -64,11 +63,14 @@ html, body {
   transition: opacity 0.9s var(--ease-out);
 }
 #thread path { fill: none; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.9s var(--ease-out), stroke-width 0.9s var(--ease-out); }
-#thread .th-path { stroke-width: 2; animation: breathe 5s ease-in-out infinite; }
+#thread .th-path { stroke-width: 2; }
 #thread .th-glow { stroke-width: 10; stroke-opacity: 0.14; filter: blur(6px); }
-#thread .th-tail { stroke-width: 3.5; stroke-opacity: 0.9; filter: drop-shadow(0 0 6px currentColor); transition: opacity 0.6s; }
-#thread .th-spark { fill: var(--star); filter: drop-shadow(0 0 8px var(--ice)) drop-shadow(0 0 16px var(--violet)); transition: opacity 0.6s; }
-@keyframes breathe { 50% { stroke-opacity: 0.72; } }
+.thread-wrap { position: absolute; inset: 0; z-index: 1; pointer-events: none; animation: breathe 5s ease-in-out infinite; }
+@keyframes breathe { 50% { opacity: 0.8; } }
+#thread-spark { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; overflow: visible; will-change: transform; }
+#thread-spark path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+#thread-spark .th-tail { stroke-width: 3.5; stroke-opacity: 0.9; filter: drop-shadow(0 0 6px currentColor); transition: opacity 0.6s; }
+#thread-spark .th-spark { fill: var(--star); filter: drop-shadow(0 0 8px var(--ice)) drop-shadow(0 0 16px var(--violet)); transition: opacity 0.6s; }
 
 /* ---------- Slides ---------- */
 .slide {
@@ -97,6 +99,9 @@ svg.scene text { font-family: var(--f-mono); }
 div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(0, 16px, 0); }
 [data-at].on, [data-only].on { opacity: 1; transform: none; }
 
+/* Las slides ocultas no animan: sus animaciones infinitas (giros, burbujas, flujos) quedan en pausa */
+.slide:not(.is-active):not(.is-leaving), .slide:not(.is-active):not(.is-leaving) * { animation-play-state: paused !important; }
+
 /* La slide que sale conserva su contenido mientras dura la transición */
 .slide.is-leaving .rv { opacity: 1; transform: none; filter: none; }
 .slide.is-leaving.hero h1 .w > span { transform: none; }
@@ -104,6 +109,8 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 /* Capas de transición: borde de luz que viaja sobre el corte */
 .fx { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 36; pointer-events: none; overflow: visible; }
 .fx path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+/* Capas individuales de los efectos de ruptura (se animan enteras, en la GPU) */
+.fxl { position: absolute; overflow: visible; will-change: transform, opacity; }
 .fx .fx-halo { stroke-width: 28; opacity: 0.3; filter: blur(14px); }
 .fx .fx-glow { stroke-width: 6; opacity: 0.75; filter: blur(3px); }
 .fx .fx-core { stroke-width: 1.6; }
@@ -125,7 +132,8 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 .fx .fx-ice { fill: rgba(143, 227, 255, 0.42); }
 .fx .fx-facet { fill: rgba(236, 240, 255, 0.12); }
 .fx .frag .fx-facet { fill: rgba(236, 240, 255, 0.07); }
-.fx .fx-rim { fill: none; stroke: #eef0ff; stroke-width: 1.8; stroke-linejoin: miter; filter: drop-shadow(0 0 4px var(--acc)) drop-shadow(0 0 10px var(--acc)); }
+.fx .fx-rim { fill: none; stroke: #eef0ff; stroke-width: 1.8; stroke-linejoin: miter; }
+.fx .fx-rim-glow { fill: none; stroke: var(--acc); stroke-width: 7; stroke-opacity: 0.4; stroke-linejoin: round; }
 .fx .ice .fx-rim { stroke: #dff7ff; }
 /* En el bloque del accidente el cristal se tiñe del color del peligro */
 .stage[data-mood="crisis"] .fx .fx-ice { fill: rgba(255, 110, 140, 0.4); }
@@ -140,9 +148,11 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 
 /* Fragmentos de la slide que estalla */
 .shards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
-.slide.shard { z-index: auto; will-change: transform, opacity; }
+.shards .shard { position: absolute; overflow: hidden; will-change: transform, opacity; }
 .cracks { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 35; pointer-events: none; overflow: visible; }
-.cracks path { fill: none; stroke: #ffd2da; stroke-width: 2.5; stroke-linejoin: round; filter: drop-shadow(0 0 6px var(--danger)) drop-shadow(0 0 16px var(--danger)); }
+.cracks path { fill: none; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; }
+.cracks .core { stroke: #ffd2da; stroke-width: 2.5; }
+.cracks .glow { stroke: var(--danger); stroke-width: 10; stroke-opacity: 0.35; }
 .flash {
   position: absolute; inset: 0; z-index: 34; pointer-events: none; opacity: 0;
   background: radial-gradient(40% 50% at 75% 50%, rgba(255, 77, 109, 0.5), rgba(255, 77, 109, 0.08) 60%, transparent);
@@ -778,7 +788,7 @@ body.presenter .pv { display: grid; position: fixed; inset: 0; z-index: 10; grid
 .slide.is-active .scene .grow { animation: grow-in 1.3s var(--ease-out) var(--pd, 0ms) backwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero .sigil .spin, .hero .sigil .spin-r, .hero .sigil .core, .hero .sigil .sg-glow, .hero .sigil .sg-ring, .hero .sigil .sg-draw, .hero .sigil .sg-dot, .pulse, .scene .flow-ok, .scene .loop-flow, .scene .bub, .scene .gas, .scene .flame, #thread .th-path,
+  .hero .sigil .spin, .hero .sigil .spin-r, .hero .sigil .core, .hero .sigil .sg-glow, .hero .sigil .sg-ring, .hero .sigil .sg-draw, .hero .sigil .sg-dot, .pulse, .scene .flow-ok, .scene .loop-flow, .scene .bub, .scene .gas, .scene .flame, .thread-wrap,
   .scene .pop, .scene .rise, .scene .fade, .scene .draw, .scene .grow, .chrome .dots i, .overlay .menu-list li, .overlay .keys > * { animation: none !important; }
   .kicker::before { transform: none; transition: none; }
   .closing .idea .n, .closing .idea .t, .closing .ask, .closing .seal, .closing .seal * , .closing .idea .t * { animation: none !important; opacity: 1 !important; }

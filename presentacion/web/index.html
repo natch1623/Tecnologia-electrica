@@ -16,7 +16,8 @@
 <main class="stage" id="stage" data-mood="maint">
 
   <!-- Hilo conductor: una sola línea que se transforma a lo largo de toda la exposición -->
-  <svg id="thread" viewBox="0 0 1920 1080" aria-hidden="true">
+  <div class="thread-wrap" aria-hidden="true">
+  <svg id="thread" viewBox="0 0 1920 1080">
     <defs>
       <linearGradient id="thg-route" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
         <stop offset="0" stop-color="#a58bff"/><stop offset=".6" stop-color="#8fe3ff"/><stop offset="1" stop-color="#ff4d6d"/>
@@ -32,6 +33,8 @@
       </linearGradient>
     </defs>
   </svg>
+  <svg id="thread-spark" viewBox="0 0 1920 1080"></svg>
+  </div>
 
   <!-- ============ 01 · Portada · cinemático ============ -->
   <section class="slide hero" id="s01" data-mood="maint" data-tx="slash" data-thread="hero" data-anchor="1440 540"
@@ -599,6 +602,7 @@
     </defs>
     <g id="fx-g"></g>
   </svg>
+  <div class="fx fx-layers" id="fx-layers" aria-hidden="true"></div>
   <svg class="cracks" id="cracks" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
   <div class="flash" id="flash" aria-hidden="true"></div>
 

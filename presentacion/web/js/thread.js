@@ -105,8 +105,11 @@
   const mk = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); svg.appendChild(n); return n; };
   const glow = mk('path', { class: 'th-glow' });
   const path = mk('path', { class: 'th-path' });
-  const tail = mk('path', { class: 'th-tail' });
-  const spark = mk('circle', { class: 'th-spark', r: 4 });
+  // La chispa y su estela van en otra capa: moverlas cada cuadro no obliga a repintar el resplandor
+  const svgSpark = document.getElementById('thread-spark');
+  const mkS = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); svgSpark.appendChild(n); return n; };
+  const tail = mkS('path', { class: 'th-tail' });
+  const spark = mkS('circle', { class: 'th-spark', r: 4 });
 
   const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 
@@ -158,7 +161,7 @@
   function style({ color, w, o, spark: sp } = {}) {
     if (color != null) { path.style.stroke = color; glow.style.stroke = color; tail.style.stroke = color; }
     if (w != null) { path.style.strokeWidth = w; glow.style.strokeWidth = w * 5; }
-    if (o != null) svg.style.opacity = o;
+    if (o != null) { svg.style.opacity = o; svgSpark.style.opacity = o; }
     if (sp != null) sparkSpeed = sp;
     spark.style.opacity = sparkSpeed > 0 ? 1 : 0;
     tail.style.opacity = sparkSpeed > 0 ? 1 : 0;
@@ -176,7 +179,11 @@
   }
 
   const ease = x => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+  let lastFrame = 0;
   function frame(now) {
+    if (now - lastFrame < 15) { requestAnimationFrame(frame); return; }
+    const dt = Math.min(0.05, (now - lastFrame) / 1000);
+    lastFrame = now;
     if (morphing) {
       const p = ease(Math.min(1, (now - t0) / dur));
       for (let i = 0; i < N * 2; i++) cur.pts[i] = from[i] + (target.pts[i] - from[i]) * p;
@@ -184,7 +191,7 @@
       if (p >= 1) morphing = false;
     }
     if (sparkSpeed > 0 && !reduced) {
-      sparkPos = (sparkPos + sparkSpeed * 0.016) % 1;
+      sparkPos = (sparkPos + sparkSpeed * dt) % 1;
       const i = Math.floor(sparkPos * (N - 1));
       spark.setAttribute('cx', cur.pts[2 * i]);
       spark.setAttribute('cy', cur.pts[2 * i + 1]);
