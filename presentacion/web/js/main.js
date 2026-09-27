@@ -88,6 +88,10 @@
     if (n === idx && next.classList.contains('is-active')) return;
     back = back || n < idx;
 
+    // Restos de una transición interrumpida: mira, fragmentos y esquirlas
+    stage.querySelectorAll('.dive-fx, .shards, .fx [data-cut]').forEach(e => e.remove());
+    stage.querySelectorAll('.breaking').forEach(e => e.classList.remove('breaking'));
+    clearTimeout(collapseT);
     if (leaving) { leaving.getAnimations().forEach(a => a.cancel()); leaving.classList.remove('is-leaving'); leaving.style.zIndex = ''; }
     if (prev && prev !== next) {
       scene(prev).leave?.(prev);
@@ -255,10 +259,23 @@
   }
 
   function transition(prevEl, nextEl, back) {
-    const kind = back ? (REWIND.has(prevEl?.dataset.tx) ? prevEl.dataset.tx : 'dissolve') : nextEl.dataset.tx || 'dissolve';
+    const ptx = prevEl?.dataset.tx;
+    const kind = back ? (REWIND.has(ptx) || (ptx === 'absorb' && nextEl.dataset.zoom) || (ptx === 'converge' && nextEl.id === 's13') || (ptx === 'collapse' && nextEl.id === 's14') ? ptx : 'dissolve') : nextEl.dataset.tx || 'dissolve';
     if (reduced || !prevEl) {
       nextEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduced ? 400 : 900, easing: 'ease-out' });
       if (prevEl) leave(prevEl, 400, false);
+      return;
+    }
+    if (kind === 'collapse' && (back ? nextEl : prevEl).id === 's14') {
+      collapse(back ? nextEl : prevEl, back ? prevEl : nextEl, back);
+      return;
+    }
+    if (kind === 'converge' && (back ? nextEl : prevEl).id === 's13') {
+      converge(back ? nextEl : prevEl, back ? prevEl : nextEl, back);
+      return;
+    }
+    if (kind === 'absorb' && (back ? nextEl : prevEl).dataset.zoom && (back ? prevEl : nextEl).dataset.focus) {
+      dive(back ? nextEl : prevEl, back ? prevEl : nextEl, back);
       return;
     }
     const origin = pt(nextEl.dataset.origin);
@@ -269,13 +286,6 @@
     if (t.frames?.[0].prev) {
       prevEl.animate(t.frames.map(f => ({ clipPath: f.prev })), { ...opt, fill: 'forwards' });
       leave(prevEl, opt.duration + opt.delay, true);
-    } else if (kind === 'absorb' && prevEl.dataset.zoom) {
-      const z = pt(prevEl.dataset.zoom);
-      prevEl.style.transformOrigin = `${z[0]}px ${z[1]}px`;
-      prevEl.animate([{ transform: 'scale(1)', opacity: 1, filter: 'blur(0px)' }, { transform: 'scale(4.5)', opacity: 0, filter: 'blur(6px)' }],
-        { duration: 1000 * SLOW, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' });
-      window.Ambient?.burst(...toWin(...z), [143, 227, 255], 30);
-      leave(prevEl, 1000 * SLOW, true);
     } else if (kind === 'fracture' || kind === 'cleave') {
       const dur = kind === 'cleave' ? cleave(prevEl) : shatter(prevEl, origin);
       prevEl.animate([{ opacity: 0 }, { opacity: 0 }], { duration: dur, fill: 'forwards' });
@@ -291,6 +301,340 @@
     nextEl.animate(t.raw || t.frames.map(f => ({ clipPath: f.next })), { ...opt, fill: 'backwards' });
     if (t.frames?.[0].edge != null) edgeLight(t.frames.map(f => f.edge), opt, t.dir, kind === 'slash');
     if (kind === 'expand') window.Ambient?.burst(...toWin(...origin), [143, 227, 255], 36);
+  }
+
+  /* Inmersión (12 → 13): una mira fija la celda 119, la cámara entra en ella y su
+     contorno se convierte en el recipiente del corte de la 13, que se abre hasta
+     llenar la pantalla. data-zoom = celda en la 12 · data-focus = celda en la 13.
+     Al retroceder, la cámara sale: la 13 se cierra en su celda y la 12 se aleja. */
+  const rectD = ([x, y, w, h]) => `M${x} ${y} L${x + w} ${y} L${x + w} ${y + h} L${x} ${y + h} Z`;
+  const insetOf = ([x, y, w, h]) => `inset(${y}px ${W - x - w}px ${H - y - h}px ${x}px)`;
+  function dive(outer, inner, back) {
+    const src = pt(outer.dataset.zoom), dst = pt(inner.dataset.focus);
+    const [sx, sy, sw, sh] = src, [dx, dy, dw, dh] = dst;
+    // La celda 119 queda exactamente sobre la celda de la 13
+    const kx = dw / sw, ky = dh / sh;
+    const tx = dx + dw / 2 - kx * (sx + sw / 2), ty = dy + dh / 2 - ky * (sy + sh / 2);
+    const zoomed = `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${kx.toFixed(3)}, ${ky.toFixed(3)})`;
+    const DIVE = 'cubic-bezier(.66,0,.24,1)';
+    const full = [-6, -6, W + 12, H + 12], out = [-90, -90, W + 180, H + 180];
+    const cellC = [dx + dw / 2, dy + dh / 2];
+    outer.style.transformOrigin = '0 0';
+
+    if (!back) {
+      const lock = 420 * SLOW, zoom = 1150 * SLOW, zStart = 260 * SLOW;
+      const open = 1500 * SLOW, oStart = zStart + zoom * 0.86, hold = 0.24;
+      // Mira y velo: viven dentro de la 12, así entran con la cámara
+      const fx = document.createElementNS(SVGNS, 'svg');
+      fx.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      fx.setAttribute('class', 'dive-fx');
+      const m = 10, [bx, by, bw, bh] = [sx - m, sy - m, sw + 2 * m, sh + 2 * m];
+      const veil = fxEl('path', { class: 'dive-veil', d: `M-40 -40 H${W + 40} V${H + 40} H-40 Z ${rectD([bx, by, bw, bh])}` }, fx);
+      const ret = fxEl('g', { class: 'dive-ret' }, fx);
+      const c = 14;
+      [[bx, by, 1, 1], [bx + bw, by, -1, 1], [bx + bw, by + bh, -1, -1], [bx, by + bh, 1, -1]].forEach(([x, y, u, v]) =>
+        fxEl('path', { d: `M${x} ${y + v * c} L${x} ${y} L${x + u * c} ${y}` }, ret));
+      fxEl('text', { x: bx + bw / 2, y: by - 16, 'text-anchor': 'middle', class: 'dive-t' }, ret).textContent = 'CELDA 119';
+      for (let i = 0; i < 9; i++) {
+        const b = fxEl('circle', { cx: (sx + 6 + Math.random() * (sw - 12)).toFixed(1), cy: (sy + sh - 6).toFixed(1), r: (0.6 + Math.random() * 0.5).toFixed(2), class: 'dive-b' }, fx);
+        b.animate([{ transform: 'translateY(0)', opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: `translateY(${-(sh * 0.7).toFixed(0)}px)`, opacity: 0 }],
+          { duration: 700 + Math.random() * 500, delay: zStart + Math.random() * zoom * 0.6, iterations: 2, fill: 'both' });
+      }
+      outer.appendChild(fx);
+      veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: lock, easing: EXPO, fill: 'both' });
+      ret.style.transformOrigin = `${sx + sw / 2}px ${sy + sh / 2}px`;
+      ret.animate([{ opacity: 0, transform: 'scale(2.2) rotate(-8deg)' }, { opacity: 1, transform: 'none' }], { duration: lock, easing: EXPO, fill: 'both' });
+      ret.animate([{ opacity: 1 }, { opacity: 0 }], { duration: zoom * 0.4, delay: zStart + zoom * 0.35, fill: 'forwards', composite: 'replace' });
+      window.Ambient?.burst(...toWin(sx + sw / 2, sy + sh / 2), [143, 227, 255], 22);
+
+      // La cámara entra
+      outer.animate([{ transform: 'none', filter: 'blur(0px)' }, { transform: zoomed, filter: 'blur(1.5px)' }],
+        { duration: zoom, delay: zStart, easing: DIVE, fill: 'forwards' });
+      outer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: open * 0.35, delay: oStart + open * hold, easing: 'ease-in', fill: 'forwards' });
+
+      // La celda de la 13 aparece sobre la 119 y se abre hasta llenar la pantalla
+      inner.style.transformOrigin = `${cellC[0]}px ${cellC[1]}px`;
+      inner.animate([
+        { clipPath: insetOf(dst), opacity: 0, transform: 'scale(1.04)', easing: 'linear' },
+        { clipPath: insetOf(dst), opacity: 1, transform: 'scale(1.04)', offset: hold, easing: EXPO },
+        { clipPath: insetOf(full), opacity: 1, transform: 'none' }
+      ], { duration: open, delay: oStart, fill: 'backwards' });
+      edgeLight([rectD(dst), rectD(out)], { duration: open * (1 - hold), delay: oStart + open * hold, easing: EXPO }, 'c', false);
+      setTimeout(() => window.Ambient?.burst(...toWin(...cellC), [143, 227, 255], 34), oStart + open * hold);
+      const total = oStart + open;
+      setTimeout(() => { fx.remove(); if (inner.classList.contains('is-active')) inner.style.transformOrigin = ''; }, total + 80);
+      leave(outer, total, true);
+    } else {
+      // La cámara sale: la 13 se cierra en su celda y la 12 retrocede hasta su escala
+      const close = 800 * SLOW, zoom = 1050 * SLOW, zStart = close * 0.55;
+      inner.animate([
+        { clipPath: insetOf(full), opacity: 1, easing: 'cubic-bezier(.7,0,.3,1)' },
+        { clipPath: insetOf(dst), opacity: 1, offset: 0.7 },
+        { clipPath: insetOf(dst), opacity: 0 }
+      ], { duration: close, fill: 'forwards' });
+      edgeLight([rectD(out), rectD(dst)], { duration: close * 0.7, easing: 'cubic-bezier(.7,0,.3,1)' }, 'c', false);
+      outer.animate([
+        { transform: zoomed, opacity: 0, filter: 'blur(1.5px)' },
+        { opacity: 1, offset: 0.25 },
+        { transform: 'none', opacity: 1, filter: 'blur(0px)' }
+      ], { duration: zoom, delay: zStart, easing: DIVE, fill: 'backwards' });
+      setTimeout(() => { if (outer.classList.contains('is-active')) outer.style.transformOrigin = ''; }, zStart + zoom + 60);
+      leave(inner, close, true);
+    }
+  }
+
+  /* Convergencia (13 → 14): los tres ingredientes que se ven en la celda —H₂ y O₂ del
+     espacio de gas y la chispa externa— se desprenden, vuelan y se convierten en los
+     vértices del triángulo del fuego; el hilo se cierra entre ellos. Al retroceder,
+     los vértices regresan a la celda. */
+  const TOKENS = [
+    { t: 'H₂', from: [426, 460], to: 'h', col: '#8fe3ff', end: '#ff4d6d', burst: [255, 77, 109] },
+    { t: 'O₂', from: [496, 460], to: 'o', col: '#ece9f7', end: 'rgba(236,233,247,.58)', burst: [201, 184, 255] },
+    { t: 'IGN', from: [460, 226], to: 'ig', col: '#ff8a64', end: '#ff4d6d', burst: [255, 138, 100] }
+  ];
+  function converge(cell, tri, back) {
+    const T = window.GEO.tri;
+    const fly = 1150 * SLOW, fStart = back ? 160 * SLOW : (BLAST.at + 60) * SLOW, arrive = fStart + fly;
+    // El hilo se tiende entre las fichas mientras vuelan: el triángulo se cierra cuando llegan
+    window.Thread?.to(back ? 'gas' : 'tri', { dur: arrive });
+    const layers = TOKENS.map((k, i) => {
+      const a = k.from, b = T[k.to];
+      const [p0, p1] = back ? [b, a] : [a, b];
+      const l = fxLayer([p0[0] - 80, p0[1] - 80, 160, 160], 'fx-tok', p0);
+      const c = fxEl('circle', { cx: p0[0], cy: p0[1], r: 52, class: 'fx-tok-c' }, l);
+      fxEl('text', { x: p0[0], y: p0[1] + 11, 'text-anchor': 'middle', class: 'fx-tok-t' }, l).textContent = k.t;
+      // Trayectoria curva: se abre hacia afuera del centro del triángulo
+      const dx = p1[0] - p0[0], dy = p1[1] - p0[1];
+      const bend = (i === 1 ? -1 : 1) * 0.22;
+      const mx = dx * 0.5 - dy * bend, my = dy * 0.5 + dx * bend;
+      const [s0, s1] = back ? [1, 0.42] : [0.42, 1];
+      const delay = fStart + i * 90 * SLOW;
+      l.animate([
+        { transform: `translate(0,0) scale(${s0})`, opacity: 0 },
+        { transform: `translate(0,0) scale(${s0})`, opacity: 1, offset: 0.1 },
+        { transform: `translate(${mx.toFixed(1)}px, ${my.toFixed(1)}px) scale(${(s0 + s1) / 2})`, opacity: 1, offset: 0.55 },
+        { transform: `translate(${dx}px, ${dy}px) scale(${s1})`, opacity: 1, offset: 0.9 },
+        { transform: `translate(${dx}px, ${dy}px) scale(${s1})`, opacity: 0 }
+      ], { duration: fly, delay, easing: 'cubic-bezier(.55,0,.25,1)', fill: 'both' });
+      const [c0, c1] = back ? [k.end, k.col] : [k.col, k.end];
+      c.animate([{ stroke: c0 }, { stroke: c0, offset: 0.45 }, { stroke: c1 }], { duration: fly, delay, fill: 'both' });
+      setTimeout(() => window.Ambient?.burst(...toWin(...p1), back ? [143, 227, 255] : k.burst, 20), delay + fly * 0.9);
+      return l;
+    });
+    if (!back) batteryBlast(layers.map((l, i) => [T[TOKENS[i].to], fStart + i * 90 * SLOW + fly * 0.9]));
+    const gone = back ? tri : cell, come = back ? cell : tri;
+    // La celda sale subiendo, como el gas; el triángulo se enciende cuando llegan los vértices
+    if (back) {
+      gone.animate([{ opacity: 1, transform: 'none', filter: 'blur(0px)' }, { opacity: 0, transform: 'translateY(60px)', filter: 'blur(8px)' }],
+        { duration: 900 * SLOW, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' });
+    } else {
+      // Presión: la 13 se hincha alrededor de la celda y tiembla; al detonar se apaga de golpe
+      const D = BLAST.at * SLOW;
+      gone.style.transformOrigin = `${BLAST.x}px ${BLAST.y + 180}px`;
+      gone.animate([
+        { transform: 'none', opacity: 1, easing: 'cubic-bezier(.5,0,1,1)' },
+        { transform: 'scale(1.012) translate(2px, -1px)', opacity: 1, offset: 0.45 },
+        { transform: 'scale(1.02) translate(-2px, 1px)', opacity: 1, offset: 0.7 },
+        { transform: 'scale(1.035) translate(2px, 0)', opacity: 1, offset: 0.92 },
+        { transform: 'scale(1.05)', opacity: 0 }
+      ], { duration: D + 90, fill: 'forwards' });
+    }
+    // Solo opacidad y transformación: la GPU compone la entrada sin repintar la slide
+    come.animate([
+      { opacity: 0, transform: back ? 'translateY(-60px)' : 'scale(.97)' },
+      { opacity: 1, transform: 'none' }
+    ], { duration: 800 * SLOW, delay: arrive - 380 * SLOW, easing: EXPO, fill: 'backwards' });
+    const total = arrive + 2 * 90 * SLOW;
+    setTimeout(() => layers.forEach(l => l.remove()), total + 80);
+    leave(gone, 900 * SLOW, true);
+  }
+
+  /* La batería estalla (13 → 14). Presión: la celda se hincha y la tapa se agrieta.
+     Detonación en el espacio de gas: bola de fuego, onda expansiva y destello; las piezas
+     reales de la celda —tapa, apagallamas, bornes, paredes, fondo y placas— salen
+     despedidas en todas direcciones con giro y caída, y el electrolito sale en gotas.
+     Cada pieza es una capa SVG pequeña que se pinta una vez: la GPU solo la mueve. */
+  const BLAST = { x: 460, y: 460, at: 300 };
+  function batteryBlast(hits) {
+    const D = BLAST.at * SLOW, { x: ox, y: oy } = BLAST;
+    let last = 0;
+    const layer = (pts, cls, c) => {
+      const l = fxLayer(bboxOf(pts, 6), 'fx-blast', c);
+      fxEl('polygon', { class: cls, points: pts2(pts) }, l);
+      return l;
+    };
+    // Presión: grietas que corren por la tapa y las paredes
+    const cracksG = fxLayer([220, 320, 480, 600], '', [ox, oy]);
+    [[[300, 380], [340, 392], [372, 384], [404, 396]], [[560, 386], [600, 380], [640, 392]], [[244, 430], [256, 470], [248, 520]],
+      [[676, 450], [668, 500], [678, 540]], [[440, 372], [452, 360], [470, 372], [486, 360]]].forEach(c => {
+      const path = fxEl('polyline', { class: 'fx-crack', points: pts2(c), pathLength: 1 }, cracksG);
+      path.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: D * 0.8, delay: D * 0.15, easing: 'ease-in', fill: 'both' });
+    });
+    cracksG.animate([{ opacity: 1 }, { opacity: 1, offset: 0.95 }, { opacity: 0 }], { duration: D + 40, fill: 'both' });
+    // Brillo interior creciente en el espacio de gas
+    const pre = fxLayer([ox - 220, oy - 80, 440, 160], '', [ox, oy]);
+    fxEl('ellipse', { cx: ox, cy: oy, rx: 220, ry: 80, class: 'fx-fire' }, pre);
+    pre.animate([{ transform: 'scale(.2)', opacity: 0 }, { transform: 'scale(.8)', opacity: 0.9 }], { duration: D, easing: 'cubic-bezier(.6,0,1,1)', fill: 'both' });
+    pre.animate([{ opacity: 0.9 }, { opacity: 0 }], { duration: 160, delay: D, fill: 'forwards' });
+
+    // Las capas se crean en lotes durante la fase de presión: ningún cuadro carga con todo.
+    // dl() = lo que falta para la detonación en el instante en que se crea cada lote.
+    const t0 = performance.now();
+    const dl = () => Math.max(0, D - (performance.now() - t0));
+    const later = (t, fn) => setTimeout(fn, t);
+
+    // Detonación
+    setTimeout(() => { flash(); window.Ambient?.burst(...toWin(ox, oy), [255, 170, 120], 70); }, D);
+    later(D * 0.25, () => {
+    const D = dl();
+    const fire = fxLayer([ox - 420, oy - 420, 840, 840], '', [ox, oy]);
+    fxEl('circle', { cx: ox, cy: oy, r: 420, class: 'fx-fire' }, fire);
+    fire.animate([
+      { transform: 'scale(.05)', opacity: 0 },
+      { transform: 'scale(.55)', opacity: 1, offset: 0.12 },
+      { transform: 'scale(1.1)', opacity: 0 }
+    ], { duration: 950 * SLOW, delay: D, easing: 'cubic-bezier(.1,.8,.3,1)', fill: 'both' });
+    const shock = fxLayer([ox - 900, oy - 900, 1800, 1800], '', [ox, oy]);
+    fxEl('circle', { cx: ox, cy: oy, r: 880, class: 'fx-shock' }, shock);
+    shock.animate([{ transform: 'scale(.04)', opacity: 1 }, { transform: 'scale(1)', opacity: 0 }],
+      { duration: 900 * SLOW, delay: D, easing: 'cubic-bezier(.1,.7,.3,1)', fill: 'both' });
+    glint(ox, oy, 120, D, 520 * SLOW, true);
+    });
+
+    // Piezas de la celda: cada una huye del punto de detonación
+    later(D * 0.45, () => {
+    const D = dl();
+    const R = (x, y, w, h) => [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+    const parts = [
+      // tapa en tres trozos, apagallamas y bornes: salen hacia arriba y a los lados
+      [R(232, 372, 150, 26), 'fx-case'], [R(382, 372, 150, 26), 'fx-case'], [R(532, 372, 156, 26), 'fx-case'],
+      [R(430, 330, 60, 50), 'fx-cap'], [R(284, 330, 32, 90), 'fx-post'], [R(604, 330, 32, 90), 'fx-post'],
+      // paredes partidas y fondo
+      [R(236, 398, 8, 250), 'fx-case'], [R(236, 648, 8, 252), 'fx-case'], [R(676, 398, 8, 250), 'fx-case'], [R(676, 648, 8, 252), 'fx-case'],
+      [R(240, 892, 220, 8), 'fx-case'], [R(460, 892, 220, 8), 'fx-case'],
+      // placas (negativas y positivas alternadas)
+      ...Array.from({ length: 9 }, (_, j) => [R(282 + j * 44, 592, 12, 260), j % 2 ? 'fx-plate-p' : 'fx-plate-n'])
+    ];
+    parts.forEach(([pts, cls]) => {
+      const cx = pts.reduce((a, p) => a + p[0], 0) / 4, cy = pts.reduce((a, p) => a + p[1], 0) / 4;
+      let dx = cx - ox, dy = cy - oy;
+      const L = Math.hypot(dx, dy) || 1;
+      dx /= L; dy /= L;
+      const heavy = cls.startsWith('fx-plate') ? 0.7 : 1;
+      const v = (560 + Math.random() * 480) * heavy;
+      const rot = (Math.random() - 0.5) * 540;
+      const l = layer(pts, cls, [cx, cy]);
+      const tx = dx * v, ty = dy * v;
+      l.animate([
+        { transform: 'none', easing: 'cubic-bezier(.12,.6,.35,1)' },
+        { transform: `translate(${(tx * 0.75).toFixed(1)}px, ${(ty * 0.75).toFixed(1)}px) rotate(${(rot * 0.6).toFixed(0)}deg)`, offset: 0.55, easing: 'cubic-bezier(.4,0,1,1)' },
+        { transform: `translate(${tx.toFixed(1)}px, ${(ty + 260).toFixed(1)}px) rotate(${rot.toFixed(0)}deg)` }
+      ], { duration: (1500 + Math.random() * 400) * SLOW, delay: D, fill: 'both' });
+      l.animate([{ opacity: 1 }, { opacity: 1, offset: 0.55 }, { opacity: 0 }], { duration: 1500 * SLOW, delay: D, fill: 'both' });
+    });
+    });
+
+    // Electrolito: gotas en todas direcciones que caen
+    later(D * 0.65, () => {
+    const D = dl();
+    for (let k = 0; k < 24; k++) {
+      const a = Math.random() * Math.PI * 2, v = 300 + Math.random() * 700;
+      const x = ox + Math.cos(a) * 30, y = oy + 80 + Math.sin(a) * 30, r = 2 + Math.random() * 4;
+      const d = fxLayer([x - r - 2, y - r - 2, 2 * r + 4, 2 * r + 4], '', [x, y]);
+      fxEl('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(1), class: 'fx-drop' }, d);
+      d.animate([
+        { transform: 'translate(0,0)', opacity: 1, easing: 'cubic-bezier(.05,.7,.4,1)' },
+        { transform: `translate(${(Math.cos(a) * v * 0.85).toFixed(0)}px, ${(Math.sin(a) * v * 0.85).toFixed(0)}px)`, opacity: 1, offset: 0.5, easing: 'cubic-bezier(.4,0,1,1)' },
+        { transform: `translate(${(Math.cos(a) * v).toFixed(0)}px, ${(Math.sin(a) * v + 320).toFixed(0)}px)`, opacity: 0 }
+      ], { duration: (1100 + Math.random() * 500) * SLOW, delay: D + Math.random() * 60, fill: 'both' });
+    }
+    // Pocas esquirlas de cristal de acento
+    for (let k = 0; k < 8; k++) {
+      const a = (k / 8) * Math.PI * 2 + Math.random() * 0.5;
+      const cx = ox + Math.cos(a) * 60, cy = oy + Math.sin(a) * 60;
+      const e = svgShard(sliver(cx, cy, 70 + Math.random() * 60, 16 + Math.random() * 12, a), 'ice', [cx, cy]);
+      const v = 800 + Math.random() * 600;
+      const timing = { duration: 1300 * SLOW, delay: D, easing: 'cubic-bezier(.05,.75,.3,1)', fill: 'both' };
+      e.animate([{ transform: 'scale(.3)' }, { transform: `translate(${(Math.cos(a) * v).toFixed(0)}px, ${(Math.sin(a) * v + 150).toFixed(0)}px) rotate(${((Math.random() - 0.5) * 300).toFixed(0)}deg)` }], timing);
+      e.animate([{ opacity: 0 }, { opacity: 1, offset: 0.06 }, { opacity: 1, offset: 0.5 }, { opacity: 0 }], { ...timing, easing: 'linear' });
+    }
+    });
+
+    // Cada vértice estalla al recibir su ficha (sus esquirlas se crean poco antes)
+    hits.forEach(([[vx, vy], t]) => later(t - 220, () => {
+      const lag = Math.max(0, t - (performance.now() - t0));
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2 + Math.random() * 0.5;
+        const cx = vx + Math.cos(a) * 56, cy = vy + Math.sin(a) * 56;
+        const e = svgShard(sliver(cx, cy, 44 + Math.random() * 40, 10 + Math.random() * 8, a), 'ice', [cx, cy]);
+        const v = 110 + Math.random() * 130;
+        const timing = { duration: 800 * SLOW, delay: Math.max(0, lag - 40), easing: 'cubic-bezier(.08,.75,.3,1)', fill: 'both' };
+        e.animate([{ transform: 'scale(.3)' }, { transform: `translate(${(Math.cos(a) * v).toFixed(0)}px, ${(Math.sin(a) * v + 30).toFixed(0)}px) rotate(${((Math.random() - 0.5) * 200).toFixed(0)}deg)` }], timing);
+        e.animate([{ opacity: 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: 0.45 }, { opacity: 0 }], { ...timing, easing: 'linear' });
+      }
+    }));
+    last = Math.max(D + 1900 * SLOW, ...hits.map(h => h[1] + 800 * SLOW));
+    setTimeout(() => stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()), last + 80);
+  }
+
+  /* La teoría se rompe (14 → 15): en el Caso 4 las barreras no estaban. Los escudos
+     estallan en esquirlas, los vértices vuelven a rojo y el triángulo se cierra; luego la
+     slide colapsa en una línea —el triángulo se estira hasta ser la línea de tiempo— y
+     la 15 se abre desde esa línea con dos filos de luz que se separan. */
+  let collapseT = 0;
+  function collapse(tri, tl, back) {
+    const y = window.GEO.tl.y;
+    const fail = back ? 0 : 380 * SLOW, shut = 420 * SLOW, open = 820 * SLOW;
+    const oStart = fail + shut * 0.8;
+    const gone = back ? tl : tri, come = back ? tri : tl;
+    if (!back) {
+      // 1 · Fallan las barreras
+      tri.classList.add('breaking');
+      const boom = tri.querySelector('.boom-t');
+      if (boom) window.Scramble?.(boom, 'CASO 4 · FALLARON', '', 340 * SLOW);
+      window.Thread?.to('tri', { dur: 320 });
+      const T = window.GEO.tri;
+      const c = [(T.o[0] + T.h[0] + T.ig[0]) / 3, (T.o[1] + T.h[1] + T.ig[1]) / 3];
+      [T.h, T.ig].forEach(([vx, vy], j) => {
+        const a0 = Math.atan2(c[1] - vy, c[0] - vx);
+        for (let k = 0; k < 7; k++) {
+          const a = a0 + (k - 3) * 0.3;
+          const cx = vx + Math.cos(a) * 84, cy = vy + Math.sin(a) * 84;
+          const e = svgShard(sliver(cx, cy, 34 + Math.random() * 26, 9 + Math.random() * 6, a + Math.PI / 2), 'ice', [cx, cy]);
+          const v = 90 + Math.random() * 160;
+          const timing = { duration: 700 * SLOW, delay: j * 90 + Math.random() * 60, easing: 'cubic-bezier(.08,.75,.3,1)', fill: 'both' };
+          e.animate([{ transform: 'none' }, { transform: `translate(${(Math.cos(a) * v).toFixed(0)}px, ${(Math.sin(a) * v + 60).toFixed(0)}px) rotate(${((Math.random() - 0.5) * 260).toFixed(0)}deg)` }], timing);
+          e.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { ...timing, easing: 'linear' });
+        }
+        setTimeout(() => window.Ambient?.burst(...toWin(vx, vy), [255, 77, 109], 18), j * 90);
+      });
+      // El triángulo se aplasta junto con la slide hasta ser la línea de tiempo
+      collapseT = setTimeout(() => window.Thread?.to('tl', { dur: shut }), fail);
+    }
+    // 2 · Colapso sobre la línea (solo transformación y opacidad: la GPU compone)
+    gone.style.transformOrigin = `960px ${y}px`;
+    gone.animate([
+      { transform: 'none', opacity: 1, easing: 'cubic-bezier(.7,0,.9,.4)' },
+      { transform: 'scale(1.03, .006)', opacity: 1, offset: 0.85 },
+      { transform: 'scale(1.1, .002)', opacity: 0 }
+    ], { duration: shut, delay: fail, fill: 'forwards' });
+    setTimeout(() => window.Ambient?.burst(...toWin(960, y), back ? [255, 138, 160] : [255, 77, 109], 40), fail + shut * 0.8);
+    // 3 · Apertura desde la línea con dos filos que se separan
+    come.style.transformOrigin = `960px ${y}px`;
+    come.animate([
+      { transform: 'scale(1.06, .004)', opacity: 0 },
+      { transform: 'scale(1.04, .02)', opacity: 1, offset: 0.08 },
+      { transform: 'none', opacity: 1 }
+    ], { duration: open, delay: oStart, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+    edgeLight([`M-40 ${y} L1960 ${y} M-40 ${y} L1960 ${y}`, `M-40 -6 L1960 -6 M-40 ${H + 6} L1960 ${H + 6}`],
+      { duration: open, delay: oStart, easing: 'cubic-bezier(.16,1,.3,1)' }, 'h', false);
+    const total = oStart + open;
+    setTimeout(() => {
+      tri.classList.remove('breaking');
+      [gone, come].forEach(e => { if (e.classList.contains('is-active')) e.style.transformOrigin = ''; });
+      stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove());
+    }, total + 80);
+    leave(gone, fail + shut, true);
   }
 
   function leave(el, dur, custom) {
@@ -802,6 +1146,8 @@
   addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const k = e.key;
+    // Una escena puede consumir teclas propias (p. ej. la reconstrucción R6)
+    if (!document.querySelector('.overlay.open') && scene(slides[idx]).key?.(slides[idx], k)) { e.preventDefault(); return; }
     if (k === 'Escape') { closeOverlays(); drawer.classList.remove('open'); return; }
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) {
       if (k === 'Enter' && document.activeElement?.closest?.('.hit, button')) { document.activeElement.dispatchEvent(new MouseEvent('click', { bubbles: true })); e.preventDefault(); return; }

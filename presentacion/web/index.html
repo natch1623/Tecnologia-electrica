@@ -298,7 +298,7 @@
   </section>
 
   <!-- ============ 12 · Banco de baterías · escena ============ -->
-  <section class="slide" id="s12" data-mood="dc" data-tx="sweep" data-thread="string" data-anchor="1100 480" data-zoom="897 372"
+  <section class="slide" id="s12" data-mood="dc" data-tx="sweep" data-thread="string" data-anchor="1100 480" data-zoom="868 330 58 84"
     data-title="Caso 4: la instalación" data-who="I3" data-time="1:00" data-ref="Caso 4 · 205.2">
     <p class="kicker rv">Caso 4 · Centro de Datos Alfa · <span class="c-danger">escenario hipotético</span></p>
     <h2 class="title rv">La instalación</h2>
@@ -327,29 +327,31 @@
   </section>
 
   <!-- ============ 13 · Corte de celda ============ -->
-  <section class="slide" id="s13" data-mood="h2" data-tx="absorb" data-thread="gas" data-anchor="470 600"
+  <section class="slide" id="s13" data-mood="h2" data-tx="absorb" data-focus="232 372 456 528" data-thread="gas" data-anchor="470 600"
     data-title="El otro peligro: electrolito e hidrógeno" data-who="I4" data-time="2:00" data-ref="320.3(B) · 320.3(D)">
     <svg class="scene" viewBox="0 0 1920 1080" aria-label="Corte de una celda ventilada de plomo-ácido"></svg>
     <div class="a" style="left:980px; top:150px; width:790px">
       <p class="kicker rv">Peligro químico</p>
       <h2 class="title rv">El otro peligro: <em>electrolito</em> e <em>hidrógeno</em></h2>
-      <p class="body rv"><b>320.3(B)(1):</b> si se maneja electrolito, gafas <b>y</b> protector facial (eléctrico y químico), guantes y delantal, y <b>lavaojos dentro del área</b>. Leer densidad con hidrómetro de bulbo cuenta como manejo.</p>
-      <div class="facts">
-        <div class="rv"><b>4 %</b><span>Límite inferior de inflamabilidad del H₂</span></div>
-        <div class="rv"><b>&lt; 1 %</b><span>Objetivo de ventilación (≈ 25 % del LII)</span></div>
-        <div class="rv"><b>0,02 mJ</b><span>Energía mínima de ignición</span></div>
-      </div>
-      <p class="teaser rv" style="font-size:28px; margin-top:44px">Carga de igualación → más gas.</p>
+    </div>
+    <div class="cap a rv" style="left:980px; top:432px; width:790px">
+      <p data-only="0">En sobrecarga, y sobre todo en una <b>carga de igualación</b>, parte de la corriente ya no carga las placas: <b>descompone el agua</b>. El gas se junta sobre el electrolito.</p>
+      <p data-only="1">Cada tapón es un <b>apagallamas</b>: una barrera porosa que deja salir el gas pero no deja entrar la llama. Una chispa afuera no alcanza la mezcla de adentro.</p>
+      <p data-only="2">El H₂ es unas <b>14 veces más liviano</b> que el aire: sube y se acumula en el techo. La ventilación lo mantiene <b>por debajo del 1 %</b>, lejos del 4 %.</p>
+    </div>
+    <div class="ppe a rv" style="left:980px; top:590px; width:790px">
+      <b>320.3(B)(1) · Si se maneja electrolito</b>
+      <p>Gafas <em>y</em> protector facial (eléctrico y químico), guantes y delantal, y <em>lavaojos dentro del área</em>. Leer densidad con hidrómetro de bulbo cuenta como manejo.</p>
     </div>
     <aside class="notes">
-      <p>Estados (→): 1) apagallamas: el gas sale, la llama no entra. 2) el H₂ sube y se acumula en el techo; por eso se ventila arriba.</p>
-      <p>Sobrecarga electroliza el agua: H₂ en la placa negativa, O₂ en la positiva. Más gas con igualación, temperatura y celdas defectuosas.</p>
-      <p>Valores de fuente externa (NFPA 1 cap. 52, IEEE/ASHRAE 1635).</p>
+      <p>Estados (→): 0) electrólisis: H₂ en las placas negativas, O₂ en las positivas, 2 : 1 en volumen. 1) apagallamas: el gas sale, la llama no entra; basta 0,02 mJ. 2) el H₂ sube y se acumula en el techo; escala 0–4 %: objetivo &lt; 1 %, LII 4 %.</p>
+      <p>Placas negativas en los extremos (una más que positivas), todas bajo el electrolito, entre las marcas MÍN y MÁX. Más gas con igualación, temperatura y celdas defectuosas.</p>
+      <p>4 %, &lt; 1 % y 0,02 mJ son de fuente externa (NFPA 1 cap. 52, IEEE/ASHRAE 1635); el EPP químico es el 320.3(B)(1).</p>
     </aside>
   </section>
 
   <!-- ============ 14 · Triángulo del fuego ============ -->
-  <section class="slide" id="s14" data-mood="h2" data-tx="rise" data-thread="tri" data-anchor="540 650"
+  <section class="slide" id="s14" data-mood="h2" data-tx="converge" data-thread="tri" data-anchor="540 650"
     data-title="Barreras contra la explosión" data-who="I4" data-time="1:30" data-ref="240.1 · 320.3(C) · 320.3(D)">
     <p class="kicker rv">Triángulo del fuego aplicado al H₂</p>
     <svg class="scene" viewBox="0 0 1920 1080" aria-label="Triángulo del fuego del hidrógeno y sus barreras"></svg>
@@ -360,16 +362,16 @@
         <li class="rv" data-v="ig"><span class="n">2</span><div><h4>Apagallamas en cada celda</h4><p>Instalado, sin obstrucción, reemplazado según fabricante. Corta la <b>ignición</b> hacia el interior.</p><span class="r">320.3(D)</span></div></li>
         <li class="rv" data-v="ig"><span class="n">3</span><div><h4>Sin fuentes de ignición</h4><p>Herramientas aisladas; antichispa si la evaluación lo justifica; no fumar ni llama.</p><span class="r">320.3(C) · 320.3(A)(6)</span></div></li>
       </ul>
-      <p class="teaser rv" style="font-size:28px">El EPP <b class="c-danger">no</b> protege contra la onda de presión de una celda.</p>
+      <p class="teaser" data-at="2" style="font-size:28px">El EPP <b class="c-danger">no</b> protege contra la onda de presión.</p>
     </div>
     <aside class="notes">
-      <p>Triángulo completo = explosión posible. → la ventilación rompe el vértice del combustible. → apagallamas y control de fuentes rompen el de la ignición.</p>
+      <p>Triángulo completo = explosión posible. → la ventilación abre el triángulo en el vértice del combustible. → apagallamas y control de fuentes lo abren en el de la ignición. Cada barrera se ilumina en la lista cuando actúa; la advertencia del EPP aparece al final.</p>
       <p>El oxígeno no se puede quitar: se controla el combustible (ventilación) y la ignición (apagallamas, herramientas). Por eso el control del H₂ va en ingeniería y mantenimiento, no en EPP.</p>
     </aside>
   </section>
 
   <!-- ============ 15 · Reconstrucción forense ============ -->
-  <section class="slide" id="s15" data-mood="crisis" data-tx="scan" data-thread="tl" data-anchor="1433 600"
+  <section class="slide" id="s15" data-mood="crisis" data-tx="collapse" data-thread="tl" data-anchor="1433 600"
     data-title="Caso 4: línea de tiempo y evidencias" data-who="I4" data-time="2:30" data-ref="Caso 4 · 110.5(J)">
     <p class="kicker rv">Caso 4 · 14 de agosto de 2026 · <span class="c-danger">hipotético</span></p>
     <h2 class="title rv">Línea de tiempo <span class="thin">y evidencias</span></h2>
@@ -379,16 +381,28 @@
       <div class="rv"><b>−20 h</b><span>fin de carga de igualación</span></div>
     </div>
     <svg class="scene" viewBox="0 0 1920 1080" aria-label="Línea de tiempo de la noche del accidente"></svg>
-    <div class="boom a" data-at="1" style="left:1180px; top:300px; width:590px"><b>02:38</b>Arco ≈ 0,9 s + detonación en la celda 119</div>
-    <div class="evidence a" style="left:150px; top:800px; width:1620px">
-      <div data-at="3"><b>HERRAMIENTA</b>Matraca de acero con marcas de fusión</div>
-      <div data-at="3"><b>CABLE PUENTE</b>Aislamiento desgastado · ≈ 0 Ω al bastidor</div>
-      <div data-at="3"><b>TAPONES</b>4 no originales, 1 apagallamas obstruido</div>
-      <div data-at="3"><b>LAVAOJOS</b>Vacío y vencido</div>
-      <div data-at="3"><b>BMS</b>Alarma inhibida desde marzo</div>
+    <div class="crew a" data-only="0" style="left:1180px; top:290px; width:590px">
+      <b>Cuadrilla contratista</b>
+      <p><em>T1 · técnico:</em> 12 años en CA, <em>primer banco inundado</em>. Matraca de acero sin aislar, camisa de algodón, anillo y reloj metálico.</p>
+      <p><em>T2 · auxiliar:</em> 8 meses de experiencia.</p>
+      <p class="c-danger">Sin evaluación de riesgos · sin plan · sin permiso</p>
+    </div>
+    <div class="boom a" data-at="1" style="left:1180px; top:290px; width:590px"><b>02:38:14</b><span class="boom-d">Arco ≈ 0,9 s + detonación en la celda 119<i>matraca: borne + C-118 → larguero</i></span></div>
+    <div class="after a" data-only="2" style="left:1180px; top:756px; width:590px">
+      <b>Lo que siguió</b>
+      <p>Lavaojos <em>vacío</em>: ≈ 1 min hasta un lavamanos a 15 m. <em>T1:</em> quemaduras de 2.º grado en mano y antebrazo (peor bajo el anillo) y rostro, irritación en ambos ojos. <em>T2:</em> salpicadura leve.</p>
+    </div>
+    <p class="ev-h a" data-at="3" style="left:150px; top:748px">Evidencias · <span>✕ barrera que falló</span></p>
+    <div class="evidence a" style="left:150px; top:790px; width:1620px">
+      <div data-at="3"><b>HERRAMIENTA</b>Matraca de acero con marcas de fusión<i>herramienta aislada</i></div>
+      <div data-at="3"><b>CABLE PUENTE</b>Aislamiento desgastado · ≈ 0 Ω al bastidor<i>aislamiento</i></div>
+      <div data-at="3"><b>TAPONES</b>4 no originales, 1 apagallamas obstruido<i>apagallamas</i></div>
+      <div data-at="3"><b>LAVAOJOS</b>Vacío y vencido<i>EPP y lavaojos</i></div>
+      <div data-at="3"><b>BMS</b>Alarma inhibida desde marzo<i>alarma de falla a tierra</i></div>
     </div>
     <aside class="notes">
-      <p>Estados (→): 1) 02:38, el arco y la detonación; las condiciones latentes convergen en ese instante. 2) lo que siguió. 3) evidencias.</p>
+      <p>Estados (→): 0) condiciones latentes, la noche y la cuadrilla. 1) 02:38:14, el arco y la detonación; las condiciones latentes convergen en ese instante. 2) lo que siguió: lavaojos vacío y lesiones. 3) evidencias, cada una con la barrera que falló (se retoman en la slide 16).</p>
+      <p>Al avanzar, un cursor recorre la noche: en el estado 1 el reloj corre de 02:25 a 02:38:14 y las tres condiciones latentes llegan al arco al mismo tiempo; en el 2 sigue hasta 02:39 y 02:41; en el 3 un escaneo revela las evidencias. Conviene esperar a que el cursor llegue antes de hablar del arco.</p>
       <p>02:38:14 — reapretando C-118/119, la cabeza de la matraca toca el larguero con el dado en el borne + de la celda 118.</p>
       <p>Tapón genérico en la celda 119 → la mezcla interior se enciende, se fractura la tapa y salta electrolito.</p>
       <p><em>"Ya sabemos qué pasó. Ahora, como peritos, respondemos por qué pasó."</em></p>
@@ -564,6 +578,20 @@
     <aside class="notes"><p>Verificar numerales contra el texto oficial en inglés (el PDF es traducción automática).</p></aside>
   </section>
 
+  <!-- ============ R6 · Reconstrucción animada (adicional) ============ -->
+  <section class="slide recon" id="r6" data-backup="R6" data-mood="crisis" data-tx="dissolve" data-thread="rest" data-title="R6 · Reconstrucción animada del Caso 4" data-who="Respaldo" data-time="≈ 1:00" data-ref="Caso 4 · secuencia de hechos">
+    <p class="backup-badge a rv" style="left:150px; top:100px">✦ DIAPOSITIVA ADICIONAL · ESPACIO PAUSA · ← → SALTAR · R REPETIR</p>
+    <h2 class="title a rv" style="left:150px; top:128px; font-size:46px">La noche del 14 de agosto <span class="thin">· reconstrucción</span></h2>
+    <div class="rc-clock a" style="right:150px; top:96px"><b>01:30:00</b><span>14 AGO 2026 · ESCENARIO HIPOTÉTICO</span></div>
+    <svg class="scene rc" viewBox="0 0 1920 1080" aria-label="Reconstrucción animada de la secuencia de hechos del Caso 4"></svg>
+    <p class="rc-cap a" style="left:150px; top:884px; width:1620px"></p>
+    <aside class="notes">
+      <p>Animación de ≈ 1 min que se reproduce sola al entrar. Espacio o clic en la escena: pausa. → / ←: salta al hecho siguiente o anterior (al final, → pasa a la siguiente diapositiva). R: repetir. Clic en la línea de abajo: ir a ese momento.</p>
+      <p>Secuencia: 01:30 acceso · 01:45 sin plan · 01:55 retira las 62 cubiertas del nivel superior · 02:10 micro-óhmetro · 02:25 hidrómetro · 02:38:14 la matraca toca el larguero, lazo C-118 → 63 → cable puente → bastidor (≈ 126 V, interruptor fuera del lazo), arco ≈ 0,9 s y detonación de la 119 · 02:39 lavaojos vacío · 02:40 lavamanos a 15 m · 02:41 BMS.</p>
+      <p>Al final se marcan las cuatro barreras de mantenimiento que ya habían fallado (las mismas de la slide 16). Banco esquemático: 125 celdas, no a escala.</p>
+    </aside>
+  </section>
+
   <!-- Capas de transición -->
   <svg class="fx" id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
     <defs>
@@ -586,6 +614,9 @@
       </pattern>
       <radialGradient id="fx-bloom">
         <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".22" stop-color="#f1ecff" stop-opacity=".75"/><stop offset=".55" style="stop-color:var(--acc);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </radialGradient>
+      <radialGradient id="fx-fire">
+        <stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset=".2" stop-color="#fff1d6" stop-opacity=".95"/><stop offset=".45" stop-color="#ffb070" stop-opacity=".7"/><stop offset=".72" stop-color="#ff4d6d" stop-opacity=".28"/><stop offset="1" stop-color="#ff4d6d" stop-opacity="0"/>
       </radialGradient>
       <linearGradient id="fx-pane" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset=".45" stop-color="#c9b8ff" stop-opacity=".16"/><stop offset="1" stop-color="#8fe3ff" stop-opacity=".4"/>
@@ -667,6 +698,7 @@
 <script src="js/ambient.js"></script>
 <script src="js/thread.js"></script>
 <script src="js/scenes.js"></script>
+<script src="js/recon.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

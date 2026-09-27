@@ -70,6 +70,9 @@
     [xs + 9, tl.y + 26], [xs + 15, tl.y - 70], [xs + 22, tl.y], [tl.x1, tl.y]];
 
   const T = G.tri;
+  // Punto a distancia g de a, hacia b: el triángulo se abre alrededor del vértice que rompe cada barrera
+  const toward = (a, b, g) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]); return [a[0] + (b[0] - a[0]) * g / L, a[1] + (b[1] - a[1]) * g / L]; };
+  const gap = 112;
   const P = G.pyr;
   const pyrMid = (P.x0 + P.x1) / 2;
 
@@ -88,6 +91,8 @@
     string:  { subs: [rackString], color: '#8fe3ff', w: 2.5, o: 0.9, spark: 0.06 },
     gas:     { subs: [[[460, 330], [460, 230], [476, 170], [530, 142], [600, 136], [880, 136]]], color: '#8fe3ff', w: 2, o: 0.7, spark: 0.12 },
     tri:     { subs: [[T.o, T.h, T.ig, T.o]], color: '#ff4d6d', w: 3, o: 1, spark: 0.06 },
+    triH:    { subs: [[T.o, toward(T.h, T.o, gap)], [toward(T.h, T.ig, gap), T.ig, T.o]], color: '#ff8aa0', w: 3, o: 1, spark: 0.05 },
+    triHI:   { subs: [[T.o, toward(T.h, T.o, gap)], [toward(T.h, T.ig, gap), toward(T.ig, T.h, gap)], [toward(T.ig, T.o, gap), T.o]], color: '#5ef0c8', w: 2.5, o: 0.9 },
     tl:      { subs: [tlFlat], color: '#c9b8ff', w: 2, o: 0.9 },
     tlSpike: { subs: [tlSpike], color: '#ff4d6d', w: 2.5, o: 1 },
     vector:  { subs: [line(150, G.bar.y, 1770, G.bar.y)], color: '#ff4d6d', w: 2, o: 0.3 },

@@ -111,6 +111,25 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 .fx path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 /* Capas individuales de los efectos de ruptura (se animan enteras, en la GPU) */
 .fxl { position: absolute; overflow: visible; will-change: transform, opacity; }
+/* La batería estalla (13 → 14): piezas de la celda, fuego, onda y electrolito */
+.fx .fx-case { fill: rgba(30, 24, 62, 0.9); stroke: rgba(201, 184, 255, 0.85); stroke-width: 2; }
+.fx .fx-cap { fill: rgba(94, 240, 200, 0.2); stroke: #5ef0c8; stroke-width: 2; }
+.fx .fx-post { fill: rgba(236, 233, 247, 0.6); }
+.fx .fx-plate-n { fill: rgba(143, 227, 255, 0.55); }
+.fx .fx-plate-p { fill: rgba(236, 233, 247, 0.45); }
+.fx .fx-fire { fill: url(#fx-fire); }
+.fx .fx-shock { fill: none; stroke: #ffe3c8; stroke-width: 5; stroke-opacity: 0.8; }
+.fx .fx-crack { fill: none; stroke: #fff4e6; stroke-width: 2.5; stroke-dasharray: 1; stroke-linejoin: bevel; }
+.fx .fx-drop { fill: rgba(143, 227, 255, 0.85); }
+/* Convergencia 13 → 14: fichas que vuelan de la celda a los vértices del triángulo */
+.fx .fx-tok-c { fill: var(--void); stroke-width: 2.5; filter: drop-shadow(0 0 12px var(--acc)); }
+.fx .fx-tok-t { fill: var(--text); font: 500 30px var(--f-mono); }
+/* Inmersión 12 → 13: velo con hueco en la celda 119, mira y burbujas (viajan con la cámara) */
+.dive-fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; z-index: 5; }
+.dive-fx .dive-veil { fill: rgba(7, 6, 15, 0.72); fill-rule: evenodd; }
+.dive-fx .dive-ret path { fill: none; stroke: var(--ice); stroke-width: 2.5; stroke-linecap: square; filter: drop-shadow(0 0 6px var(--ice)); }
+.dive-fx .dive-t { fill: var(--ice); font: 500 13px var(--f-mono); letter-spacing: 0.24em; }
+.dive-fx .dive-b { fill: none; stroke: var(--ice); stroke-width: 0.6; transform-box: fill-box; }
 .fx .fx-halo { stroke-width: 28; opacity: 0.3; filter: blur(14px); }
 .fx .fx-glow { stroke-width: 6; opacity: 0.75; filter: blur(3px); }
 .fx .fx-core { stroke-width: 1.6; }
@@ -368,7 +387,7 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .scene .over { fill: rgba(255, 77, 109, 0.1); }
 .scene .limit { stroke: var(--ice); stroke-width: 2; stroke-dasharray: 10 8; }
 .scene .limit-l { fill: var(--ice); font-size: 18px; letter-spacing: 0.1em; }
-.scene .col { stroke-width: 10; stroke-linecap: butt; stroke: var(--ice); filter: drop-shadow(0 0 12px currentColor); }
+.scene .col { stroke-width: 10; stroke-linecap: butt; stroke: var(--ice); filter: drop-shadow(0 0 12px var(--acc)); }
 .scene .col.ok { stroke: var(--control); }
 .scene .leader { stroke: var(--control); stroke-dasharray: 3 6; stroke-opacity: 0.6; }
 .scene .pt { fill: var(--star); stroke: var(--void); stroke-width: 3; filter: drop-shadow(0 0 10px var(--ice)); }
@@ -519,7 +538,7 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .scene .flame { fill: rgba(255, 138, 100, 0.85); filter: drop-shadow(0 0 10px var(--danger)); animation: flame 2.4s var(--ease-inout) infinite; }
 @keyframes flame { 0% { transform: translateY(-50px); opacity: 0; } 30% { opacity: 1; } 60% { transform: translateY(40px); opacity: 1; } 75%, 100% { transform: translateY(40px) scale(0.2); opacity: 0; } }
 .scene .flame { transform-box: fill-box; transform-origin: center bottom; }
-.scene .block { stroke: var(--control); stroke-width: 3; }
+.scene .block { stroke: var(--control); stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 0 8px var(--control)); }
 .scene .ctrl-l { fill: var(--control); font-size: 18px; letter-spacing: 0.1em; }
 .scene .h2-band { fill: rgba(143, 227, 255, 0.1); }
 .scene .ceil { stroke: var(--muted); stroke-dasharray: 3 6; }
@@ -527,10 +546,25 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .scene .fan-b { stroke: var(--ice); stroke-width: 2.5; stroke-linecap: round; }
 .scene .fan { transform-box: fill-box; transform-origin: center; }
 #s13[data-s="2"] .fan-b { transform-box: fill-box; transform-origin: center; animation: spin 1.4s linear infinite; }
-.facts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); margin-top: 36px; }
-.facts div { padding: 22px 26px 0 0; }
-.facts b { display: block; font: 200 60px/1 var(--f-sans); color: var(--ice); white-space: nowrap; }
-.facts span { font: 300 20px/1.35 var(--f-sans); color: var(--muted); }
+.scene .lid { fill: rgba(201, 184, 255, 0.08); stroke: rgba(201, 184, 255, 0.6); stroke-width: 2; }
+.scene .lug.pos, .scene .strap.pos { fill: rgba(236, 233, 247, 0.5); }
+.scene .strap { stroke: var(--void); stroke-width: 3; paint-order: stroke; }
+.scene .lug.neg, .scene .strap.neg { fill: rgba(143, 227, 255, 0.5); }
+.scene .sep { stroke: rgba(236, 233, 247, 0.16); stroke-width: 1; stroke-dasharray: 2 7; }
+.scene .pl-s { fill: var(--faint); font-size: 18px; }
+.scene .lvl { stroke: var(--muted); stroke-width: 1.5; }
+.scene .lead { stroke: var(--line-strong); stroke-width: 1; }
+.scene .rx { fill: var(--ice); font-size: 22px; }
+.scene .h2-dot { fill: var(--ice); opacity: 0.7; animation: drift var(--t) var(--ease-inout) infinite alternate; animation-delay: var(--dl); }
+@keyframes drift { to { transform: translate(14px, -4px); opacity: 0.25; } }
+.scene .sc-base { stroke: var(--line-strong); stroke-width: 2; }
+.scene .sc-ok { stroke: var(--control); stroke-width: 6; filter: drop-shadow(0 0 8px var(--control)); }
+.scene .sc-bad { stroke: var(--danger); stroke-width: 6; filter: drop-shadow(0 0 8px var(--danger)); }
+.scene .bad-l { fill: var(--danger); font-size: 18px; letter-spacing: 0.1em; }
+.ppe { border-top: 1px solid var(--line); padding-top: 20px; }
+.ppe b { display: block; font: 500 16px/1 var(--f-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--violet-hi); margin-bottom: 12px; }
+.ppe p { margin: 0; font: 300 22px/1.45 var(--f-sans); color: var(--muted); }
+.ppe em { font-style: normal; color: var(--text); font-weight: 500; }
 
 /* ---------- 14 · Triángulo ---------- */
 .scene .vtx-c { fill: var(--void); stroke: var(--danger); stroke-width: 2; transition: stroke 0.6s, fill 0.6s; }
@@ -538,8 +572,30 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .scene .vtx.o .vtx-c { stroke: var(--muted); }
 .scene .vtx.hl .vtx-c { fill: rgba(143, 227, 255, 0.12); }
 #s14[data-s="1"] .vtx.h .vtx-c, #s14[data-s="2"] .vtx.h .vtx-c, #s14[data-s="2"] .vtx.ig .vtx-c { stroke: var(--control); fill: rgba(94, 240, 200, 0.1); }
+/* 14 → 15: las barreras fallan (escudos fuera, vértices y relleno en rojo) */
+#s14.breaking .shield, #s14.breaking .vent, #s14.breaking .sparks { opacity: 0 !important; transition: opacity 0.12s !important; }
+#s14.breaking .vtx.h .vtx-c, #s14.breaking .vtx.ig .vtx-c { stroke: var(--danger) !important; fill: rgba(255, 77, 109, 0.14) !important; transition: stroke 0.2s, fill 0.2s !important; }
+#s14.breaking .tri-fill { fill: rgba(255, 77, 109, 0.16) !important; transition: fill 0.25s !important; }
+#s14.breaking .barrier-list li::before { background: var(--danger); box-shadow: 0 0 12px var(--danger); transform: scaleX(0) !important; transition: transform 0.35s var(--ease-in, ease-in) !important; transform-origin: right; }
+/* El vértice cambia cuando el cometa llega, no antes */
+#s14[data-s="1"] .vtx.h .vtx-c, #s14[data-s="2"] .vtx.ig .vtx-c { transition: stroke 0.5s 0.62s, fill 0.5s 0.62s; }
+#s14 .teaser[data-at].on { transition: opacity 0.7s var(--ease-out) 1.1s, transform 0.9s var(--ease-out) 1.1s; }
 .scene .v-name { fill: var(--text); font-size: 20px; letter-spacing: 0.24em; }
-.scene .shield path { fill: none; stroke: var(--control); stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 10px var(--control)); }
+.scene .shield path { fill: none; stroke: var(--control); stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 10px var(--control)); stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.5s var(--ease-in, ease-in); }
+/* El escudo se traza cuando el cometa llega (retraso = viaje del cometa) */
+#s14 .shield[data-at] { transition: opacity 0.3s; }
+#s14 .shield.on path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.7s var(--ease-out) 0.6s; }
+#s14 .shield.on { transition: opacity 0.3s 0.55s; }
+.scene .tri-fill { fill: rgba(255, 77, 109, 0.08); transition: fill 1s var(--ease-out) 0.6s; }
+#s14[data-s="1"] .tri-fill { fill: rgba(255, 138, 160, 0.04); }
+#s14[data-s="2"] .tri-fill { fill: rgba(94, 240, 200, 0.06); }
+.scene .comet { fill: none; stroke: var(--control); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 0.1 1; filter: drop-shadow(0 0 8px var(--control)); }
+.scene .vtx-ring { fill: none; stroke: var(--control); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; }
+.scene .vent-f { fill: none; stroke: var(--ice); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 3 14; opacity: 0.7; animation: vent 1.6s linear infinite; animation-delay: var(--dl); }
+@keyframes vent { to { stroke-dashoffset: -34; } }
+#s14 .vent.on, #s14 .sparks.on { transition: opacity 0.8s 0.9s; }
+.scene .spk { fill: #ffb070; transform-box: fill-box; animation: spk 1.85s var(--ease-in, ease-in) infinite; animation-delay: var(--dl); }
+@keyframes spk { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: 1; } 80% { transform: translate(var(--sx), var(--sy)); opacity: 1; } 100% { transform: translate(var(--sx), var(--sy)) scale(2.5); opacity: 0; } }
 .scene .boom-t { fill: var(--danger); font-size: 22px; letter-spacing: 0.28em; }
 .scene .boom-t.warn { fill: #ff8aa0; }
 .scene .boom-t.ok { fill: var(--control); }
@@ -554,6 +610,15 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .barrier-list .r { font: 500 16px/1 var(--f-mono); color: var(--violet-hi); letter-spacing: 0.1em; }
 #s14[data-s="1"] li[data-v="h"] .n, #s14[data-s="2"] li .n { color: var(--control); }
 #s14[data-s="1"] li[data-v="h"], #s14[data-s="2"] li { border-top-color: rgba(94, 240, 200, 0.5); }
+#s14 .barrier-list li { position: relative; }
+#s14 .barrier-list li::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--control); box-shadow: 0 0 12px var(--control); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out); }
+#s14[data-s="1"] li[data-v="h"]::before, #s14[data-s="2"] li::before { transform: scaleX(1); transition: transform 0.9s var(--ease-out); }
+#s14[data-s="2"] li[data-v="h"]::before { transition: none; }
+#s14 .barrier-list .n { transition: color 0.6s, transform 0.6s var(--ease-back); }
+#s14[data-s="1"] li[data-v="h"] .n, #s14[data-s="2"] li[data-v="ig"] .n { animation: npop 0.7s var(--ease-back); }
+@keyframes npop { 40% { transform: scale(1.35); } }
+#s14 .barrier-list li > * { opacity: 0.42; transition: opacity 0.6s var(--ease-out); }
+#s14[data-s="1"] li[data-v="h"] > *, #s14[data-s="2"] li > * { opacity: 1; }
 
 /* ---------- 15 · Reconstrucción ---------- */
 .latent { display: flex; gap: 60px; }
@@ -571,10 +636,38 @@ blockquote.q cite { display: block; margin-top: 22px; font: 500 17px/1 var(--f-m
 .evidence { display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; }
 .evidence div { font: 300 21px/1.35 var(--f-sans); color: var(--muted); border-top: 1px solid rgba(143, 227, 255, 0.3); padding-top: 18px; }
 .evidence div b { display: block; font: 500 15px/1 var(--f-mono); letter-spacing: 0.2em; color: var(--ice); margin-bottom: 10px; }
-.evidence div:nth-child(2) { transition-delay: 0.08s; }
-.evidence div:nth-child(3) { transition-delay: 0.16s; }
-.evidence div:nth-child(4) { transition-delay: 0.24s; }
-.evidence div:nth-child(5) { transition-delay: 0.32s; }
+.evidence div i { display: block; margin-top: 10px; font: 500 14px/1.3 var(--f-mono); font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--danger); }
+.evidence div i::before { content: "✕ "; }
+.ev-h { font: 500 15px/1 var(--f-mono); letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); }
+.ev-h span { color: var(--danger); }
+.boom i { display: block; margin-top: 12px; font: 500 16px/1 var(--f-mono); font-style: normal; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.crew b, .after b { display: block; font: 500 16px/1 var(--f-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--violet-hi); margin-bottom: 14px; }
+.after b { color: var(--danger); }
+.crew p, .after p { margin: 0 0 8px; font: 300 22px/1.4 var(--f-sans); color: var(--muted); }
+.crew em, .after em { font-style: normal; color: var(--text); font-weight: 500; }
+.crew p.c-danger { font: 500 16px/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--danger); margin-top: 14px; }
+/* 15 · Estados: el cursor reproduce la noche; las evidencias aparecen al paso del escaneo */
+.scene .tcur { opacity: 0; transition: opacity 0.4s; }
+.scene .tcur.on { opacity: 1; }
+.scene .tcur-l { stroke: var(--danger); stroke-width: 2.5; filter: drop-shadow(0 0 8px var(--danger)); }
+.scene .tcur-d { fill: #fff; filter: drop-shadow(0 0 8px var(--danger)); }
+.scene .conv-p { fill: none; stroke: var(--danger); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 0.12 1; filter: drop-shadow(0 0 8px var(--danger)); }
+#s15 .latent b { transition: color 0.5s, text-shadow 0.5s; }
+#s15:not([data-s="0"]) .latent b { color: var(--danger); text-shadow: 0 0 18px rgba(255, 77, 109, 0.5); }
+#s15:not([data-s="0"]) .latent div:nth-child(2) b { transition-delay: 0.15s; }
+#s15:not([data-s="0"]) .latent div:nth-child(3) b { transition-delay: 0.3s; }
+#s15 .boom .boom-d { display: block; opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s; }
+#s15 .boom.on .boom-d { opacity: 1; transform: none; transition: opacity 0.6s var(--ease-out) 1.1s, transform 0.8s var(--ease-out) 1.1s; }
+#s15 .after.on { transition: opacity 0.7s var(--ease-out) 1.2s, transform 0.9s var(--ease-out) 1.2s; }
+.ev-scan { left: 150px; top: 770px; width: 3px; height: 200px; background: linear-gradient(transparent, var(--danger), transparent); box-shadow: 0 0 22px var(--danger); opacity: 0; pointer-events: none; }
+.evidence div:nth-child(1) { transition-delay: 0.1s; }
+.evidence div:nth-child(2) { transition-delay: 0.36s; }
+.evidence div:nth-child(3) { transition-delay: 0.62s; }
+.evidence div:nth-child(4) { transition-delay: 0.88s; }
+.evidence div:nth-child(5) { transition-delay: 1.14s; }
+.evidence div i { opacity: 0; transition: opacity 0.4s; }
+.evidence div.on i { opacity: 1; transition: opacity 0.5s 1.5s; }
+#s15 .ev-h.on { transition: opacity 0.5s; }
 
 /* ---------- 16 · Barreras espaciales ---------- */
 .scene .seg { stroke: var(--danger); stroke-linecap: round; filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.9)); transition: opacity 0.5s calc(var(--k) * 0.07s), stroke-width 0.5s calc(var(--k) * 0.07s); }
@@ -788,7 +881,7 @@ body.presenter .pv { display: grid; position: fixed; inset: 0; z-index: 10; grid
 .slide.is-active .scene .grow { animation: grow-in 1.3s var(--ease-out) var(--pd, 0ms) backwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero .sigil .spin, .hero .sigil .spin-r, .hero .sigil .core, .hero .sigil .sg-glow, .hero .sigil .sg-ring, .hero .sigil .sg-draw, .hero .sigil .sg-dot, .pulse, .scene .flow-ok, .scene .loop-flow, .scene .bub, .scene .gas, .scene .flame, .thread-wrap,
+  .hero .sigil .spin, .hero .sigil .spin-r, .hero .sigil .core, .hero .sigil .sg-glow, .hero .sigil .sg-ring, .hero .sigil .sg-draw, .hero .sigil .sg-dot, .pulse, .scene .flow-ok, .scene .loop-flow, .scene .bub, .scene .gas, .scene .h2-dot, .scene .vent-f, .scene .spk, .scene .flame, .thread-wrap,
   .scene .pop, .scene .rise, .scene .fade, .scene .draw, .scene .grow, .chrome .dots i, .overlay .menu-list li, .overlay .keys > * { animation: none !important; }
   .kicker::before { transform: none; transition: none; }
   .closing .idea .n, .closing .idea .t, .closing .ask, .closing .seal, .closing .seal * , .closing .idea .t * { animation: none !important; opacity: 1 !important; }
@@ -797,3 +890,70 @@ body.presenter .pv { display: grid; position: fixed; inset: 0; z-index: 10; grid
   .slide.is-active .rv { transition: opacity 0.5s var(--d, 0ms); }
   .fx, .cracks, .flash, .shards { display: none; }
 }
+
+/* ---------- R6 · Reconstrucción animada (diapositiva adicional) ---------- */
+.recon svg.rc { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.recon svg.rc text { font-family: var(--f-mono); }
+.recon .rc-world { pointer-events: none; }
+.recon .rc-world * { vector-effect: non-scaling-stroke; }
+.recon .rc-s { fill: var(--faint); font-size: 13px; letter-spacing: 0.14em; }
+.recon .rc-f { fill: var(--danger); font-size: 15px; letter-spacing: 0.1em; }
+.recon .rc-wall { fill: none; stroke: var(--line-strong); stroke-width: 1.2; }
+.recon .rc-floor { stroke: rgba(236, 233, 247, 0.35); stroke-width: 1.5; }
+.recon .rc-door { fill: none; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 6 6; }
+.recon .rc-box { fill: rgba(17, 13, 36, 0.8); stroke: var(--line-strong); stroke-width: 1.2; }
+.recon .rc-bt { fill: var(--muted); font-size: 14px; letter-spacing: 0.12em; }
+.recon .rc-bv { fill: var(--ice); font-size: 20px; }
+.recon .rc-out { fill: none; stroke: rgba(143, 227, 255, 0.35); stroke-width: 1.2; stroke-dasharray: 3 5; }
+.recon .rc-outl { fill: none; stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.recon .rc-fan { stroke: var(--violet-hi); stroke-width: 2; opacity: 0.6; }
+.recon .rc-led { fill: var(--violet-hi); opacity: 0.5; }
+.recon .rc-bms { fill: var(--muted); font-size: 12.5px; letter-spacing: 0.06em; }
+.recon .rc-bms.bad { fill: var(--danger); }
+.recon .rc-bottle { fill: rgba(143, 227, 255, 0.12); stroke: var(--ice); stroke-width: 1.3; transition: fill 0.4s, stroke 0.4s; }
+.recon .bad .rc-bottle { fill: transparent; stroke: var(--danger); }
+.recon .rc-metal { fill: rgba(143, 227, 255, 0.16); stroke: rgba(143, 227, 255, 0.5); stroke-width: 1; }
+.recon .rc-cell { fill: rgba(143, 227, 255, 0.07); stroke: rgba(143, 227, 255, 0.4); stroke-width: 1; transition: fill 0.25s, stroke 0.25s; }
+.recon .rc-cell.hot { fill: rgba(255, 77, 109, 0.32); stroke: var(--danger); }
+.recon .rc-conn { fill: rgba(236, 233, 247, 0.6); }
+.recon .rc-cover { fill: rgba(201, 184, 255, 0.55); }
+.recon .rc-cover.off { fill: rgba(201, 184, 255, 0.35); }
+.recon .rc-lid { fill: rgba(143, 227, 255, 0.4); }
+.recon .rc-plug { fill: var(--danger); }
+.recon .rc-crack { fill: none; stroke: var(--danger); stroke-width: 1.4; }
+.recon .rc-bridge { fill: none; stroke: #ffb070; stroke-width: 2; }
+.recon .rc-fault { fill: var(--danger); }
+.recon .rc-fault-h { fill: none; stroke: var(--danger); stroke-width: 1.2; }
+.recon .rc-loop { fill: none; stroke: var(--danger); stroke-width: 3.5; filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.8)); }
+.recon .rc-flow { fill: none; stroke: #fff1f3; stroke-width: 2; stroke-dasharray: 4 26; }
+.recon .rc-tag text { fill: var(--violet-hi); font-size: 13px; letter-spacing: 0.12em; }
+.recon .rc-lead { fill: none; stroke: rgba(201, 184, 255, 0.5); stroke-width: 1; stroke-dasharray: 2 4; }
+.recon .rc-fig path { fill: none; stroke: var(--text); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.recon .rc-fig circle { fill: var(--void); stroke: var(--text); stroke-width: 2.4; }
+.recon .rc-fig.t2 path, .recon .rc-fig.t2 circle { stroke: var(--ice); }
+.recon .rc-who { fill: var(--muted); font-size: 14px; letter-spacing: 0.2em; }
+.recon .rc-tool { fill: rgba(143, 227, 255, 0.15); stroke: var(--ice); stroke-width: 1.2; }
+.recon .rc-read circle { fill: none; stroke: var(--danger); stroke-width: 1.5; }
+.recon .rc-read text { fill: var(--danger); font-size: 13px; }
+.recon .rc-sock, .recon .rc-head { fill: #cfd6e6; stroke: #7d879c; stroke-width: 1; }
+.recon .rc-handle { stroke: #cfd6e6; stroke-width: 3; stroke-linecap: round; }
+.recon .rc-arc { fill: none; stroke: #fff; stroke-width: 2; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px var(--danger)); }
+.recon .rc-frag { fill: rgba(143, 227, 255, 0.7); }
+.recon .rc-drop { fill: #ffd27a; opacity: 0.9; }
+.recon .rc-mark .rc-ring { fill: none; stroke: var(--danger); stroke-width: 2; filter: drop-shadow(0 0 8px var(--danger)); }
+.recon .rc-mark text { fill: var(--text); font-size: 15px; letter-spacing: 0.1em; paint-order: stroke; stroke: var(--void); stroke-width: 5px; vector-effect: none; }
+.recon .rc-scrub .rc-sc-bg { stroke: var(--line-strong); stroke-width: 1; }
+.recon .rc-scrub .rc-sc-fg { stroke: var(--danger); stroke-width: 2; }
+.recon .rc-scrub .rc-sc-d { fill: var(--void); stroke: var(--muted); stroke-width: 1; }
+.recon .rc-scrub .rc-sc-d.bad { stroke: var(--danger); }
+.recon .rc-scrub .rc-sc-t { fill: var(--faint); font-size: 12px; letter-spacing: 0.12em; }
+.recon .rc-scrub .rc-sc-t.bad { fill: var(--danger); }
+.recon .rc-scrub .rc-sc-h { fill: var(--star); filter: drop-shadow(0 0 6px var(--danger)); }
+.recon .rc-clock { text-align: right; }
+.recon .rc-clock b { display: block; font: 500 52px/1 var(--f-mono); color: var(--text); transition: color 0.3s, text-shadow 0.3s; }
+.recon .rc-clock b.bad { color: var(--danger); text-shadow: 0 0 24px rgba(255, 77, 109, 0.6); }
+.recon .rc-clock span { display: block; margin-top: 10px; font: 500 14px/1 var(--f-mono); letter-spacing: 0.2em; color: var(--muted); }
+.recon .rc-cap { margin: 0; font: 300 23px/1.45 var(--f-sans); color: var(--muted); }
+.recon .rc-cap b { color: var(--text); font-weight: 500; }
+.recon .rc-cap .h { font: 500 17px/1 var(--f-mono); letter-spacing: 0.12em; color: var(--ice); margin-right: 16px; }
+.recon .rc-cap .h.ok { color: var(--violet-hi); }

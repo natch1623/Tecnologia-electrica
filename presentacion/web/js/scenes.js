@@ -223,6 +223,7 @@
     },
     state(slide, n, prev) {
       clearTimeout(this.hit);
+      svgOf(slide).querySelectorAll('.comet.fly').forEach(c => c.remove());
       // Mismo instante en que el pulso alcanza el eslabón 07 (0,2 s + 6 · 0,28 s)
       if (n >= 1 && prev === 0 && !reduced) this.hit = setTimeout(() => deck().burst(G.chain.xs[6], G.chain.y, [255, 77, 109], 44), 1880);
     },
@@ -432,38 +433,60 @@
     build(slide) {
       const svg = svgOf(slide);
       const C = G.cell;
-      // Techo y extracción (estado 2)
+      const W = C.x1;
+      // Techo y extracción (estado 2): el H₂ se estratifica arriba
+      const defs = el('defs', {}, svg);
+      const gr = el('linearGradient', { id: 'h2-strat', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+      el('stop', { offset: 0, 'stop-color': '#8fe3ff', 'stop-opacity': 0.3 }, gr);
+      el('stop', { offset: 1, 'stop-color': '#8fe3ff', 'stop-opacity': 0 }, gr);
       const top = el('g', { 'data-at': 2 }, svg);
-      el('rect', { x: 150, y: 104, width: 730, height: 46, class: 'h2-band' }, top);
+      el('rect', { x: 150, y: 104, width: 730, height: 120, fill: 'url(#h2-strat)' }, top);
       el('line', { x1: 150, y1: 104, x2: 880, y2: 104, class: 'ceil' }, top);
-      
+      for (let k = 0; k < 14; k++) {
+        el('circle', { cx: 170 + k * 50 + (k % 3) * 9, cy: 116 + (k % 4) * 9, r: 2, class: 'h2-dot', style: `--t:${(3 + (k % 5) * 0.6).toFixed(1)}s; --dl:${(-k * 0.4).toFixed(1)}s` }, top);
+      }
       const fan = el('g', { class: 'fan' }, top);
       el('circle', { cx: 880, cy: 136, r: 24, class: 'fan-c' }, fan);
       el('path', { d: 'M880 136 l0 -18 M880 136 l16 9 M880 136 l-16 9', class: 'fan-b' }, fan);
-      el('text', { x: 860, y: 184, class: 'tick-s', 'text-anchor': 'end' }, top, 'TECHO: EL H₂ SUBE Y SE ACUMULA · EXTRACCIÓN ALTA');
-      // Celda
-      el('rect', { x: C.x0, y: C.top, width: C.x1 - C.x0, height: C.bot - C.top, rx: 8, class: 'cellbox' }, svg);
-      el('rect', { x: C.x0 + 2, y: C.level, width: C.x1 - C.x0 - 4, height: C.bot - C.level - 2, class: 'electrolyte' }, svg);
-      el('line', { x1: C.x0 + 2, y1: C.level, x2: C.x1 - 2, y2: C.level, class: 'surface' }, svg);
+      el('text', { x: 546, y: 186, class: 'tick-s' }, top, 'EL H₂ SUBE Y SE ACUMULA EN EL TECHO');
+      el('text', { x: 546, y: 212, class: 'tick-s' }, top, '→ LA EXTRACCIÓN SE TOMA ARRIBA');
+
+      // Recipiente, tapa y electrolito
+      el('rect', { x: C.x0, y: C.top, width: W - C.x0, height: C.bot - C.top, rx: 8, class: 'cellbox' }, svg);
+      el('rect', { x: C.x0 + 2, y: C.level, width: W - C.x0 - 4, height: C.bot - C.level - 2, class: 'electrolyte' }, svg);
+      el('line', { x1: C.x0 + 2, y1: C.level, x2: W - 2, y2: C.level, class: 'surface' }, svg);
+      el('rect', { x: C.x0 - 8, y: C.top - 8, width: W - C.x0 + 16, height: 26, rx: 4, class: 'lid' }, svg);
+
+      // Placas: negativas en los extremos (una más que positivas), todas bajo el electrolito
+      const PX = j => 282 + j * 44, PT = 592, PB = 852;
+      const SP = 548, SN = 568;
       const plates = [];
-      for (let j = 0; j < 8; j++) {
-        const x = 290 + j * 52;
-        plates.push([x, j % 2 === 0]);
-        el('rect', { x, y: 440, width: 14, height: 430, rx: 2, class: j % 2 === 0 ? 'plate pos' : 'plate neg' }, svg);
+      for (let j = 0; j < 9; j++) {
+        const neg = j % 2 === 0, x = PX(j), ly = neg ? SN + 8 : SP + 8;
+        plates.push([x, neg]);
+        el('rect', { x: x + 3, y: ly, width: 6, height: PT - ly, class: neg ? 'lug neg' : 'lug pos' }, svg);
+        el('rect', { x, y: PT, width: 12, height: PB - PT, rx: 2, class: neg ? 'plate neg' : 'plate pos' }, svg);
+        el('text', { x: x + 6, y: PB + 28, class: 'pl-s', 'text-anchor': 'middle' }, svg, neg ? '−' : '+');
+        if (j < 8) el('line', { x1: x + 28, y1: PT + 4, x2: x + 28, y2: PB - 4, class: 'sep' }, svg);
       }
-      el('rect', { x: 290, y: C.top - 30, width: 20, height: 30, class: 'post' }, svg);
-      el('rect', { x: 610, y: C.top - 30, width: 20, height: 30, class: 'post' }, svg);
-      el('text', { x: 300, y: C.top - 42, class: 'pol', 'text-anchor': 'middle' }, svg, '+');
-      el('text', { x: 620, y: C.top - 42, class: 'pol', 'text-anchor': 'middle' }, svg, '−');
+      // Puentes de placas y bornes: + une las positivas, − las negativas
+      el('rect', { x: 290, y: SP, width: PX(7) + 12 - 290, height: 8, rx: 2, class: 'strap pos' }, svg);
+      el('rect', { x: PX(0), y: SN, width: PX(8) + 12 - PX(0), height: 8, rx: 2, class: 'strap neg' }, svg);
+      el('rect', { x: 290, y: 336, width: 20, height: SP - 336, class: 'post' }, svg);
+      el('rect', { x: 610, y: 336, width: 20, height: SN - 336, class: 'post' }, svg);
+      el('rect', { x: 284, y: 330, width: 32, height: 10, rx: 2, class: 'post' }, svg);
+      el('rect', { x: 604, y: 330, width: 32, height: 10, rx: 2, class: 'post' }, svg);
+      el('text', { x: 300, y: 314, class: 'pol', 'text-anchor': 'middle' }, svg, '+');
+      el('text', { x: 620, y: 314, class: 'pol', 'text-anchor': 'middle' }, svg, '−');
       el('text', { x: 460, y: 470, class: 'gas-l', 'text-anchor': 'middle' }, svg, 'H₂ + O₂');
-      el('text', { x: 460, y: 720, class: 'elec-l', 'text-anchor': 'middle' }, svg, 'H₂SO₄ diluido');
-      // Burbujas: H₂ en placas negativas, O₂ en positivas
-      plates.forEach(([x, pos]) => {
-        for (let k = 0; k < 3; k++) {
-          const y0 = 850 - Math.random() * 260;
+
+      // Burbujas: H₂ en las negativas, O₂ en las positivas (≈ 2 : 1 en volumen)
+      plates.forEach(([x, neg]) => {
+        for (let k = 0; k < (neg ? 4 : 2); k++) {
+          const y0 = PB - 10 - Math.random() * 230;
           el('circle', {
-            cx: x + 7 + (Math.random() - 0.5) * 22, cy: y0, r: pos ? 2.6 : 3.6 + Math.random() * 2,
-            class: `bub ${pos ? 'o2' : 'h2'}`,
+            cx: x + 6 + (Math.random() - 0.5) * 24, cy: y0, r: neg ? 3.4 + Math.random() * 1.6 : 2.4,
+            class: `bub ${neg ? 'h2' : 'o2'}`,
             style: `--rise:${y0 - C.level - 4}px; --t:${(2.2 + Math.random() * 2).toFixed(2)}s; --dl:${(-Math.random() * 4).toFixed(2)}s`
           }, svg);
         }
@@ -471,16 +494,48 @@
       for (let k = 0; k < 10; k++) {
         el('circle', { cx: 290 + Math.random() * 340, cy: C.level - 8, r: 2.2, class: 'gas', style: `--dx:${(460 - (290 + k * 34)).toFixed(0)}px; --t:${(2.4 + Math.random() * 1.6).toFixed(2)}s; --dl:${(-Math.random() * 3).toFixed(2)}s` }, svg);
       }
-      el('text', { x: C.x0, y: C.bot + 40, class: 'tick-s' }, svg, '○ H₂ EN LA PLACA NEGATIVA    ● O₂ EN LA POSITIVA');
+
+      // Rótulos a la derecha de la celda
+      const lead = (y, a, b, cls) => {
+        el('line', { x1: W + 2, y1: y, x2: W + 30, y2: y, class: 'lead' }, svg);
+        el('text', { x: W + 40, y: y + 5, class: 'tick-s' }, svg, a);
+        if (b) el('text', { x: W + 40, y: y + 38, class: cls }, svg, b);
+      };
+      lead(446, 'ESPACIO DE GAS');
+      el('line', { x1: W + 2, y1: 506, x2: W + 18, y2: 506, class: 'lvl' }, svg);
+      el('line', { x1: W + 2, y1: 536, x2: W + 18, y2: 536, class: 'lvl' }, svg);
+      el('text', { x: W + 26, y: 511, class: 'tick-s' }, svg, 'MÁX');
+      el('text', { x: W + 26, y: 541, class: 'tick-s' }, svg, 'MÍN');
+      lead(690, 'ELECTROLITO', 'H₂SO₄ diluido', 'elec-l');
+      lead(790, 'SOBRECARGA', '2 H₂O → 2 H₂ + O₂', 'rx');
+      el('text', { x: C.x0, y: C.bot + 44, class: 'tick-s' }, svg, '○ H₂ EN LAS NEGATIVAS · ● O₂ EN LAS POSITIVAS · 2 : 1');
+
       // Apagallamas
       const [cx0, cx1, cy0, cy1] = C.cap;
       el('rect', { x: cx0, y: cy0, width: cx1 - cx0, height: cy1 - cy0, rx: 5, class: 'arrester' }, svg);
       [cy0 + 12, cy0 + 24, cy0 + 36].forEach(y => el('line', { x1: cx0 + 8, y1: y, x2: cx1 - 8, y2: y, class: 'mesh' }, svg));
       const fl = el('g', { 'data-at': 1 }, svg);
       el('path', { d: 'M460 250 c -14 -16 -4 -30 0 -44 c 4 14 14 26 0 44 z', class: 'flame' }, fl);
-      el('path', { d: `M${cx0 - 16} ${cy0 - 12} l22 0 M${cx1 - 6} ${cy0 - 12} l22 0`, class: 'block' }, fl);
+      el('path', { d: `M${cx0 - 10} ${cy0 - 9} L${cx1 + 10} ${cy0 - 9}`, class: 'block' }, fl);
       el('text', { x: 520, y: 262, class: 'ctrl-l' }, fl, 'APAGALLAMAS · 320.3(D)');
       el('text', { x: 520, y: 290, class: 'tick-s' }, fl, 'EL GAS SALE · LA LLAMA NO ENTRA');
+      el('text', { x: 436, y: 232, class: 'f-l', 'text-anchor': 'end' }, fl, 'chispa externa');
+      el('text', { x: 436, y: 258, class: 'tick-s', 'text-anchor': 'end' }, fl, 'BASTA 0,02 mJ');
+
+      // Escala de concentración de H₂ en el aire (estado 2)
+      const sx = p => 980 + p * 170, sy = 880;
+      const sc = el('g', { 'data-at': 2 }, svg);
+      el('text', { x: 980, y: 812, class: 'tick-s' }, sc, 'H₂ EN EL AIRE · % EN VOLUMEN');
+      el('line', { x1: sx(0), y1: sy, x2: 1770, y2: sy, class: 'sc-base' }, sc);
+      el('line', { x1: sx(0), y1: sy, x2: sx(1), y2: sy, class: 'sc-ok' }, sc);
+      el('line', { x1: sx(4), y1: sy, x2: 1770, y2: sy, class: 'sc-bad' }, sc);
+      for (let p = 0; p <= 4; p++) {
+        el('line', { x1: sx(p), y1: sy - 10, x2: sx(p), y2: sy + 10, class: 'sc-base' }, sc);
+        el('text', { x: sx(p), y: sy + 38, class: p === 4 ? 'bad-l' : p === 1 ? 'ctrl-l' : 'tick-s', 'text-anchor': p ? 'middle' : 'start' }, sc, p ? `${p} %` : '0');
+      }
+      el('text', { x: sx(0.5), y: sy - 22, class: 'ctrl-l', 'text-anchor': 'middle' }, sc, 'OBJETIVO < 1 %');
+      el('text', { x: sx(1), y: sy + 66, class: 'tick-s', 'text-anchor': 'middle' }, sc, '≈ 25 % DEL LII');
+      el('text', { x: 1770, y: sy - 22, class: 'bad-l', 'text-anchor': 'end' }, sc, 'LII · INFLAMABLE');
     },
     state(slide, n) {
       window.Thread.style({ o: n >= 2 ? 1 : 0.7 });
@@ -488,12 +543,60 @@
   };
 
   /* ---------- 14 · Triángulo del fuego ---------- */
+  // Anillo que late en un vértice cuando su barrera lo alcanza
+  function ring(svg, [x, y]) {
+    if (reduced) return;
+    const c = el('circle', { cx: x, cy: y, r: 52, class: 'vtx-ring' }, svg);
+    c.animate([{ transform: 'scale(1)', opacity: 0.9 }, { transform: 'scale(2.4)', opacity: 0 }], { duration: 900, easing: 'cubic-bezier(.1,.7,.3,1)' }).onfinish = () => c.remove();
+  }
+  // Texto que se descifra: las letras pasan por glifos al azar hasta asentarse
+  function scramble(t, target, cls, dur) {
+    cancelAnimationFrame(t.__raf);
+    clearTimeout(t.__end);
+    t.setAttribute('class', `boom-t ${cls}`.trim());
+    if (!dur) { t.textContent = target; return; }
+    // Si los cuadros se detienen (pestaña oculta), el texto igual queda correcto
+    t.__end = setTimeout(() => { cancelAnimationFrame(t.__raf); t.textContent = target; }, dur + 50);
+    const from = t.textContent, G = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789·/%';
+    const L = Math.max(from.length, target.length), t0 = performance.now();
+    const step = now => {
+      const p = Math.min(1, (now - t0) / dur);
+      let out = '';
+      for (let i = 0; i < L; i++) {
+        const done = p > (i / L) * 0.7 + 0.3;
+        const ch = target[i] ?? '';
+        out += done ? ch : ch === ' ' ? ' ' : G[(Math.random() * G.length) | 0];
+      }
+      t.textContent = out.trimEnd();
+      if (p < 1) t.__raf = requestAnimationFrame(step);
+    };
+    t.__raf = requestAnimationFrame(step);
+  }
+
+  window.Scramble = scramble;
+
   S.s14 = {
     states: 2,
     build(slide) {
       const svg = svgOf(slide);
       const T = G.tri;
       const cx = (T.o[0] + T.h[0] + T.ig[0]) / 3, cy = (T.o[1] + T.h[1] + T.ig[1]) / 3;
+      // Interior del triángulo: carmesí mientras está cerrado, verde cuando las barreras lo abren
+      el('path', { d: `M${T.o[0]} ${T.o[1]} L${T.h[0]} ${T.h[1]} L${T.ig[0]} ${T.ig[1]} Z`, class: 'tri-fill' }, svg);
+      // 1 · La ventilación arrastra el H₂ fuera del vértice, hacia la extracción
+      const vent = el('g', { class: 'vent', 'data-at': 1 }, svg);
+      [[-70, -30], [-40, -60], [-90, 10]].forEach(([dx, dy], i) => {
+        const x0 = T.h[0] + 40 + dx * 0.2, y0 = T.h[1] - 40 + dy * 0.2;
+        el('path', { d: `M${x0} ${y0} C ${x0 + dx} ${y0 - 60 + dy}, ${x0 + dx * 1.6} ${y0 - 170 + dy}, ${x0 + dx * 1.2} ${y0 - 280 + dy}`, class: 'vent-f', style: `--dl:${-i * 0.5}s` }, vent);
+      });
+      el('text', { x: T.h[0] - 30, y: T.h[1] - 330, class: 'ctrl-l' }, vent, '↑ EXTRACCIÓN');
+      // 2 · Chispas que buscan la mezcla y mueren contra el escudo de la ignición
+      const sparks = el('g', { class: 'sparks', 'data-at': 2 }, svg);
+      for (let k = 0; k < 5; k++) {
+        // Salen de la ignición hacia la mezcla (centro) y mueren contra el escudo
+        const a = Math.atan2(cy - T.ig[1], cx - T.ig[0]) + (k - 2) * 0.22;
+        el('circle', { cx: (T.ig[0] + Math.cos(a) * 40).toFixed(1), cy: (T.ig[1] + Math.sin(a) * 40).toFixed(1), r: 3, class: 'spk', style: `--sx:${(Math.cos(a) * 42).toFixed(0)}px; --sy:${(Math.sin(a) * 42).toFixed(0)}px; --dl:${(-k * 0.37).toFixed(2)}s` }, sparks);
+      }
       const node = (p, key, txt, delay) => {
         const g = el('g', { class: `vtx ${key} pop`, 'data-v': key, style: pd(delay) }, svg);
         el('circle', { cx: p[0], cy: p[1], r: 52, class: 'vtx-c' }, g);
@@ -513,14 +616,16 @@
         const a = Math.atan2(cy - p[1], cx - p[0]);
         const r = 84, s = 0.95;
         const g = el('g', { class: 'shield', 'data-at': at }, svg);
-        el('path', { d: `M${p[0] + r * Math.cos(a - s)} ${p[1] + r * Math.sin(a - s)} A${r} ${r} 0 0 1 ${p[0] + r * Math.cos(a + s)} ${p[1] + r * Math.sin(a + s)}` }, g);
+        el('path', { d: `M${p[0] + r * Math.cos(a - s)} ${p[1] + r * Math.sin(a - s)} A${r} ${r} 0 0 1 ${p[0] + r * Math.cos(a + s)} ${p[1] + r * Math.sin(a + s)}`, pathLength: 1 }, g);
         el('text', { x: p[0] + (r + 34) * Math.cos(a), y: p[1] + (r + 34) * Math.sin(a) + 6, class: 'ctrl-l', 'text-anchor': 'middle' }, g, label);
       };
       shield(T.h, 1, '1');
       shield(T.ig, 2, '2 · 3');
-      el('text', { x: cx, y: cy - 10, class: 'boom-t', 'text-anchor': 'middle', 'data-only': 0 }, svg, 'EXPLOSIÓN POSIBLE');
-      el('text', { x: cx, y: cy - 10, class: 'boom-t warn', 'text-anchor': 'middle', 'data-only': 1 }, svg, 'SALA CONTROLADA');
-      el('text', { x: cx, y: cy - 10, class: 'boom-t ok', 'text-anchor': 'middle', 'data-only': 2 }, svg, 'SIN EXPLOSIÓN');
+      // Un solo rótulo que se descifra hacia el estado nuevo
+      this.boom = el('text', { x: cx, y: cy - 10, class: 'boom-t', 'text-anchor': 'middle' }, svg, 'EXPLOSIÓN POSIBLE');
+      // Cometa: la barrera viaja desde su renglón de la lista hasta el vértice que controla
+      this.comet = el('path', { class: 'comet', pathLength: 1 }, svg);
+      this.cx = cx; this.cy = cy;
       const note = (n, t) => {
         const f = el('foreignObject', { x: cx - 210, y: cy + 14, width: 420, height: 120, 'data-only': n }, svg);
         const d = document.createElement('p');
@@ -536,8 +641,49 @@
         li.addEventListener('mouseleave', () => svg.querySelector(`.vtx.${li.dataset.v}`).classList.remove('hl'));
       });
     },
-    state(slide, n) {
-      window.Thread.style({ color: n >= 2 ? '#5ef0c8' : n === 1 ? '#ff8aa0' : '#ff4d6d', spark: n >= 2 ? 0 : 0.06 });
+    state(slide, n, prev) {
+      // Cada barrera viaja desde su renglón hasta su vértice y, al llegar, abre el triángulo:
+      // sin lado cerrado, no hay explosión
+      const LABEL = [['EXPLOSIÓN POSIBLE', ''], ['SALA CONTROLADA', 'warn'], ['SIN EXPLOSIÓN', 'ok']];
+      clearTimeout(this.hit);
+      if (prev === -1) {
+        if (n) window.Thread.to(['tri', 'triH', 'triHI'][n], { dur: 1300 });
+        scramble(this.boom, ...LABEL[n], 0);
+        return;
+      }
+      if (n < prev || reduced) {
+        window.Thread.to(['tri', 'triH', 'triHI'][n], { dur: 700 });
+        scramble(this.boom, ...LABEL[n], reduced ? 0 : 500);
+        return;
+      }
+      const T = G.tri;
+      const v = n === 1 ? T.h : T.ig;
+      const items = [...slide.querySelectorAll('.barrier-list li')].filter(li => (n === 1 ? li.dataset.v === 'h' : li.dataset.v === 'ig'));
+      const travel = 620;
+      items.forEach((li, i) => this.fly(slide, li, v, i * 140, travel));
+      this.hit = setTimeout(() => {
+        window.Thread.to(['tri', 'triH', 'triHI'][n], { dur: 700 });
+        deck().burst(v[0], v[1], [94, 240, 200], 30);
+        ring(svgOf(slide), v);
+        scramble(this.boom, ...LABEL[n], 650);
+      }, travel + (items.length - 1) * 140);
+    },
+    // Cometa desde el número del renglón hasta el escudo del vértice
+    fly(slide, li, v, delay, dur) {
+      const svg = svgOf(slide);
+      const k = 1920 / svg.getBoundingClientRect().width;
+      const r0 = svg.getBoundingClientRect(), r1 = li.querySelector('.n').getBoundingClientRect();
+      const x0 = (r1.left - r0.left) * k - 14, y0 = (r1.top + r1.height / 2 - r0.top) * k;
+      const a = Math.atan2(this.cy - v[1], this.cx - v[0]);
+      const x1 = v[0] + 84 * Math.cos(a), y1 = v[1] + 84 * Math.sin(a);
+      const c = this.comet.cloneNode();
+      c.classList.add('fly');
+      setTimeout(() => c.remove(), delay + dur + 100);
+      // Rodea el triángulo por debajo para no cruzar el rótulo central
+      c.setAttribute('d', `M${x0} ${y0} C ${x0 - 120} ${y0 + 360}, ${x1 + (x0 > x1 ? 420 : -420) * (v === G.tri.ig ? 0.3 : 1)} ${y1 + 190}, ${x1} ${y1}`);
+      svg.appendChild(c);
+      c.animate([{ strokeDashoffset: 0.12, opacity: 0 }, { opacity: 1, offset: 0.15 }, { strokeDashoffset: -0.9, opacity: 1, offset: 0.92 }, { strokeDashoffset: -1, opacity: 0 }],
+        { duration: dur, delay, easing: 'cubic-bezier(.55,0,.35,1)', fill: 'both' }).onfinish = () => c.remove();
     }
   };
 
@@ -574,13 +720,88 @@
       // Condiciones latentes que convergen en 02:38
       const conv = el('g', { class: 'conv', 'data-at': 1 }, svg);
       const sx = T.x(68);
-      [250, 560, 870].forEach(x => el('path', { d: `M${x} 404 C ${x} 520, ${sx - 200} ${T.y - 150}, ${sx - 4} ${T.y - 120}` }, conv));
+      this.convD = [250, 560, 870].map(x => `M${x} 404 C ${x} 520, ${sx - 200} ${T.y - 150}, ${sx - 4} ${T.y - 120}`);
+      this.convD.forEach(d => el('path', { d }, conv));
+      // Cursor de tiempo: reproduce la noche sobre la línea
+      this.cursor = el('g', { class: 'tcur' }, svg);
+      el('line', { x1: 0, y1: T.y - 34, x2: 0, y2: T.y + 34, class: 'tcur-l' }, this.cursor);
+      el('circle', { cx: 0, cy: T.y, r: 5, class: 'tcur-d' }, this.cursor);
+      // Eventos de "lo que siguió": aparecen cuando el cursor pasa por ellos
+      slide.querySelectorAll('.ev[data-at="2"]').forEach((e, i) => { e.style.transitionDelay = `${0.3 + i * 0.45}s`; });
+      svg.querySelectorAll('g[data-at="2"]').forEach((g, i) => { g.style.transitionDelay = `${0.3 + i * 0.45}s`; });
+      // El rombo del arco aparece cuando el cursor llega a 02:38, no antes
+      svg.querySelector('.dm.bad').parentNode.style.transitionDelay = '1.05s';
+      // Línea de escaneo de las evidencias
+      this.scan = document.createElement('div');
+      this.scan.className = 'ev-scan a';
+      slide.appendChild(this.scan);
+    },
+    // Posición del cursor en cada estado (minutos desde 01:30)
+    at(n) { return n === 1 ? 68 : n === 2 ? 71 : null; },
+    place(n) {
+      const m = this.at(n);
+      this.cursor.getAnimations().forEach(a => a.cancel());
+      this.cursor.classList.toggle('on', m != null);
+      if (m != null) this.cursor.style.transform = `translateX(${G.tl.x(m)}px)`;
+    },
+    clock(slide, from, to, dur) {
+      const b = slide.querySelector('.boom b');
+      const fmt = t => [Math.floor(t / 3600), Math.floor(t / 60) % 60, t % 60].map(v => String(v).padStart(2, '0')).join(':');
+      cancelAnimationFrame(this.raf); clearTimeout(this.clockEnd);
+      if (!dur) { b.textContent = fmt(to); return; }
+      const t0 = performance.now();
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        b.textContent = fmt(Math.round(from + (to - from) * e));
+        if (p < 1) this.raf = requestAnimationFrame(step);
+      };
+      this.raf = requestAnimationFrame(step);
+      this.clockEnd = setTimeout(() => { cancelAnimationFrame(this.raf); b.textContent = fmt(to); }, dur + 60);
     },
     state(slide, n, prev) {
-      window.Thread.to(n >= 1 ? 'tlSpike' : 'tl', { dur: n >= 1 ? 600 : 900 });
-      if (n >= 1 && prev < 1) {
-        deck().flash();
-        deck().burst(G.tl.x(68), G.tl.y - 60, [255, 77, 109]);
+      const T = G.tl, svg = svgOf(slide);
+      clearTimeout(this.hit);
+      svg.querySelectorAll('.conv-p').forEach(c => c.remove());
+      const fwd = prev >= 0 && n === prev + 1 && !reduced;
+      // Si se avanza antes de que termine la llegada al arco, el arco queda hecho (no se pierde)
+      if (fwd && n >= 2) {
+        window.Thread.to('tlSpike', { dur: 400 });
+        this.clock(slide, 0, 2 * 3600 + 38 * 60 + 14, 0);
+      }
+      if (!fwd) {
+        // Entrar, retroceder o saltar: todo en su sitio, sin coreografía
+        window.Thread.to(n >= 1 ? 'tlSpike' : 'tl', { dur: prev === -1 ? 900 : 600 });
+        this.place(n);
+        this.clock(slide, 0, 2 * 3600 + 38 * 60 + 14, 0);
+        return;
+      }
+      if (n === 1) {
+        // La noche corre de 02:25 a 02:38:14; las condiciones latentes viajan hacia el arco
+        const travel = 1100;
+        this.cursor.classList.add('on');
+        this.cursor.animate([{ transform: `translateX(${T.x(55)}px)` }, { transform: `translateX(${T.x(68)}px)` }],
+          { duration: travel, easing: 'cubic-bezier(.5,0,.2,1)', fill: 'forwards' }).onfinish = () => this.place(1);
+        this.clock(slide, 2 * 3600 + 25 * 60, 2 * 3600 + 38 * 60 + 14, travel);
+        this.convD.forEach((d, i) => {
+          const c = el('path', { d, class: 'conv-p', pathLength: 1 }, svg);
+          c.animate([{ strokeDashoffset: 0.14, opacity: 0 }, { opacity: 1, offset: 0.1 }, { strokeDashoffset: -0.88, opacity: 1, offset: 0.93 }, { strokeDashoffset: -1, opacity: 0 }],
+            { duration: travel - i * 150, delay: i * 150, easing: 'cubic-bezier(.5,0,.4,1)', fill: 'both' });
+          setTimeout(() => c.remove(), travel + 100);
+        });
+        this.hit = setTimeout(() => {
+          window.Thread.to('tlSpike', { dur: 500 });
+          deck().flash();
+          deck().burst(T.x(68), T.y - 60, [255, 77, 109], 40);
+          slide.animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-6px, 3px)' }, { transform: 'translate(5px, -2px)' }, { transform: 'translate(-2px, 1px)' }, { transform: 'none' }], { duration: 320, composite: 'add' });
+        }, travel);
+      } else if (n === 2) {
+        this.cursor.animate([{ transform: `translateX(${T.x(68)}px)` }, { transform: `translateX(${T.x(71)}px)` }],
+          { duration: 1100, easing: 'cubic-bezier(.4,0,.3,1)', fill: 'forwards' }).onfinish = () => this.place(2);
+      } else if (n === 3) {
+        this.place(3);
+        this.scan.getAnimations().forEach(a => a.cancel());
+        this.scan.animate([{ transform: 'translateX(0)', opacity: 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: 0.9 }, { transform: 'translateX(1620px)', opacity: 0 }],
+          { duration: 1300, easing: 'cubic-bezier(.45,0,.55,1)' });
       }
     }
   };

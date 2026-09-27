@@ -61,9 +61,11 @@ Técnicamente correctos primero, animados después. Interactivos: se seleccionan
 | `expand` | Se abre desde un punto del contenido (anillo, frontera, reloj) |
 | `sweep` | Barrido por propagación (cadena causal, trayectoria) |
 | `wave` | Borde senoidal (CA/CC) |
-| `absorb` | Zoom dentro de la celda 119 (banco → corte de celda) |
+| `absorb` | Inmersión en la celda 119 (12 → 13): una mira la fija, la cámara entra hasta que la 119 cubre exactamente el recipiente del corte, este aparece dentro y se abre hasta llenar la pantalla con un contorno de luz. Al retroceder, la cámara sale (`data-zoom` en la 12, `data-focus` en la 13) |
 | `rise` | Emerge desde abajo, como el gas |
+| `converge` | La batería estalla (13 → 14): la celda se hincha y se agrieta, detona en el espacio de gas (bola de fuego, onda expansiva) y sus piezas —tapa, apagallamas, bornes, paredes, placas y gotas de electrolito— salen en todas direcciones; del centro salen H₂, O₂ e IGN, que se convierten en los vértices del triángulo. Al retroceder, los vértices regresan a la celda |
 | `scan` | Reconstrucción por franjas (forense) |
+| `collapse` | La teoría se rompe (14 → 15): los escudos estallan, el triángulo vuelve a rojo y se cierra ("CASO 4 · FALLARON"); la slide colapsa en una línea —el triángulo se estira hasta ser la línea de tiempo— y la 15 se abre desde ella con dos filos de luz. Al retroceder, la 15 colapsa y la 14 se abre |
 | `fracture` | La slide saliente se parte en fragmentos reales (con su contenido) que salen despedidos desde el punto del arco (accidente → barreras) |
 | `reconstruct` | Las franjas se reordenan (vuelve el orden) |
 | `dissolve` | Fundido sereno |
@@ -84,9 +86,11 @@ Una sola línea (`#thread`) atraviesa toda la presentación y se convierte en un
 
 01 cinemático · 02 ruta · 03 tipográfico · 04 radial · 05 barreras · 06 timeline · 07 cuantitativo · 08 cadena · 09 números gigantes · 10 ondas · 11 fronteras · 12 banco · 13 corte · 14 triángulo · 15 forense · 16 barreras espaciales · 17 jerarquía · 18 interacción · 19 minimalista.
 
+**R6 · Reconstrucción animada (adicional, después de los respaldos).** Elevación de la sala de baterías en la que se reproduce la noche del Caso 4 (≈ 1 min, sola al entrar): acceso, retiro de cubiertas, mediciones, contacto de la matraca con el larguero (la cámara entra al borne de la 118), lazo de falla, arco de ≈ 0,9 s en cámara lenta, detonación de la 119, lavaojos vacío, BMS y, al final, las cuatro barreras de mantenimiento marcadas. No modifica las 19 principales. Espacio pausa, `←`/`→` saltan entre hechos, `R` repite, clic en la línea inferior busca. Todo se calcula a partir de un tiempo `t`, así que se puede pausar y rebobinar sin perder coherencia.
+
 ## 11. Interacción
 
-Controles: `→`/Espacio/clic avanzar · `←` retroceder · `M` índice · `N` notas · `P` presentador · `F` pantalla completa · `T` reloj 30 s · `A–D` respuesta · `?`/`H` ayuda.
+Controles: `→`/Espacio/clic avanzar (en R6, la escena consume Espacio, `←`, `→` y `R`) · `←` retroceder · `M` índice · `N` notas · `P` presentador · `F` pantalla completa · `T` reloj 30 s · `A–D` respuesta · `?`/`H` ayuda.
 
 Cada slide puede tener **estados internos** (`data-s`): `→` avanza el estado antes de cambiar de slide y `←` lo retrocede. Elementos con `data-at="k"` aparecen desde el estado k; con `data-only="k"`, solo en el estado k.
 
@@ -100,6 +104,7 @@ HTML + CSS + JavaScript sin dependencias (funciona con `python -m http.server`).
 | `js/thread.js` | Geometría compartida (`GEO`) y el hilo que se transforma |
 | `js/scenes.js` | Construcción y estados de cada diagrama |
 | `js/main.js` | Navegación, estados, transiciones, cromo, notas, presentador |
+| `js/recon.js` | R6 · reconstrucción animada de los hechos del Caso 4 (diapositiva adicional) |
 
 ## 13. Principio técnico
 
