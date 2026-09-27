@@ -23,6 +23,24 @@
 
   const S = {};
 
+  /* ---------- 01 · Portada: destello cuando nace el núcleo del sigilo ---------- */
+  S.s01 = {
+    enter() {
+      clearTimeout(this.t);
+      if (!reduced) this.t = setTimeout(() => deck().burst(1440, 540, [201, 184, 255], 44), 1700);
+    },
+    leave() { clearTimeout(this.t); }
+  };
+
+  /* ---------- 19 · Cierre: el núcleo del sello nace con un destello ---------- */
+  S.s19 = {
+    enter() {
+      clearTimeout(this.t);
+      if (!reduced) this.t = setTimeout(() => deck().burst(1650, 870, [94, 240, 200], 40), 6350);
+    },
+    leave() { clearTimeout(this.t); }
+  };
+
   /* ---------- 04 · Condición normal (radial) ---------- */
   const COND = [
     ['01', 'Correctamente instalado', '110.4(D)(1)', 'Instalado según el fabricante y el código aplicable, sin modificaciones improvisadas.', 'Instalado'],
