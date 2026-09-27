@@ -117,6 +117,8 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 .fx .blade .fx-halo { stroke-width: 70; opacity: 0.4; filter: blur(24px); }
 .fx .blade .fx-glow { stroke-width: 12; opacity: 0.9; filter: blur(4px); }
 .fx .blade .fx-core { stroke-width: 3.5; }
+/* Borde de vidrio de las esquirlas del tajo */
+.fx .fx-shard { fill: rgba(201, 184, 255, 0.07); stroke: #e4dcff; stroke-width: 1.5; stroke-linejoin: round; transform-box: view-box; filter: drop-shadow(0 0 6px var(--acc)); }
 
 /* Fragmentos de la slide que estalla */
 .shards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }

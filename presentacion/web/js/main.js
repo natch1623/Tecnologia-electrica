@@ -206,6 +206,24 @@
   };
   TX.slash = TX.rift;
 
+  /* Tajo (02 → 03): geometría del corte diagonal. s recorre el corte, d es la
+     distancia perpendicular (+ hacia abajo a la derecha). */
+  const CUT = (() => {
+    const a = [-200, 960], b = [2120, 140];
+    const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const u = [(b[0] - a[0]) / L, (b[1] - a[1]) / L], n = [-u[1], u[0]];
+    const at = (s, d) => [a[0] + u[0] * s + n[0] * d, a[1] + u[1] * s + n[1] * d];
+    return { L, u, n, at, open: 1200, delay: 300, dur: 1600, easing: 'cubic-bezier(.6,0,.2,1)' };
+  })();
+  // La 03 aparece en la brecha: una banda que se abre al mismo ritmo que se separan las mitades
+  TX.cleave = () => ({
+    dur: CUT.dur, easing: CUT.easing, delay: CUT.delay,
+    frames: sample(1, p => {
+      const g = CUT.open * p, { L, at } = CUT;
+      return { next: poly([at(-2000, -g), at(L + 2000, -g), at(L + 2000, g), at(-2000, g)]) };
+    })
+  });
+
   // Franjas (forense): cada franja avanza con su propio retraso; su frente es el borde de luz
   function bands(n, ltr) {
     const h = H / n;
@@ -251,8 +269,8 @@
         { duration: 1000, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' });
       window.Ambient?.burst(...toWin(...z), [143, 227, 255], 30);
       leave(prevEl, 1000, true);
-    } else if (kind === 'fracture') {
-      const dur = shatter(prevEl, origin);
+    } else if (kind === 'fracture' || kind === 'cleave') {
+      const dur = kind === 'cleave' ? cleave(prevEl) : shatter(prevEl, origin);
       prevEl.animate([{ opacity: 0 }, { opacity: 0 }], { duration: dur, fill: 'forwards' });
       leave(prevEl, dur, true);
     } else if (kind === 'reconstruct') {
@@ -297,6 +315,110 @@
     fxG.animate([{ opacity: 0 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.72 }, { opacity: 0 }], { ...opt, easing: 'linear', fill: 'both' });
   }
 
+  // Copia de la slide recortada a un polígono (fragmento real, con su contenido)
+  function fragment(el, pts, box, [ox, oy]) {
+    const c = el.cloneNode(true);
+    c.removeAttribute('id');
+    c.classList.remove('is-active');
+    c.classList.add('is-leaving', 'shard');
+    c.style.clipPath = poly(pts);
+    c.style.transformOrigin = `${ox.toFixed(0)}px ${oy.toFixed(0)}px`;
+    box.appendChild(c);
+    return c;
+  }
+
+  /* Tajo (02 → 03): un corte diagonal de luz cruza la pantalla; la slide se parte en
+     dos mitades que se separan a lo largo del corte, esquirlas de la propia slide
+     salen despedidas del filo en la dirección del tajo y la 03 aparece en la brecha. */
+  function cleave(el) {
+    const { L, u, n, at, open, delay, dur, easing } = CUT;
+    const NS = 'http://www.w3.org/2000/svg';
+    const draw = 260, total = delay + dur;
+    const box = document.createElement('div');
+    box.className = 'shards';
+    stage.insertBefore(box, cracks);
+
+    // Mitades: se abren en perpendicular (igual que la brecha) y resbalan a lo largo del corte
+    fxG.replaceChildren();
+    fxG.setAttribute('class', '');
+    [-1, 1].forEach(side => {
+      const pivot = at(L / 2, 0);
+      const c = fragment(el, [at(-2000, 0), at(L + 2000, 0), at(L + 2000, side * 4000), at(-2000, side * 4000)], box, pivot);
+      const tx = n[0] * open * side + u[0] * 150 * side, ty = n[1] * open * side + u[1] * 150 * side;
+      const move = [{ transform: 'none' }, { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px)` }];
+      c.animate([{ transform: 'none', filter: 'brightness(1)' }, { transform: `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${side * 1.5}deg)`, filter: 'brightness(.5) blur(2px)' }],
+        { duration: dur, delay, easing, fill: 'both' });
+      c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.45, delay: delay + dur * 0.5, easing: 'ease-in', fill: 'both' });
+      // Filo luminoso de cada mitad, que viaja con ella
+      const g = document.createElementNS(NS, 'g');
+      g.dataset.cut = '';
+      fxG.appendChild(g);
+      ['fx-glow', 'fx-core'].forEach(cls => {
+        const p = document.createElementNS(NS, 'path');
+        p.setAttribute('class', `${cls} c`);
+        p.setAttribute('d', line([at(-2000, 0), at(L + 2000, 0)]));
+        g.appendChild(p);
+      });
+      g.animate(move, { duration: dur, delay, easing, fill: 'both' });
+      g.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }], { duration: dur * 0.8, delay: delay - 40, easing: 'ease-out', fill: 'both' });
+    });
+
+    // El tajo: se traza de un extremo a otro y se apaga mientras se abre la brecha
+    const blade = document.createElementNS(NS, 'g');
+    blade.setAttribute('class', 'blade');
+    blade.dataset.cut = '';
+    fxG.appendChild(blade);
+    ['fx-halo', 'fx-glow', 'fx-core'].forEach(cls => {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('class', `${cls} c`);
+      p.setAttribute('d', line([at(0, 0), at(L, 0)]));
+      p.setAttribute('pathLength', 1);
+      p.style.strokeDasharray = 1;
+      blade.appendChild(p);
+      p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: draw, easing: 'cubic-bezier(.7,0,.3,1)', fill: 'both' });
+    });
+    blade.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: delay + 600, fill: 'both' });
+
+    // Esquirlas del filo: grandes, con borde de vidrio luminoso; salen en la dirección
+    // del tajo cuando la hoja pasa por ellas. Brillo constante (sin destellos) y se
+    // desvanecen por completo antes de retirarlas, para que nada parpadee al final.
+    let last = total;
+    for (let i = 0; i < 16; i++) {
+      const s = L * (0.04 + 0.92 * (i + Math.random()) / 16), side = i % 2 ? -1 : 1;
+      const r = 90 + Math.random() * 110;
+      const [cx, cy] = at(s, side * r * 0.45);
+      const m = Math.random() < 0.5 ? 4 : 3;
+      const pts = Array.from({ length: m }, (_, j) => {
+        const a = (j / m) * Math.PI * 2 + Math.random() * 0.8, rr = r * (0.6 + Math.random() * 0.5);
+        return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr];
+      });
+      const va = 350 + Math.random() * 700, vn = side * (200 + Math.random() * 420);
+      const rot = (Math.random() - 0.5) * 240;
+      const frames = [
+        { transform: 'none', opacity: 1 },
+        { transform: `translate(${(u[0] * va + n[0] * vn).toFixed(1)}px, ${(u[1] * va + n[1] * vn + 90).toFixed(1)}px) rotate(${rot.toFixed(0)}deg) scale(.55)`, opacity: 0 }
+      ];
+      const timing = { duration: 1400 + Math.random() * 400, delay: (draw * s) / L, easing: 'cubic-bezier(.12,.7,.3,1)', fill: 'both' };
+      const c = fragment(el, pts, box, [cx, cy]);
+      c.style.filter = 'brightness(1.35) saturate(1.2)';
+      c.animate(frames, timing);
+      const edge = document.createElementNS(NS, 'polygon');
+      edge.setAttribute('points', pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' '));
+      edge.setAttribute('class', 'fx-shard');
+      edge.dataset.cut = '';
+      edge.style.transformOrigin = `${cx.toFixed(0)}px ${cy.toFixed(0)}px`;
+      fxG.appendChild(edge);
+      edge.animate(frames, timing);
+      last = Math.max(last, timing.delay + timing.duration);
+    }
+
+    for (let k = 0; k <= 6; k++) {
+      setTimeout(() => window.Ambient?.burst(...toWin(...at((L * k) / 6, 0)), k % 2 ? [143, 227, 255] : [201, 184, 255], 16), (draw * k) / 6);
+    }
+    setTimeout(() => { box.remove(); fxG.querySelectorAll('[data-cut]').forEach(e => e.remove()); }, last + 80);
+    return total;
+  }
+
   /* Estallido (15 → 16): la slide saliente se parte de verdad. Cada fragmento es una
      copia de la slide recortada a su polígono; las grietas se dibujan sobre las
      juntas y luego los fragmentos salen despedidos desde el punto del arco. */
@@ -328,13 +450,7 @@
       const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
       const dx = cx - ox, dy = cy - oy, L = Math.hypot(dx, dy) || 1;
       const push = (inner ? 820 : 520) + Math.random() * 360;
-      const c = el.cloneNode(true);
-      c.removeAttribute('id');
-      c.classList.remove('is-active');
-      c.classList.add('is-leaving', 'shard');
-      c.style.clipPath = poly(pts);
-      c.style.transformOrigin = `${cx.toFixed(0)}px ${cy.toFixed(0)}px`;
-      box.appendChild(c);
+      const c = fragment(el, pts, box, [cx, cy]);
       const rot = (Math.random() - 0.5) * (inner ? 70 : 30);
       const nx = (dx / L) * 8, ny = (dy / L) * 8;
       // Tensión (se abren las juntas) → estallido: sale rápido y frena, con algo de caída

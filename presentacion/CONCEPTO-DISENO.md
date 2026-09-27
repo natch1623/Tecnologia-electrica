@@ -57,6 +57,7 @@ Técnicamente correctos primero, animados después. Interactivos: se seleccionan
 | --- | --- |
 | `slash` | Corte de espada: inicio de bloque |
 | `rift` | Grieta diagonal |
+| `cleave` | Tajo diagonal de luz: la slide se parte en dos mitades con filo luminoso que se separan, esquirlas salen del corte y la siguiente aparece en la brecha (02 → 03) |
 | `expand` | Se abre desde un punto del contenido (anillo, frontera, reloj) |
 | `sweep` | Barrido por propagación (cadena causal, trayectoria) |
 | `wave` | Borde senoidal (CA/CC) |
