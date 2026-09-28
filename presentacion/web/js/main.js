@@ -123,6 +123,26 @@
     if (!silent) broadcast();
   }
 
+  /* ---------- Salto a una slide adicional y regreso ---------- */
+  let returnTo = null;
+  function jumpTo(id) {
+    const n = slides.findIndex(s => s.id === id);
+    if (n < 0) return;
+    returnTo = idx;
+    slides[n].querySelectorAll('[data-return]').forEach(b => { b.hidden = false; });
+    go(n);
+  }
+  function jumpBack() {
+    if (returnTo === null) return false;
+    const n = returnTo;
+    returnTo = null;
+    slides.forEach(s => s.querySelectorAll('[data-return]').forEach(b => { b.hidden = true; }));
+    go(n, { back: true });
+    return true;
+  }
+  stage.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); jumpTo(b.dataset.goto); }));
+  stage.querySelectorAll('[data-return]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); jumpBack(); }));
+
   function next() {
     const s = slides[idx];
     if (+s.dataset.s < nStates(s)) { setState(s, +s.dataset.s + 1); return; }
@@ -1164,6 +1184,7 @@
     if (window.Codex?.isOpen()) { if (Codex.key(k)) e.preventDefault(); return; }
     // Una escena puede consumir teclas propias (p. ej. la reconstrucción R6)
     if (!document.querySelector('.overlay.open') && scene(slides[idx]).key?.(slides[idx], k)) { e.preventDefault(); return; }
+    if (k === 'Escape' && !document.querySelector('.overlay.open') && !drawer.classList.contains('open') && jumpBack()) { e.preventDefault(); return; }
     if (k === 'Escape') { closeOverlays(); drawer.classList.remove('open'); return; }
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) {
       if (k === 'Enter' && document.activeElement?.closest?.('.hit, button')) { document.activeElement.dispatchEvent(new MouseEvent('click', { bubbles: true })); e.preventDefault(); return; }
