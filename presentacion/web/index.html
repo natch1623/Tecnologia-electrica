@@ -638,14 +638,14 @@
   <div class="flash" id="flash" aria-hidden="true"></div>
 
   <!-- Cromo -->
-  <div class="chrome" aria-hidden="true">
-    <svg class="ruler" viewBox="0 0 1920 1080"></svg>
-    <div class="brand"><span class="sparkle">✦</span>MÓDULO D · NFPA 70E</div>
-    <div class="ref" id="c-ref"></div>
-    <div class="who" id="c-who"></div>
-    <div class="dots" id="c-dots"></div>
-    <div class="count" id="c-count"></div>
-    <div class="progress"><i id="c-prog"></i></div>
+  <div class="chrome">
+    <svg class="ruler" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+    <div class="brand" aria-hidden="true"><span class="sparkle">✦</span>MÓDULO D · NFPA 70E</div>
+    <button class="ref" id="c-ref" type="button" title="Ver qué dicen estos artículos y tablas (L)"><span class="t"></span><span class="go" aria-hidden="true">LEER NORMA ↗</span></button>
+    <div class="who" id="c-who" aria-hidden="true"></div>
+    <div class="dots" id="c-dots" aria-hidden="true"></div>
+    <div class="count" id="c-count" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i id="c-prog"></i></div>
   </div>
 </main>
 
@@ -683,6 +683,7 @@
       <kbd>← · Retroceso</kbd><span>Retroceder un estado o una diapositiva</span>
       <kbd>Inicio · Fin</kbd><span>Primera / última</span>
       <kbd>M</kbd><span>Índice de diapositivas (incluye respaldo)</span>
+      <kbd>L · clic en la referencia</kbd><span>Lector normativo: qué dicen los artículos y tablas de esta diapositiva</span>
       <kbd>N</kbd><span>Notas del orador en esta pantalla</span>
       <kbd>P</kbd><span>Abrir vista de presentador en otra ventana (sincronizada)</span>
       <kbd>F</kbd><span>Pantalla completa</span>
@@ -693,12 +694,13 @@
   </div>
 </div>
 <div class="notes-drawer" id="drawer"><div class="meta" id="d-meta"></div><div class="txt" id="d-txt"></div></div>
-<div class="hint" id="hint">→ AVANZAR · ← RETROCEDER · M ÍNDICE · N NOTAS · P PRESENTADOR · F PANTALLA COMPLETA · ? AYUDA</div>
+<div class="hint" id="hint">→ AVANZAR · ← RETROCEDER · M ÍNDICE · L NORMA · N NOTAS · P PRESENTADOR · F PANTALLA COMPLETA · ? AYUDA</div>
 
 <script src="js/ambient.js"></script>
 <script src="js/thread.js"></script>
 <script src="js/scenes.js"></script>
 <script src="js/recon.js"></script>
+<script src="js/codex.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

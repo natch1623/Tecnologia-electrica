@@ -90,7 +90,9 @@ Una sola línea (`#thread`) atraviesa toda la presentación y se convierte en un
 
 ## 11. Interacción
 
-Controles: `→`/Espacio/clic avanzar (en R6, la escena consume Espacio, `←`, `→` y `R`) · `←` retroceder · `M` índice · `N` notas · `P` presentador · `F` pantalla completa · `T` reloj 30 s · `A–D` respuesta · `?`/`H` ayuda.
+Controles: `→`/Espacio/clic avanzar (en R6, la escena consume Espacio, `←`, `→` y `R`) · `←` retroceder · `M` índice · `N` notas · `P` presentador · `F` pantalla completa · `T` reloj 30 s · `A–D` respuesta · `L` lector normativo · `?`/`H` ayuda.
+
+**Lector normativo.** La referencia de arriba a la derecha es un botón ("LEER NORMA ↗") en las slides que citan artículos o tablas: abre una vista a pantalla completa con cada referencia de esa slide — qué dice (paráfrasis), la tabla con sus valores normativos, cómo se lee paso a paso (cada paso ilumina su columna), la idea clave y cómo aplica al Caso 4 (filas del caso marcadas; en las tablas de CC se alterna 250 V / 281 V). `↑`/`↓` cambian de referencia; "Regresar a la presentación", `Esc` o `Retroceso` vuelven a la misma slide y estado. Contenido en `js/codex.js` (`E` = entradas, `MAP` = referencias por slide).
 
 Cada slide puede tener **estados internos** (`data-s`): `→` avanza el estado antes de cambiar de slide y `←` lo retrocede. Elementos con `data-at="k"` aparecen desde el estado k; con `data-only="k"`, solo en el estado k.
 
@@ -104,6 +106,7 @@ HTML + CSS + JavaScript sin dependencias (funciona con `python -m http.server`).
 | `js/thread.js` | Geometría compartida (`GEO`) y el hilo que se transforma |
 | `js/scenes.js` | Construcción y estados de cada diagrama |
 | `js/main.js` | Navegación, estados, transiciones, cromo, notas, presentador |
+| `js/codex.js` | Lector normativo: artículos y tablas de cada slide, explicados |
 | `js/recon.js` | R6 · reconstrucción animada de los hechos del Caso 4 (diapositiva adicional) |
 
 ## 13. Principio técnico

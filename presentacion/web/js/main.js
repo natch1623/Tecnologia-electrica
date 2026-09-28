@@ -1014,7 +1014,10 @@
   function updateChrome() {
     const s = slides[idx];
     stage.classList.toggle('is-hero', idx === 0);
-    cRef.textContent = s.dataset.ref || '';
+    cRef.querySelector('.t').textContent = s.dataset.ref || '';
+    const hasCx = !!window.Codex?.has(label(s));
+    cRef.classList.toggle('has-cx', hasCx);
+    cRef.disabled = !hasCx;
     [cRef, cWho, cCount].forEach((el, i) => el.animate([{ opacity: 0, transform: i ? 'translateY(10px)' : 'translateX(12px)' }, { opacity: 1, transform: 'none' }],
       { duration: 700, delay: i * 70, easing: EXPO, fill: 'backwards' }));
     cWho.innerHTML = s.dataset.backup
@@ -1107,6 +1110,17 @@
     closeOverlays();
     go(+b.dataset.i);
   });
+  /* ---------- Lector normativo (clic en la referencia) ---------- */
+  function openCodex() {
+    const s = slides[idx];
+    if (!window.Codex) return;
+    closeOverlays();
+    drawer.classList.remove('open');
+    const done = () => stage.classList.remove('is-reading');
+    if (Codex.open(label(s), { mood: stage.dataset.mood, slideTitle: s.dataset.title, done })) stage.classList.add('is-reading');
+  }
+  cRef.addEventListener('click', e => { e.stopPropagation(); openCodex(); });
+
   function closeOverlays() { document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open')); }
   document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
@@ -1146,6 +1160,8 @@
   addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const k = e.key;
+    // El lector normativo se queda con el teclado mientras está abierto
+    if (window.Codex?.isOpen()) { if (Codex.key(k)) e.preventDefault(); return; }
     // Una escena puede consumir teclas propias (p. ej. la reconstrucción R6)
     if (!document.querySelector('.overlay.open') && scene(slides[idx]).key?.(slides[idx], k)) { e.preventDefault(); return; }
     if (k === 'Escape') { closeOverlays(); drawer.classList.remove('open'); return; }
@@ -1159,6 +1175,7 @@
     else if (k === 'm' || k === 'M') { document.getElementById('help').classList.remove('open'); menu.classList.toggle('open'); }
     else if (k === '?' || k === 'h' || k === 'H') { menu.classList.remove('open'); document.getElementById('help').classList.toggle('open'); }
     else if (k === 'n' || k === 'N') drawer.classList.toggle('open');
+    else if (k === 'l' || k === 'L') openCodex();
     else if (k === 'f' || k === 'F') toggleFullscreen();
     else if (k === 'p' || k === 'P') window.open(`${location.pathname}?presentador#${idx + 1}`, 'presentador', 'width=1100,height=700');
     else if (k === 't' || k === 'T') startQuizTimer();
@@ -1174,7 +1191,7 @@
   let tx = null;
   addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
   addEventListener('touchend', e => {
-    if (tx === null) return;
+    if (tx === null || window.Codex?.isOpen()) { tx = null; return; }
     const dx = e.changedTouches[0].clientX - tx;
     if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
     tx = null;
