@@ -346,77 +346,115 @@
     states: 4,
     build(slide) {
       const svg = svgOf(slide);
-      const R = G.rack;
-      const base = el('g', { class: 'rack' }, svg);
-      // Bastidor
-      el('rect', { x: R.upL, y: R.railTop, width: R.upR - R.upL + 8, height: 7, class: 'metal' }, base);
-      el('rect', { x: R.upL, y: R.shelfUp, width: R.upR - R.upL + 8, height: 7, class: 'metal' }, base);
-      el('rect', { x: R.upL, y: R.shelfLo, width: R.upR - R.upL + 8, height: 7, class: 'metal' }, base);
-      el('rect', { x: R.upL, y: R.railTop, width: 8, height: R.shelfLo - R.railTop + 7, class: 'metal' }, base);
-      el('rect', { x: R.upR - 4, y: R.railTop, width: 8, height: R.shelfLo - R.railTop + 7, class: 'metal' }, base);
-      el('text', { x: R.upR + 4, y: R.shelfLo + 40, class: 'tick-s', 'text-anchor': 'end' }, base, 'BASTIDOR METÁLICO');
-      // Celdas
-      // Orden serie: abajo 1 → 62 de izquierda a derecha; arriba 63 → 125 de derecha a izquierda
-      const row = (labels, up) => labels.forEach((lb, i) => {
-        const x = R.x0 + i * R.step, y = up ? R.upY : R.loY;
-        const g = el('g', { class: 'rise', style: pd(350 + (up ? 25 - i : i) * 34) }, base);
-        if (lb === '…') { el('text', { x: x + R.w / 2, y: y + R.h - 14, class: 'cell-l dim', 'text-anchor': 'middle' }, g, '···'); return; }
-        el('rect', { x, y, width: R.w, height: R.h, rx: 3, class: 'cell' }, g);
-        el('rect', { x: x + 6, y: y - 7, width: 10, height: 7, class: 'post' }, g);
-        el('rect', { x: x + R.w - 16, y: y - 7, width: 10, height: 7, class: 'post' }, g);
-        el('text', { x: x + R.w / 2, y: y + R.h - 12, class: 'cell-l', 'text-anchor': 'middle' }, g, lb);
+      const defs = el('defs', {}, svg);
+      const floor = el('linearGradient', { id: 's12-floor', x1: 0, y1: 0, x2: 1, y2: 1 }, defs);
+      el('stop', { offset: 0, 'stop-color': '#8fe3ff', 'stop-opacity': 0.02 }, floor);
+      el('stop', { offset: 0.55, 'stop-color': '#a58bff', 'stop-opacity': 0.1 }, floor);
+      el('stop', { offset: 1, 'stop-color': '#07060f', 'stop-opacity': 0 }, floor);
+
+      const base = el('g', { class: 's12-base' }, svg);
+      el('text', { x: 610, y: 320, class: 's12-section' }, base, 'VISTA FÍSICA · DOS BASTIDORES / DOS NIVELES');
+      el('path', { d: 'M540 782 L850 332 L1732 560 L1390 830 Z', class: 's12-floor' }, base);
+
+      const isoCell = (parent, x, y, label, hot = false, delay = 0) => {
+        const g = el('g', { class: `s12-iso-cell rise${hot ? ' is-hot' : ''}`, style: pd(delay) }, parent);
+        el('path', { d: `M${x} ${y + 12} L${x + 12} ${y} H${x + 68} L${x + 56} ${y + 12} Z`, class: 's12-cell-top' }, g);
+        el('rect', { x, y: y + 12, width: 56, height: 50, class: 's12-cell-front' }, g);
+        el('path', { d: `M${x + 56} ${y + 12} L${x + 68} ${y} V${y + 50} L${x + 56} ${y + 62} Z`, class: 's12-cell-side' }, g);
+        el('circle', { cx: x + 17, cy: y + 7, r: 3.2, class: 's12-post neg' }, g);
+        el('circle', { cx: x + 46, cy: y + 7, r: 3.2, class: 's12-post pos' }, g);
+        if (label) el('text', { x: x + 28, y: y + 47, class: hot ? 's12-cell-n hot' : 's12-cell-n', 'text-anchor': 'middle' }, g, label);
+        return g;
+      };
+
+      const isoRack = (x, y, back, labels, name) => {
+        const g = el('g', { class: `s12-rack${back ? ' is-back' : ''}`, transform: `translate(${x} ${y})` }, base);
+        el('path', { d: 'M0 48 L510 48 L560 10 L50 10 M0 48 V302 H510 V48 M510 48 L560 10 V264 L510 302 M0 164 H510 L560 126 M0 274 H510 L560 236', class: 's12-frame' }, g);
+        labels.forEach((lb, i) => isoCell(g, 24 + i * 83, 68, lb, lb === '118', 260 + i * 45));
+        labels.forEach((lb, i) => isoCell(g, 24 + i * 83, 178, i === 0 ? '1' : i === labels.length - 1 ? '62' : '', false, 420 + i * 45));
+        el('text', { x: 8, y: -10, class: 's12-rack-name' }, g, name);
+        el('text', { x: 500, y: 335, class: 's12-rack-note', 'text-anchor': 'end' }, g, back ? 'REFERENCIA FÍSICA' : 'ZONA DE TRABAJO');
+        return g;
+      };
+
+      isoRack(590, 340, true, ['', '', '', '', '', ''], 'BASTIDOR A');
+      isoRack(805, 405, false, ['125', '119', '118', '···', '64', '63'], 'BASTIDOR B');
+      el('path', { d: 'M1288 682 C1390 650 1438 568 1363 474', class: 's12-bridge draw', pathLength: 1, style: pd(720) }, base);
+      el('text', { x: 1408, y: 560, class: 's12-data' }, base, 'PUENTE 62/63');
+
+      // Unifilar que permanece sincronizado con la vista física.
+      const uni = el('g', { class: 's12-uni' }, svg);
+      el('text', { x: 150, y: 390, class: 's12-section' }, uni, 'UNIFILAR SINCRONIZADO');
+      el('rect', { x: 150, y: 412, width: 362, height: 374, class: 's12-panel' }, uni);
+      const b = { x: 178, y: 458, w: 124, h: 66 };
+      const u = { x: 178, y: 682, w: 124, h: 62 };
+      el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 's12-device brk' }, uni);
+      el('text', { x: 240, y: 485, class: 's12-device-t', 'text-anchor': 'middle' }, uni, 'INT. CC');
+      el('text', { x: 240, y: 510, class: 's12-device-v', 'text-anchor': 'middle' }, uni, '400 A');
+      el('rect', { x: u.x, y: u.y, width: u.w, height: u.h, class: 's12-device ups' }, uni);
+      el('text', { x: 240, y: 720, class: 's12-device-u', 'text-anchor': 'middle' }, uni, 'UPS-2');
+      el('path', { d: 'M240 524 V682', class: 's12-feed' }, uni);
+      el('text', { x: 253, y: 610, class: 's12-small' }, uni, 'A 6 m');
+
+      // Serie: 125 → 63 arriba; puente; 62 → 1 abajo.
+      el('path', { d: 'M302 480 H334 V538 H466 V658 H334 V720 H302', class: 's12-series' }, uni);
+      [350, 388, 426, 466].forEach((x, i) => {
+        el('circle', { cx: x, cy: 538, r: 7, class: `s12-node${i === 1 ? ' n119' : i === 2 ? ' n118' : ''}` }, uni);
+        el('circle', { cx: x, cy: 658, r: 7, class: 's12-node' }, uni);
       });
-      row(R.upper, true);
-      row(R.lower, false);
-      el('text', { x: R.upR - 6, y: R.shelfUp + 32, class: 'tick-s', 'text-anchor': 'end' }, base, 'NIVEL SUPERIOR · 63 → 125, DE DERECHA A IZQUIERDA');
-      el('text', { x: R.x0, y: R.loY + R.h + 34, class: 'tick-s' }, base, 'NIVEL INFERIOR · 1 → 62');
-      // Cable puente
-      const cy0 = R.cy(false), cy1 = R.cy(true);
-      el('path', { d: `M${R.cx(12) + R.w / 2} ${cy0} L${R.cableX} ${cy0} L${R.cableX} 520 L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12) + R.w / 2} ${cy1}`, class: 'bridge draw', pathLength: 1, style: pd(350 + 12.5 * 34) }, base);
-      el('text', { x: R.cableX + 16, y: 420, class: 'tick-s' }, base, 'CABLE');
-      el('text', { x: R.cableX + 16, y: 444, class: 'tick-s' }, base, 'PUENTE');
-      // Interruptor y UPS
-      const b = R.brk, u = R.ups;
-      el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'box brk' }, base);
-      el('text', { x: b.x + b.w / 2, y: b.y + 42, class: 'box-t', 'text-anchor': 'middle' }, base, 'INT. CC');
-      el('text', { x: b.x + b.w / 2, y: b.y + 74, class: 'box-v', 'text-anchor': 'middle' }, base, '400 A');
-      el('rect', { x: u.x, y: u.y, width: u.w, height: u.h, class: 'box ups' }, base);
-      el('text', { x: u.x + u.w / 2, y: u.y + 58, class: 'box-u', 'text-anchor': 'middle' }, base, 'UPS-2');
-      el('line', { x1: b.x + b.w / 2, y1: b.y + b.h, x2: u.x + u.w / 2, y2: u.y, class: 'flow-ok' }, base);
-      el('text', { x: b.x + b.w / 2 + 14, y: 560, class: 'tick-s' }, base, 'A 6 m');
+      [['125',350], ['119',388], ['118',426], ['63',466]].forEach(([t, x]) => el('text', { x, y: 522, class: t === '118' ? 's12-num hot' : 's12-num', 'text-anchor': 'middle' }, uni, t));
+      [['1',350], ['···',408], ['62',466]].forEach(([t, x]) => el('text', { x, y: 684, class: 's12-num', 'text-anchor': 'middle' }, uni, t));
+      el('path', { d: 'M466 538 H486 V658 H466', class: 's12-uni-bridge' }, uni);
+      el('text', { x: 336, y: 568, class: 's12-small' }, uni, '63 → 125');
+      el('text', { x: 336, y: 642, class: 's12-small' }, uni, '1 → 62');
 
       // 1 · Tensiones
-      const v = el('g', { class: 'volt', 'data-at': 1 }, svg);
-      el('text', { x: 455, y: cy1 - 22, class: 'v-l', 'text-anchor': 'end' }, v, '+ ≈ 281 V');
-      el('text', { x: 462, y: 540, class: 'v-l', 'text-anchor': 'end' }, v, '− 0 V');
-      el('text', { x: R.cableX + 16, y: cy0 + 44, class: 'v-l' }, v, '≈ 140 V');
-      el('text', { x: R.x0, y: R.loY + R.h + 64, class: 'tick-s' }, v, '≈ 2,25 V POR CELDA EN FLOTACIÓN');
+      const v = el('g', { class: 's12-volts', 'data-at': 1 }, svg);
+      el('path', { d: 'M320 438 H420', class: 's12-lead' }, v);
+      el('text', { x: 320, y: 429, class: 's12-voltage' }, v, '+ ≈ 281 V');
+      el('text', { x: 319, y: 765, class: 's12-voltage' }, v, '− 0 V');
+      el('text', { x: 456, y: 620, class: 's12-voltage', 'text-anchor': 'end' }, v, '≈ 140 V');
+      el('rect', { x: 728, y: 755, width: 404, height: 54, class: 's12-info' }, v);
+      el('text', { x: 754, y: 788, class: 's12-data' }, v, '≈ 2,25 V POR CELDA EN FLOTACIÓN');
 
-      // 2 · Punto de falla
-      const f = el('g', { 'data-at': 2 }, svg);
-      el('circle', { cx: R.contact[0], cy: R.contact[1], r: 18, class: 'pulse fault-h' }, f);
-      el('circle', { cx: R.contact[0], cy: R.contact[1], r: 7, class: 'fault' }, f);
-      el('text', { x: R.contact[0] - 20, y: R.contact[1] + 6, class: 'f-l', 'text-anchor': 'end' }, f, 'contacto cable–bastidor · ≈ 0 Ω');
+      // 2 · Primer contacto: cable puente con bastidor. El bus aislado aún no entrega corriente.
+      const f = el('g', { class: 's12-fault-one', 'data-at': 2 }, svg);
+      el('circle', { cx: 1288, cy: 682, r: 22, class: 's12-pulse' }, f);
+      el('circle', { cx: 1288, cy: 682, r: 8, class: 's12-fault-dot' }, f);
+      el('path', { d: 'M1288 704 V734 H1450', class: 's12-lead danger' }, f);
+      el('rect', { x: 1450, y: 696, width: 318, height: 86, class: 's12-danger-box' }, f);
+      el('text', { x: 1474, y: 728, class: 's12-danger-t' }, f, '1 · PUENTE / BASTIDOR');
+      el('text', { x: 1474, y: 756, class: 's12-small' }, f, '≈ 0 Ω · detector inhibido');
+      el('circle', { cx: 466, cy: 658, r: 15, class: 's12-fault-ring' }, f);
+      el('text', { x: 318, y: 754, class: 's12-no-current' }, f, 'BUS AISLADO · 1.ª FALLA = 0 A');
 
-      // 3 · Trayectoria del lazo
-      const lp = el('g', { 'data-at': 3 }, svg);
-      for (let i = 5; i < 13; i++) {
-        if (R.upper[i] === '…') continue;
-        el('rect', { x: R.x0 + i * R.step, y: R.upY, width: R.w, height: R.h, rx: 3, class: 'cell hot' }, lp);
-      }
-      const px = R.x0 + 5 * R.step + 10;
-      const loopD = `M${px} ${R.upY - 4} L${px} ${R.railTop + 3} L${R.upR} ${R.railTop + 3} L${R.upR} ${R.contact[1]} L1630 490 L${R.cableX} 460 L${R.cableX} ${cy1} L${R.cx(12)} ${cy1} L${R.cx(5)} ${cy1} L${px} ${R.upY - 4}`;
-      this.loop = el('path', { d: loopD, class: 'loop', pathLength: 1 }, lp);
-      el('path', { d: loopD, class: 'loop-flow' }, lp);
-      el('rect', { x: px - 6, y: R.railTop - 2, width: 12, height: R.upY - R.railTop, rx: 3, class: 'wrench' }, lp);
-      el('text', { x: px, y: R.railTop - 16, class: 'f-l', 'text-anchor': 'middle' }, lp, 'matraca · borne + celda 118');
-      el('text', { x: 1300, y: R.railTop - 16, class: 'f-l', 'text-anchor': 'middle' }, lp, '≈ 126 V · varios kA');
+      // 3 · Segundo contacto y lazo cerrado, visible en las dos representaciones.
+      const lp = el('g', { class: 's12-loop-layer', 'data-at': 3 }, svg);
+      const physicalD = 'M1023 474 C1138 385 1352 398 1460 486 C1522 536 1476 712 1192 766 C878 824 610 718 610 625 C610 532 797 482 1023 474';
+      el('path', { d: physicalD, class: 's12-loop', pathLength: 1 }, lp);
+      el('path', { d: physicalD, class: 's12-loop-flow' }, lp);
+      el('circle', { cx: 1023, cy: 474, r: 19, class: 's12-contact-two' }, lp);
+      el('text', { x: 1023, y: 480, class: 's12-contact-n', 'text-anchor': 'middle' }, lp, '2');
+      el('path', { d: 'M1042 474 H1420', class: 's12-lead danger' }, lp);
+      el('rect', { x: 1420, y: 408, width: 348, height: 88, class: 's12-danger-box' }, lp);
+      el('text', { x: 1446, y: 441, class: 's12-danger-t' }, lp, '2 · MATRACA / CELDA 118');
+      el('text', { x: 1446, y: 469, class: 's12-small' }, lp, 'segundo contacto cierra el lazo');
 
-      // 4 · Consecuencia
-      const c = el('g', { 'data-at': 4 }, svg);
-      el('rect', { x: b.x - 8, y: b.y - 8, width: b.w + 16, height: b.h + 16, class: 'out' }, c);
-      el('text', { x: b.x + b.w / 2, y: b.y - 22, class: 'f-l', 'text-anchor': 'middle' }, c, 'FUERA DE LA CADENA');
-      el('text', { x: b.x + b.w / 2 + 14, y: 640, class: 'tick-s' }, c, '0 A DE FALLA');
+      const uniLoop = 'M426 538 H466 V658 H486 V706 H322 V438 H426 V538';
+      el('path', { d: uniLoop, class: 's12-loop', pathLength: 1 }, lp);
+      el('path', { d: uniLoop, class: 's12-loop-flow' }, lp);
+      el('circle', { cx: 426, cy: 538, r: 14, class: 's12-contact-two' }, lp);
+      el('text', { x: 426, y: 543, class: 's12-contact-n', 'text-anchor': 'middle' }, lp, '2');
+      el('rect', { x: 670, y: 742, width: 538, height: 72, class: 's12-danger-box' }, lp);
+      el('text', { x: 698, y: 773, class: 's12-danger-t' }, lp, 'LAZO CERRADO · ≈ 126 V CC · VARIOS kA');
+      el('text', { x: 698, y: 798, class: 's12-small' }, lp, '118 → 63 → puente → bastidor → matraca');
+
+      // 4 · El dispositivo está fuera del recorrido interno de la falla.
+      const c = el('g', { class: 's12-consequence', 'data-at': 4 }, svg);
+      el('rect', { x: b.x - 10, y: b.y - 10, width: b.w + 20, height: b.h + 20, class: 's12-out' }, c);
+      el('path', { d: 'M162 447 L318 535 M318 447 L162 535', class: 's12-cross' }, c);
+      el('text', { x: 240, y: 424, class: 's12-danger-t', 'text-anchor': 'middle' }, c, 'FUERA DEL LAZO');
+      el('text', { x: 240, y: 555, class: 's12-no-current', 'text-anchor': 'middle' }, c, '0 A DE FALLA');
     },
     state(slide, n) {
       slide.querySelectorAll('.rail li').forEach(li => {
@@ -439,23 +477,32 @@
       const gr = el('linearGradient', { id: 'h2-strat', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
       el('stop', { offset: 0, 'stop-color': '#8fe3ff', 'stop-opacity': 0.3 }, gr);
       el('stop', { offset: 1, 'stop-color': '#8fe3ff', 'stop-opacity': 0 }, gr);
+      const eg = el('linearGradient', { id: 's13-electrolyte', x1: 0, y1: 0, x2: 0.9, y2: 1 }, defs);
+      el('stop', { offset: 0, 'stop-color': '#8fe3ff', 'stop-opacity': 0.18 }, eg);
+      el('stop', { offset: 1, 'stop-color': '#5b3fd6', 'stop-opacity': 0.06 }, eg);
       const top = el('g', { 'data-at': 2 }, svg);
-      el('rect', { x: 150, y: 104, width: 730, height: 120, fill: 'url(#h2-strat)' }, top);
-      el('line', { x1: 150, y1: 104, x2: 880, y2: 104, class: 'ceil' }, top);
+      el('rect', { x: 150, y: 112, width: 760, height: 136, class: 's13-h2-ceiling', fill: 'url(#h2-strat)' }, top);
+      el('line', { x1: 150, y1: 112, x2: 910, y2: 112, class: 'ceil' }, top);
       for (let k = 0; k < 14; k++) {
         el('circle', { cx: 170 + k * 50 + (k % 3) * 9, cy: 116 + (k % 4) * 9, r: 2, class: 'h2-dot', style: `--t:${(3 + (k % 5) * 0.6).toFixed(1)}s; --dl:${(-k * 0.4).toFixed(1)}s` }, top);
       }
       const fan = el('g', { class: 'fan' }, top);
-      el('circle', { cx: 880, cy: 136, r: 24, class: 'fan-c' }, fan);
-      el('path', { d: 'M880 136 l0 -18 M880 136 l16 9 M880 136 l-16 9', class: 'fan-b' }, fan);
-      el('text', { x: 546, y: 186, class: 'tick-s' }, top, 'EL H₂ SUBE Y SE ACUMULA EN EL TECHO');
-      el('text', { x: 546, y: 212, class: 'tick-s' }, top, '→ LA EXTRACCIÓN SE TOMA ARRIBA');
+      el('circle', { cx: 880, cy: 148, r: 28, class: 'fan-c' }, fan);
+      el('path', { d: 'M880 148 l0 -20 M880 148 l18 10 M880 148 l-18 10', class: 'fan-b' }, fan);
+      el('path', { d: 'M460 330 C460 260 520 224 610 205 S790 185 852 151', class: 's13-extract-flow' }, top);
+      el('path', { d: 'M438 330 C426 258 500 210 600 190 S772 168 846 143', class: 's13-extract-flow secondary' }, top);
+      el('text', { x: 532, y: 160, class: 's13-ceiling-t' }, top, 'EL H₂ SUBE Y SE ESTRATIFICA');
+      el('text', { x: 532, y: 191, class: 's13-ceiling-s' }, top, 'EXTRACCIÓN EN EL PUNTO ALTO');
 
       // Recipiente, tapa y electrolito
+      el('path', { d: `M${C.x0} ${C.top} L${C.x0 + 36} ${C.top - 22} H${W + 36} L${W} ${C.top} Z`, class: 's13-case-top' }, svg);
+      el('path', { d: `M${W} ${C.top} L${W + 36} ${C.top - 22} V${C.bot - 22} L${W} ${C.bot} Z`, class: 's13-case-side' }, svg);
       el('rect', { x: C.x0, y: C.top, width: W - C.x0, height: C.bot - C.top, rx: 8, class: 'cellbox' }, svg);
+      el('path', { d: `M${W - 2} ${C.level} L${W + 34} ${C.level - 22} V${C.bot - 24} L${W - 2} ${C.bot - 2} Z`, class: 's13-electrolyte-side' }, svg);
       el('rect', { x: C.x0 + 2, y: C.level, width: W - C.x0 - 4, height: C.bot - C.level - 2, class: 'electrolyte' }, svg);
       el('line', { x1: C.x0 + 2, y1: C.level, x2: W - 2, y2: C.level, class: 'surface' }, svg);
       el('rect', { x: C.x0 - 8, y: C.top - 8, width: W - C.x0 + 16, height: 26, rx: 4, class: 'lid' }, svg);
+      el('path', { d: `M${C.x0 + 4} ${C.top + 35} V${C.bot - 34}`, class: 's13-glass-glint' }, svg);
 
       // Placas: negativas en los extremos (una más que positivas), todas bajo el electrolito
       const PX = j => 282 + j * 44, PT = 592, PB = 852;
@@ -465,6 +512,8 @@
         const neg = j % 2 === 0, x = PX(j), ly = neg ? SN + 8 : SP + 8;
         plates.push([x, neg]);
         el('rect', { x: x + 3, y: ly, width: 6, height: PT - ly, class: neg ? 'lug neg' : 'lug pos' }, svg);
+        el('path', { d: `M${x} ${PT} L${x + 6} ${PT - 5} H${x + 18} L${x + 12} ${PT} Z`, class: neg ? 's13-plate-top neg' : 's13-plate-top pos' }, svg);
+        el('path', { d: `M${x + 12} ${PT} L${x + 18} ${PT - 5} V${PB - 5} L${x + 12} ${PB} Z`, class: neg ? 's13-plate-side neg' : 's13-plate-side pos' }, svg);
         el('rect', { x, y: PT, width: 12, height: PB - PT, rx: 2, class: neg ? 'plate neg' : 'plate pos' }, svg);
         el('text', { x: x + 6, y: PB + 28, class: 'pl-s', 'text-anchor': 'middle' }, svg, neg ? '−' : '+');
         if (j < 8) el('line', { x1: x + 28, y1: PT + 4, x2: x + 28, y2: PB - 4, class: 'sep' }, svg);
@@ -514,17 +563,29 @@
       const [cx0, cx1, cy0, cy1] = C.cap;
       el('rect', { x: cx0, y: cy0, width: cx1 - cx0, height: cy1 - cy0, rx: 5, class: 'arrester' }, svg);
       [cy0 + 12, cy0 + 24, cy0 + 36].forEach(y => el('line', { x1: cx0 + 8, y1: y, x2: cx1 - 8, y2: y, class: 'mesh' }, svg));
-      const fl = el('g', { 'data-at': 1 }, svg);
+      const fl = el('g', { class: 's13-arrester-state', 'data-at': 1 }, svg);
       el('path', { d: 'M460 250 c -14 -16 -4 -30 0 -44 c 4 14 14 26 0 44 z', class: 'flame' }, fl);
       el('path', { d: `M${cx0 - 10} ${cy0 - 9} L${cx1 + 10} ${cy0 - 9}`, class: 'block' }, fl);
-      el('text', { x: 520, y: 262, class: 'ctrl-l' }, fl, 'APAGALLAMAS · 320.3(D)');
-      el('text', { x: 520, y: 290, class: 'tick-s' }, fl, 'EL GAS SALE · LA LLAMA NO ENTRA');
       el('text', { x: 436, y: 232, class: 'f-l', 'text-anchor': 'end' }, fl, 'chispa externa');
       el('text', { x: 436, y: 258, class: 'tick-s', 'text-anchor': 'end' }, fl, 'BASTA 0,02 mJ');
+
+      // Ampliación pericial del apagallamas: flujo de gas permitido y frente de llama detenido.
+      const detail = el('g', { class: 's13-arrester-detail', 'data-only': 1 }, svg);
+      el('path', { d: 'M490 350 C585 328 622 312 682 312', class: 's13-detail-lead' }, detail);
+      el('rect', { x: 682, y: 252, width: 258, height: 204, class: 's13-detail-box' }, detail);
+      el('text', { x: 706, y: 282, class: 's13-detail-title' }, detail, 'APAGALLAMAS · 320.3(D)');
+      el('rect', { x: 790, y: 306, width: 52, height: 102, rx: 4, class: 's13-porous' }, detail);
+      [318, 334, 350, 366, 382, 398].forEach(y => el('line', { x1: 798, y1: y, x2: 834, y2: y, class: 's13-pore' }, detail));
+      el('path', { d: 'M816 430 V394 M806 406 L816 394 L826 406', class: 's13-gas-arrow' }, detail);
+      el('path', { d: 'M745 378 C730 357 742 339 750 323 C760 340 772 358 754 378 Z', class: 's13-detail-flame' }, detail);
+      el('line', { x1: 770, y1: 358, x2: 790, y2: 358, class: 's13-stop' }, detail);
+      el('text', { x: 706, y: 432, class: 's13-detail-ok' }, detail, 'GAS SALE');
+      el('text', { x: 918, y: 432, class: 's13-detail-stop' }, detail, 'LLAMA NO ENTRA');
 
       // Escala de concentración de H₂ en el aire (estado 2)
       const sx = p => 980 + p * 170, sy = 880;
       const sc = el('g', { 'data-at': 2 }, svg);
+      el('rect', { x: 950, y: 790, width: 840, height: 150, class: 's13-scale-panel' }, sc);
       el('text', { x: 980, y: 812, class: 'tick-s' }, sc, 'H₂ EN EL AIRE · % EN VOLUMEN');
       el('line', { x1: sx(0), y1: sy, x2: 1770, y2: sy, class: 'sc-base' }, sc);
       el('line', { x1: sx(0), y1: sy, x2: sx(1), y2: sy, class: 'sc-ok' }, sc);
@@ -538,6 +599,10 @@
       el('text', { x: 1770, y: sy - 22, class: 'bad-l', 'text-anchor': 'end' }, sc, 'LII · INFLAMABLE');
     },
     state(slide, n) {
+      slide.querySelectorAll('.s13-rail li').forEach(li => {
+        li.classList.toggle('cur', +li.dataset.k === n);
+        li.classList.toggle('done', +li.dataset.k < n);
+      });
       window.Thread.style({ o: n >= 2 ? 1 : 0.7 });
     }
   };

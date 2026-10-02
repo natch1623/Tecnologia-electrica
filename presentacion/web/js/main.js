@@ -6,7 +6,9 @@
   const stage = document.getElementById('stage');
   const slides = [...stage.querySelectorAll('.slide')];
   const mainCount = slides.filter(s => !s.dataset.backup).length;
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  let reduced = motionPreference.matches;
+  motionPreference.addEventListener('change', e => { reduced = e.matches; });
   const isPresenter = new URLSearchParams(location.search).has('presentador');
   const channel = 'BroadcastChannel' in window ? new BroadcastChannel('modulo-d') : null;
   const Scenes = window.Scenes || {};
@@ -38,6 +40,7 @@
   const sigil = stage.querySelector('.hero .sigil');
   let pointer = null;
   addEventListener('mousemove', e => {
+    if (reduced) return;
     if (!pointer) requestAnimationFrame(() => {
       if (slides[idx].classList.contains('hero')) {
         sigil.style.setProperty('--mx', ((pointer.clientX / innerWidth) * 2 - 1).toFixed(3));
@@ -53,7 +56,7 @@
 
   /* ---------- Retrasos escalonados ---------- */
   slides.forEach(slide => {
-    slide.querySelectorAll('.rv').forEach((el, i) => el.style.setProperty('--d', `${180 + i * 70}ms`));
+    slide.querySelectorAll('.rv').forEach((el, i) => el.style.setProperty('--d', `${180 + Math.min(i, 9) * 60}ms`));
     slide.querySelectorAll('h1 .w > span').forEach((el, i) => el.style.setProperty('--d', `${250 + i * 80}ms`));
   });
 
@@ -80,6 +83,25 @@
   const cProg = document.getElementById('c-prog');
   const cDots = document.getElementById('c-dots');
   let leaving = null;
+  // A navigation owns its delayed effects; interrupted cuts cannot reappear later.
+  const txTimers = new Set(), txFrames = new Set();
+  function txLater(fn, delay) {
+    const id = setTimeout(() => { txTimers.delete(id); fn(); }, delay);
+    txTimers.add(id); return id;
+  }
+  function txFrame(fn) {
+    const id = requestAnimationFrame(() => { txFrames.delete(id); fn(); });
+    txFrames.add(id); return id;
+  }
+  function cancelTransitionWork() {
+    txTimers.forEach(clearTimeout); txTimers.clear();
+    txFrames.forEach(cancelAnimationFrame); txFrames.clear();
+    fxG.getAnimations({ subtree: true }).forEach(a => a.cancel());
+    fxG.replaceChildren();
+    cracks.getAnimations({ subtree: true }).forEach(a => a.cancel());
+    cracks.replaceChildren();
+    flashEl.getAnimations().forEach(a => a.cancel());
+  }
 
   function go(n, { silent = false, back = false, state = null } = {}) {
     n = Math.max(0, Math.min(slides.length - 1, n));
@@ -87,12 +109,13 @@
     const next = slides[n];
     if (n === idx && next.classList.contains('is-active')) return;
     back = back || n < idx;
+    cancelTransitionWork();
 
     // Restos de una transición interrumpida: mira, fragmentos y esquirlas
     stage.querySelectorAll('.dive-fx, .shards, .fx [data-cut]').forEach(e => e.remove());
     stage.querySelectorAll('.breaking').forEach(e => e.classList.remove('breaking'));
     clearTimeout(collapseT);
-    if (leaving) { leaving.getAnimations().forEach(a => a.cancel()); leaving.classList.remove('is-leaving'); leaving.style.zIndex = ''; }
+    if (leaving) { leaving.getAnimations().forEach(a => a.cancel()); leaving.classList.remove('is-leaving'); leaving.style.zIndex = ''; leaving.style.transformOrigin = ''; }
     if (prev && prev !== next) {
       scene(prev).leave?.(prev);
       prev.classList.remove('is-active');
@@ -168,9 +191,10 @@
   const line = points => 'M' + points.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L');
   // f(p) → { next, prev?, edge? } muestreado en n + 1 cuadros equiespaciados
   const sample = (n, f) => Array.from({ length: n + 1 }, (_, i) => f(i / n));
-  const REWIND = new Set(['slash', 'rift', 'sweep', 'wave', 'rise']);
-  // Ritmo global de las transiciones: > 1 las hace más lentas para que se aprecien los detalles
-  const SLOW = 1.4;
+  const NARRATIVE_TX = new Set(['cleave', 'absorb', 'converge', 'collapse', 'fracture']);
+  // Ritmo global: conserva las transiciones narrativas, pero libera la escena
+  // antes para que una navegación rápida no deje fragmentos sobre la siguiente slide.
+  const SLOW = 1.18;
 
   const TX = {
     rift: back => ({
@@ -280,10 +304,19 @@
 
   function transition(prevEl, nextEl, back) {
     const ptx = prevEl?.dataset.tx;
-    const kind = back ? (REWIND.has(ptx) || (ptx === 'absorb' && nextEl.dataset.zoom) || (ptx === 'converge' && nextEl.id === 's13') || (ptx === 'collapse' && nextEl.id === 's14') ? ptx : 'dissolve') : nextEl.dataset.tx || 'dissolve';
-    if (reduced || !prevEl) {
-      nextEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduced ? 400 : 900, easing: 'ease-out' });
-      if (prevEl) leave(prevEl, 400, false);
+    const requestedKind = back ? ptx : nextEl.dataset.tx;
+    const kind = NARRATIVE_TX.has(requestedKind) ? requestedKind : 'dissolve';
+    if (reduced || !prevEl || kind === 'dissolve') {
+      const duration = reduced ? 180 : 360;
+      // La salida es más corta que la entrada y se desenfoca: así las dos slides
+      // no se superponen a media opacidad (doble imagen) durante el fundido.
+      const exit = reduced ? duration : Math.round(duration * 0.6);
+      nextEl.animate([{ opacity: 0 }, { opacity: 1 }], { duration, easing: EXPO, fill: 'backwards' });
+      if (prevEl) {
+        const out = reduced ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(6px)' }];
+        prevEl.animate(out, { duration: exit, easing: EXPO, fill: 'forwards' });
+        leave(prevEl, exit, true);
+      }
       return;
     }
     if (kind === 'collapse' && (back ? nextEl : prevEl).id === 's14') {
@@ -299,7 +332,7 @@
       return;
     }
     const origin = pt(nextEl.dataset.origin);
-    const t = (TX[kind] || TX.dissolve)(back, origin);
+    const t = TX[kind](back, origin);
     const opt = { duration: t.dur * SLOW, easing: t.easing, delay: (t.delay || 0) * SLOW };
 
     // Salida
@@ -311,7 +344,7 @@
       prevEl.animate([{ opacity: 0 }, { opacity: 0 }], { duration: dur, fill: 'forwards' });
       leave(prevEl, dur, true);
     } else if (kind === 'reconstruct') {
-      prevEl.animate([{ opacity: 1, filter: 'blur(0px) saturate(1)' }, { opacity: 0, filter: 'blur(4px) saturate(0)' }], { duration: 800 * SLOW, easing: 'ease-in', fill: 'forwards' });
+      prevEl.animate([{ opacity: 1, filter: 'blur(0px) saturate(1)' }, { opacity: 0, filter: 'blur(4px) saturate(0)' }], { duration: 800 * SLOW, easing: EXPO, fill: 'forwards' });
       leave(prevEl, 800 * SLOW, true);
     } else {
       leave(prevEl, (back ? 500 : 650) * SLOW, false);
@@ -319,7 +352,7 @@
 
     // Entrada
     nextEl.animate(t.raw || t.frames.map(f => ({ clipPath: f.next })), { ...opt, fill: 'backwards' });
-    if (t.frames?.[0].edge != null) edgeLight(t.frames.map(f => f.edge), opt, t.dir, kind === 'slash');
+    if (t.frames?.[0].edge != null) edgeLight(t.frames.map(f => f.edge), opt, t.dir, kind === 'slash', kind);
     if (kind === 'expand') window.Ambient?.burst(...toWin(...origin), [143, 227, 255], 36);
   }
 
@@ -380,9 +413,9 @@
         { clipPath: insetOf(full), opacity: 1, transform: 'none' }
       ], { duration: open, delay: oStart, fill: 'backwards' });
       edgeLight([rectD(dst), rectD(out)], { duration: open * (1 - hold), delay: oStart + open * hold, easing: EXPO }, 'c', false);
-      setTimeout(() => window.Ambient?.burst(...toWin(...cellC), [143, 227, 255], 34), oStart + open * hold);
+      txLater(() => window.Ambient?.burst(...toWin(...cellC), [143, 227, 255], 34), oStart + open * hold);
       const total = oStart + open;
-      setTimeout(() => { fx.remove(); if (inner.classList.contains('is-active')) inner.style.transformOrigin = ''; }, total + 80);
+      txLater(() => { fx.remove(); if (inner.classList.contains('is-active')) inner.style.transformOrigin = ''; }, total + 80);
       leave(outer, total, true);
     } else {
       // La cámara sale: la 13 se cierra en su celda y la 12 retrocede hasta su escala
@@ -398,7 +431,7 @@
         { opacity: 1, offset: 0.25 },
         { transform: 'none', opacity: 1, filter: 'blur(0px)' }
       ], { duration: zoom, delay: zStart, easing: DIVE, fill: 'backwards' });
-      setTimeout(() => { if (outer.classList.contains('is-active')) outer.style.transformOrigin = ''; }, zStart + zoom + 60);
+      txLater(() => { if (outer.classList.contains('is-active')) outer.style.transformOrigin = ''; }, zStart + zoom + 60);
       leave(inner, close, true);
     }
   }
@@ -438,7 +471,7 @@
       ], { duration: fly, delay, easing: 'cubic-bezier(.55,0,.25,1)', fill: 'both' });
       const [c0, c1] = back ? [k.end, k.col] : [k.col, k.end];
       c.animate([{ stroke: c0 }, { stroke: c0, offset: 0.45 }, { stroke: c1 }], { duration: fly, delay, fill: 'both' });
-      setTimeout(() => window.Ambient?.burst(...toWin(...p1), back ? [143, 227, 255] : k.burst, 20), delay + fly * 0.9);
+      txLater(() => window.Ambient?.burst(...toWin(...p1), back ? [143, 227, 255] : k.burst, 20), delay + fly * 0.9);
       return l;
     });
     if (!back) batteryBlast(layers.map((l, i) => [T[TOKENS[i].to], fStart + i * 90 * SLOW + fly * 0.9]));
@@ -465,7 +498,7 @@
       { opacity: 1, transform: 'none' }
     ], { duration: 800 * SLOW, delay: arrive - 380 * SLOW, easing: EXPO, fill: 'backwards' });
     const total = arrive + 2 * 90 * SLOW;
-    setTimeout(() => layers.forEach(l => l.remove()), total + 80);
+    txLater(() => layers.forEach(l => l.remove()), total + 80);
     leave(gone, 900 * SLOW, true);
   }
 
@@ -501,10 +534,10 @@
     // dl() = lo que falta para la detonación en el instante en que se crea cada lote.
     const t0 = performance.now();
     const dl = () => Math.max(0, D - (performance.now() - t0));
-    const later = (t, fn) => setTimeout(fn, t);
+    const later = (t, fn) => txLater(fn, t);
 
     // Detonación
-    setTimeout(() => { flash(); window.Ambient?.burst(...toWin(ox, oy), [255, 170, 120], 70); }, D);
+    txLater(() => { flash(); window.Ambient?.burst(...toWin(ox, oy), [255, 170, 120], 70); }, D);
     later(D * 0.25, () => {
     const D = dl();
     const fire = fxLayer([ox - 420, oy - 420, 840, 840], '', [ox, oy]);
@@ -594,7 +627,7 @@
       }
     }));
     last = Math.max(D + 1900 * SLOW, ...hits.map(h => h[1] + 800 * SLOW));
-    setTimeout(() => stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()), last + 80);
+    txLater(() => stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()), last + 80);
   }
 
   /* La teoría se rompe (14 → 15): en el Caso 4 las barreras no estaban. Los escudos
@@ -626,10 +659,10 @@
           e.animate([{ transform: 'none' }, { transform: `translate(${(Math.cos(a) * v).toFixed(0)}px, ${(Math.sin(a) * v + 60).toFixed(0)}px) rotate(${((Math.random() - 0.5) * 260).toFixed(0)}deg)` }], timing);
           e.animate([{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { ...timing, easing: 'linear' });
         }
-        setTimeout(() => window.Ambient?.burst(...toWin(vx, vy), [255, 77, 109], 18), j * 90);
+        txLater(() => window.Ambient?.burst(...toWin(vx, vy), [255, 77, 109], 18), j * 90);
       });
       // El triángulo se aplasta junto con la slide hasta ser la línea de tiempo
-      collapseT = setTimeout(() => window.Thread?.to('tl', { dur: shut }), fail);
+      collapseT = txLater(() => window.Thread?.to('tl', { dur: shut }), fail);
     }
     // 2 · Colapso sobre la línea (solo transformación y opacidad: la GPU compone)
     gone.style.transformOrigin = `960px ${y}px`;
@@ -638,7 +671,7 @@
       { transform: 'scale(1.03, .006)', opacity: 1, offset: 0.85 },
       { transform: 'scale(1.1, .002)', opacity: 0 }
     ], { duration: shut, delay: fail, fill: 'forwards' });
-    setTimeout(() => window.Ambient?.burst(...toWin(960, y), back ? [255, 138, 160] : [255, 77, 109], 40), fail + shut * 0.8);
+    txLater(() => window.Ambient?.burst(...toWin(960, y), back ? [255, 138, 160] : [255, 77, 109], 40), fail + shut * 0.8);
     // 3 · Apertura desde la línea con dos filos que se separan
     come.style.transformOrigin = `960px ${y}px`;
     come.animate([
@@ -649,7 +682,7 @@
     edgeLight([`M-40 ${y} L1960 ${y} M-40 ${y} L1960 ${y}`, `M-40 -6 L1960 -6 M-40 ${H + 6} L1960 ${H + 6}`],
       { duration: open, delay: oStart, easing: 'cubic-bezier(.16,1,.3,1)' }, 'h', false);
     const total = oStart + open;
-    setTimeout(() => {
+    txLater(() => {
       tri.classList.remove('breaking');
       [gone, come].forEach(e => { if (e.classList.contains('is-active')) e.style.transformOrigin = ''; });
       stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove());
@@ -659,7 +692,7 @@
 
   function leave(el, dur, custom) {
     if (!custom) el.animate([{ opacity: 1, filter: 'blur(0px)', transform: 'none' }, { opacity: 0, filter: 'blur(8px)', transform: 'scale(.975)' }], { duration: dur, easing: EXPO, fill: 'forwards' });
-    setTimeout(() => {
+    txLater(() => {
       if (el.classList.contains('is-active')) return;
       el.getAnimations().forEach(a => a.cancel());
       el.classList.remove('is-leaving');
@@ -671,10 +704,11 @@
 
   // Borde de luz: mismo muestreo, duración y curva que el recorte, así viaja pegado al corte
   const canMorphD = window.CSS?.supports?.('d', 'path("M0 0")');
-  function edgeLight(ds, opt, dir, blade) {
+  function edgeLight(ds, opt, dir, blade, variant = '') {
+    fxG.getAnimations({ subtree: true }).forEach(a => a.cancel());
     fxG.replaceChildren();
     if (!canMorphD) return;
-    fxG.setAttribute('class', blade ? 'blade' : '');
+    fxG.setAttribute('class', blade ? `blade ${isSkirkTx(variant) ? `skirk ${variant}` : ''}`.trim() : '');
     const frames = ds.map(d => ({ d: `path("${d}")` }));
     ['fx-halo', 'fx-glow', 'fx-core'].forEach(c => {
       const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -854,7 +888,7 @@
     // brillo constante; se desvanecen por completo antes de retirarse (sin parpadeo).
     const axis = Math.atan2(u[1], u[0]);
     // Esquirlas y luz se crean en el cuadro siguiente: el primero solo lleva las mitades y la hoja
-    requestAnimationFrame(() => {
+    txFrame(() => {
       let last = total;
       const kinds = [...Array(12).fill('frag'), ...Array(14).fill('void'), ...Array(9).fill('ice')];
       kinds.forEach((kind, i) => {
@@ -898,9 +932,9 @@
         last = Math.max(last, glint(...at(s, (Math.random() - 0.5) * 300), 14 + Math.random() * 22, (draw * s) / L + Math.random() * 500 * SLOW, 900 * SLOW, i % 3 === 0));
       }
       for (let k = 0; k <= 6; k++) {
-        setTimeout(() => window.Ambient?.burst(...toWin(...at((L * k) / 6, 0)), k % 2 ? [143, 227, 255] : [201, 184, 255], 16), (draw * k) / 6);
+        txLater(() => window.Ambient?.burst(...toWin(...at((L * k) / 6, 0)), k % 2 ? [143, 227, 255] : [201, 184, 255], 16), (draw * k) / 6);
       }
-      setTimeout(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
+      txLater(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
     });
     return total;
   }
@@ -956,7 +990,7 @@
     });
 
     // Astillas, paneles y destellos en el cuadro siguiente: el primero solo lleva los fragmentos grandes
-    requestAnimationFrame(() => {
+    txFrame(() => {
       // Astillas radiales desde el punto del arco, en el instante del estallido. La mayoría
       // son trozos reales de la 15 tomados de toda la slide; vacío y cristal solo como acento.
       let last = total;
@@ -994,7 +1028,7 @@
         const a = Math.random() * Math.PI * 2, r = 60 + Math.random() * 560;
         last = Math.max(last, glint(ox + Math.cos(a) * r, oy + Math.sin(a) * r, 14 + Math.random() * 24, hold + Math.random() * 800 * SLOW, 900 * SLOW, i % 3 === 0));
       }
-      setTimeout(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
+      txLater(() => { box.remove(); stage.querySelectorAll('.fx [data-cut]').forEach(e => e.remove()); }, last + 80);
     });
 
     // Grietas sobre las juntas: aparecen en el instante del arco y se apagan al separarse
@@ -1038,8 +1072,11 @@
     const hasCx = !!window.Codex?.has(label(s));
     cRef.classList.toggle('has-cx', hasCx);
     cRef.disabled = !hasCx;
-    [cRef, cWho, cCount].forEach((el, i) => el.animate([{ opacity: 0, transform: i ? 'translateY(10px)' : 'translateX(12px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 700, delay: i * 70, easing: EXPO, fill: 'backwards' }));
+    [cRef, cWho, cCount].forEach((el, i) => {
+      el.getAnimations().forEach(a => a.cancel());
+      el.animate([{ opacity: 0, transform: reduced ? 'none' : i ? 'translateY(10px)' : 'translateX(12px)' }, { opacity: 1, transform: 'none' }],
+        { duration: reduced ? 180 : 700, delay: reduced ? 0 : i * 70, easing: EXPO, fill: 'backwards' });
+    });
     cWho.innerHTML = s.dataset.backup
       ? '<b>RESPALDO</b> · SOLO SI PREGUNTAN'
       : `<b>${(s.dataset.who || '').replace('I', 'INTEGRANTE ')}</b> · ${s.dataset.time || ''}`;

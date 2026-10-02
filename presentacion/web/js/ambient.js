@@ -94,10 +94,13 @@
   });
 
   /* ---------- Dibujo ---------- */
-  let frameN = 0, lastT = -1e9;
+  let frameN = 0, lastT = -1e9, raf = 0, running = document.visibilityState === 'visible';
+  const schedule = () => { if (!reduced && running && !raf) raf = requestAnimationFrame(draw); };
   function draw(t) {
+    raf = 0;
+    if (!running) return;
     // Como máximo 60 cuadros por segundo: en pantallas de 120/144 Hz el fondo no corre el doble
-    if (!reduced && t - lastT < 15) { requestAnimationFrame(draw); return; }
+    if (!reduced && t - lastT < 15) { schedule(); return; }
     lastT = t;
     frameN++;
     for (const k of ['a', 'b', 'c']) for (let i = 0; i < 3; i++) pal[k][i] = lerp(pal[k][i], mood[k][i], 0.02);
@@ -256,12 +259,16 @@
       if (b.life <= 0) bursts.splice(i, 1);
     }
     ctx.globalCompositeOperation = 'source-over';
-    requestAnimationFrame(draw);
+    schedule();
   }
 
   addEventListener('resize', resize);
+  document.addEventListener('visibilitychange', () => {
+    running = document.visibilityState === 'visible';
+    if (running) { lastT = -1e9; schedule(); }
+  });
   resize();
-  if (!reduced) requestAnimationFrame(draw);
+  schedule();
 
   window.Ambient = { setMood, setAnchor, burst, mouse };
 })();

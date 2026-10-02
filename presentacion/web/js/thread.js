@@ -57,10 +57,11 @@
     return p;
   };
 
+  // En la 12 el hilo recorre el unifilar sincronizado del banco: positivo,
+  // nivel superior, puente 62/63, nivel inferior y retorno a la protección.
   const rackString = [
-    [400, 470], [470, 470], [470, R.cy(false)], [R.cx(12) + R.w / 2, R.cy(false)],
-    [R.cableX, R.cy(false)], [R.cableX, 520], [1630, 490], [R.cableX, 460], [R.cableX, R.cy(true)],
-    [R.cx(12) + R.w / 2, R.cy(true)], [R.x0, R.cy(true)], [470, R.cy(true)], [470, 430], [400, 430]
+    [302, 480], [334, 480], [334, 538], [466, 538], [486, 538],
+    [486, 658], [466, 658], [334, 658], [334, 720], [302, 720]
   ];
 
   const tl = G.tl;
