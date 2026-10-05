@@ -1,0 +1,156 @@
+/* =========================================================
+   Capa de acabado profesional (Claude · ver COORDINACION-CODEX-CLAUDE.md)
+   Mismo lenguaje Skirk; más contraste, más peso y espacio con intención.
+   No cambia textos, cifras ni estados. Se quita borrando su <link>.
+   ========================================================= */
+
+/* ---------- 1. Contraste: el texto de apoyo se lee desde el fondo del aula ---------- */
+:root {
+  --muted: rgba(236, 233, 247, 0.76);
+  --faint: rgba(236, 233, 247, 0.62);
+  --line: rgba(190, 175, 255, 0.22);
+  --line-strong: rgba(190, 175, 255, 0.5);
+}
+
+/* ---------- 2. Atmósfera: luz que da profundidad y numeral del bloque ---------- */
+/* un foco de luz detrás del contenido (del color del bloque) y un viñeteado que concentra la mirada */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(48% 62% at 30% 42%, color-mix(in srgb, var(--acc) 13%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 82% 70%, color-mix(in srgb, var(--acc) 7%, transparent), transparent 72%),
+    radial-gradient(130% 100% at 50% 45%, transparent 58%, rgba(3, 2, 8, 0.72) 100%);
+}
+.slide.hero::before { background: radial-gradient(130% 100% at 50% 45%, transparent 58%, rgba(3, 2, 8, 0.72) 100%); }
+/* ---------- 4. Tipografía: jerarquía más firme y editorial ---------- */
+.title { letter-spacing: -0.026em;
+  text-shadow: 0 2px 40px rgba(7, 6, 15, 0.9); }
+.title em, .title .hl {
+  background: linear-gradient(100deg, var(--violet-hi) 0%, color-mix(in srgb, var(--acc) 70%, var(--ice)) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.title .thin { font-weight: 200; letter-spacing: -0.01em; color: rgba(236, 233, 247, 0.86); }
+.kicker { font-size: 18px; letter-spacing: 0.4em; margin-bottom: 30px; }
+.kicker::before { width: 56px; height: 2px; box-shadow: 0 0 10px currentColor; }
+.lead { color: rgba(236, 233, 247, 0.82); text-wrap: pretty; }
+.body { font-weight: 400; text-wrap: pretty; }
+
+/* ---------- 5. Diagramas con peso y luz ---------- */
+.scene .axis { stroke-width: 2.5; }
+.scene .tick-l { fill: var(--text); }
+.scene .dm { filter: drop-shadow(0 0 8px var(--violet)) drop-shadow(0 0 22px var(--acc)); }
+.scene .node .core { filter: drop-shadow(0 0 8px var(--violet)) drop-shadow(0 0 20px var(--violet)); }
+.scene .gate line { stroke-width: 5; filter: drop-shadow(0 0 6px var(--violet)) drop-shadow(0 0 22px rgba(165, 139, 255, 0.55)); }
+.scene .gate .cap { filter: drop-shadow(0 0 8px var(--violet-hi)); }
+.route .st .n { text-shadow: 0 0 40px currentColor; font-size: 128px; }
+.route .st .dot { width: 20px; height: 20px; box-shadow: 0 0 0 6px rgba(165, 139, 255, 0.12), 0 0 30px var(--violet); }
+.gate-lbl h4 { font-size: 27px; }
+.gate-lbl p { font-size: 21px; }
+
+/* ---------- 6. Pie: la ayuda de teclado se va antes y no compite ---------- */
+#hint { opacity: 0.55; }
+
+/* ---------- 7. Texto de apoyo: nada por debajo de 18 px (escala 1920) ---------- */
+.mono-lbl { font-size: 18px; letter-spacing: 0.18em; }
+.jump { font-size: 18px; }
+.scene .tick-s { font-size: 18px; }
+.hero .meta b { font-size: 19px; }
+.route .st .i { font-size: 19px; }
+blockquote.q cite { font-size: 19px; }
+.trio li span { font-size: 18px; }
+.vs h4 { font-size: 19px; }
+.scene .node .node-n { font-size: 18px; }
+.detail .dr { font-size: 19px; }
+.scene .tag-danger { font-size: 18px; }
+.gate-lbl span { font-size: 19px; }
+.pt-lbl span { font-size: 19px; }
+.scene .cn-n { font-size: 19px; }
+.conseq div b { font-size: 19px; }
+.mono-n .lbl b { font-size: 19px; }
+.rows .h { font-size: 19px; }
+.rows .h span { font-size: 18px; }
+.specs { font-size: 19px; }
+.scene .cell-l { font-size: 19px; }
+.scene .f-l { font-size: 19px; }
+.rail { font-size: 18px; }
+.ppe b { font-size: 19px; }
+.barrier-list .r { font-size: 19px; }
+.evidence div b { font-size: 18px; }
+.evidence div i { font-size: 17px; }
+.ev-h { font-size: 18px; }
+.boom i { font-size: 19px; }
+.crew b, .after b { font-size: 19px; }
+.crew p.c-danger { font-size: 19px; }
+.plane-lbl { font-size: 19px; }
+.end-l { font-size: 19px; }
+.end-l span { font-size: 16px; }
+.roots .rt b { font-size: 19px; }
+.backup-badge { font-size: 19px; }
+.etable th { font-size: 19px; }
+
+/* =========================================================
+   8. Piezas de la temática por slide (js/pro.js)
+   ========================================================= */
+.pro { pointer-events: none; }
+/* corte de luz: violeta (mantenimiento) → hielo (datos) → carmesí (peligro) */
+.pro .pro-cut { fill: none; stroke: url(#pro-cut); stroke-width: 3; stroke-linecap: round; }
+.pro .pro-cut-halo { fill: none; stroke: url(#pro-cut); stroke-width: 18; stroke-opacity: 0.18; filter: blur(8px); }
+/* esquirla de hielo que nace del corte */
+.pro .pro-shard, .pro .pro-shard-facet { fill: url(#pro-shard); fill-opacity: 0.55; stroke: rgba(238, 240, 255, 0.4); stroke-width: 1.2; transform-box: fill-box; transform-origin: 50% 100%; }
+.pro .pro-shard-facet { fill: none; stroke: rgba(238, 240, 255, 0.22); }
+.slide:not(.is-active) .pro .pro-shard, .slide:not(.is-active) .pro .pro-shard-facet { transform: scaleY(0); opacity: 0; }
+.slide.is-active .pro .pro-shard, .slide.is-active .pro .pro-shard-facet { transition: transform 1.3s var(--ease-out) var(--d), opacity 0.8s var(--ease-out) var(--d); }
+/* láminas de hielo de las barreras (05) */
+.pro .pro-pane .pp-body { fill: url(#pro-pane); stroke: rgba(201, 184, 255, 0.35); stroke-width: 1.2; }
+.pro .pro-pane .pp-edge { stroke: #eef0ff; stroke-width: 2.5; stroke-linecap: round; opacity: 0.8; }
+.pro .pro-pane .pp-facet { stroke: rgba(238, 240, 255, 0.16); stroke-width: 1; }
+.pro .pro-pane { transform-box: fill-box; transform-origin: center; transition: opacity 0.9s var(--ease-out) var(--d), transform 1.2s var(--ease-out) var(--d); }
+.slide:not(.is-active) .pro .pro-pane { opacity: 0; transform: scaleY(0.6); }
+#s05[data-s="1"] .pro .pro-pane.hot .pp-body { fill: url(#pro-pane-hot); stroke: rgba(255, 77, 109, 0.6); }
+#s05[data-s="1"] .pro .pro-pane.hot .pp-edge { stroke: #ffd2da; }
+/* cuña de energía (06): se ensancha con el tiempo de despeje */
+.pro .pro-wedge { fill: url(#pro-wedge); transition: clip-path 2.2s var(--ease-out) 0.5s; clip-path: inset(0 0 0 0); }
+.slide:not(.is-active) .pro .pro-wedge { clip-path: inset(0 100% 0 0); }
+/* fisura de la cadena causal (08) */
+.pro .pro-fissure { fill: none; stroke: url(#pro-cut); stroke-width: 2.5; stroke-linejoin: bevel; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 2.4s var(--ease-inout) 0.4s; }
+.slide:not(.is-active) .pro .pro-fissure { stroke-dashoffset: 1; }
+.pro .pro-node { fill: rgba(17, 13, 36, 0.92); stroke: var(--ice); stroke-width: 1.5; transition: opacity 0.6s var(--ease-out) var(--d); }
+.pro .pro-node.m { stroke: var(--violet-hi); filter: drop-shadow(0 0 10px var(--violet)); }
+.pro .pro-node.e { stroke: var(--danger); filter: drop-shadow(0 0 12px var(--danger)); }
+.slide:not(.is-active) .pro .pro-node { opacity: 0; }
+/* triángulo del fuego (14): cristal facetado */
+.pro .pro-crystal { fill: url(#pro-crystal); }
+.pro .pro-facet { fill: none; stroke: rgba(255, 210, 218, 0.3); stroke-width: 1.5; }
+.pro .pro-facet-in { fill: none; stroke: rgba(255, 210, 218, 0.24); stroke-width: 1.2; stroke-dasharray: 3 9; }
+/* números protagonistas (06, 09): brillo frío */
+.mk .c, .formula-big { text-shadow: 0 0 30px color-mix(in srgb, var(--acc) 45%, transparent); }
+.mk.bad .c { color: var(--danger); text-shadow: 0 0 34px rgba(255, 77, 109, 0.6); }
+@media (prefers-reduced-motion: reduce) { .pro * { transition: none !important; } }
+
+.pro-layer { z-index: 0; }
+
+/* =========================================================
+   9. Mundo abisal (js/pro.js · world)
+   ========================================================= */
+.abyss { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: -1; pointer-events: none; overflow: visible; --px: 0; --py: 0; }
+.abyss .ab-par { transform: translate(calc(var(--px) * var(--z) * -1px), calc(var(--py) * var(--z) * -0.6px)); transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+/* cristal: cara iluminada (del color del bloque), cara en sombra y arista de luz */
+.abyss .cx-lit { fill: color-mix(in srgb, var(--acc) 22%, #120e2a); }
+.abyss .cx-dark { fill: #07060f; }
+.abyss .cx-edge { fill: none; stroke: color-mix(in srgb, var(--acc) 70%, #fff); stroke-width: 1.4; stroke-linejoin: round; }
+.abyss .ab-far { opacity: 0.32; }
+.abyss .ab-far .cx-lit { fill: color-mix(in srgb, var(--acc) 14%, #0c0a1e); }
+.abyss .ab-far .cx-edge { stroke-opacity: 0.5; }
+.abyss .ab-mid { opacity: 0.85; }
+.abyss .ab-near .cx-lit { fill: color-mix(in srgb, var(--acc) 30%, #16113a); }
+.abyss .ab-near .cx-edge { stroke-width: 2; filter: drop-shadow(0 0 8px var(--acc)); }
+/* haces de luz que respiran */
+.abyss .ab-shaft { fill: color-mix(in srgb, var(--acc) 9%, transparent); mix-blend-mode: screen; animation: ab-breathe 9s ease-in-out calc(var(--i) * -3s) infinite; }
+@keyframes ab-breathe { 50% { opacity: 0.35; } }
+/* suelo: horizonte frío y charco de luz */
+.abyss .ab-pool { fill: color-mix(in srgb, var(--acc) 12%, transparent); filter: blur(30px); }
+.abyss .ab-horizon { fill: none; stroke: color-mix(in srgb, var(--acc) 45%, transparent); stroke-width: 1.5; }
+/* entrada: la caverna emerge desde la oscuridad */
+.slide .abyss { opacity: 0; transition: opacity 1.4s var(--ease-out); }
+.slide.is-active .abyss, .slide.is-leaving .abyss { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .abyss .ab-shaft { animation: none; } .abyss .ab-par { transition: none; } }

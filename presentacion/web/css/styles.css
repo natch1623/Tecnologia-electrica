@@ -318,6 +318,9 @@ div[data-at], p[data-at], div[data-only], p[data-only] { transform: translate3d(
 .hero h1 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; }
 .hero h1 .w > span { display: inline-block; transform: translate3d(0, 110%, 0); }
 .slide.is-active.hero h1 .w > span { transform: none; transition: transform 1.4s var(--ease-out) var(--d, 0ms); }
+/* Mientras carga la página, la entrada de la portada queda en su primer cuadro */
+.hero.booting, .hero.booting * { animation-play-state: paused !important; }
+.slide.is-active.hero.booting h1 .w > span { transform: translate3d(0, 110%, 0); transition: none; }
 .hero h1 .accent { background: linear-gradient(100deg, var(--star) 10%, var(--violet-hi) 45%, var(--ice) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero .meta { display: flex; gap: 60px; align-items: flex-start; }
 .hero .meta div { font: 300 24px/1.5 var(--f-sans); color: var(--muted); }
@@ -1070,6 +1073,7 @@ body.presenter .pv { display: grid; position: fixed; inset: 0; z-index: 10; grid
 .recon .rc-3d-mark .rc-3d-label { font-size: 17px; }
 .recon .rc-3d-sub { font-size: 13px; letter-spacing: 0.04em; opacity: 0.82; }
 .recon .title, .recon .backup-badge, .recon .rc-clock, .recon .rc-cap { z-index: 4; }
+.recon .jump { z-index: 5; }
 .recon svg.rc { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; }
 .recon svg.rc { z-index: 2; }
 .recon svg.rc text { font-family: var(--f-mono); }

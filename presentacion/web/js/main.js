@@ -1268,7 +1268,21 @@
   const start = parseInt(location.hash.slice(1), 10);
   const first = Number.isFinite(start) ? Math.max(0, Math.min(slides.length - 1, start - 1)) : 0;
   idx = first;
+  // La portada espera a las fuentes y a que termine la carga: si arranca mientras
+  // el hilo principal está ocupado, el sigilo se traza a saltos y el título cambia de fuente
+  const hero = slides[0];
+  const boot = first === 0 && !reduced && document.readyState !== 'complete';
+  if (boot) hero.classList.add('booting');
   go(first, { silent: true });
+  if (boot) {
+    scene(hero).leave?.(hero);
+    const loaded = new Promise(r => addEventListener('load', r, { once: true }));
+    const cap = new Promise(r => setTimeout(r, 3500));
+    Promise.race([Promise.all([loaded, document.fonts.ready]), cap]).then(() => requestAnimationFrame(() => requestAnimationFrame(() => {
+      hero.classList.remove('booting');
+      if (idx === 0) scene(hero).enter?.(hero);
+    })));
+  }
   addEventListener('hashchange', () => {
     const h = parseInt(location.hash.slice(1), 10);
     if (Number.isFinite(h) && h - 1 !== idx) go(h - 1);
