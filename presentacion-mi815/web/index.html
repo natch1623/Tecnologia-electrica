@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perfil MI 815 · Protección radiológica</title>
+<meta name="description" content="Defensa del perfil de proyecto: efecto de un programa de optimización de la protección radiológica en el personal de imagenología de la Clínica Princess, La Chorrera, 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%2313233A%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%225%22 fill=%22%23E0A32E%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/styles.css?v=3">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main class="stage" id="stage">
+
+  <!-- Hilo conductor: una sola línea que se transforma a lo largo de la defensa -->
+  <div class="thread-wrap" aria-hidden="true">
+    <svg id="thread" viewBox="0 0 1920 1080">
+      <defs>
+        <linearGradient id="thg" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+          <stop offset="0" stop-color="#F5F2EC" stop-opacity=".55"/><stop offset=".5" stop-color="#E0A32E"/><stop offset="1" stop-color="#f2c56a"/>
+        </linearGradient>
+      </defs>
+      <path class="th-glow"/><path class="th-path"/><circle class="th-spark" r="5"/>
+    </svg>
+  </div>
+
+  <!-- ============ 01 · Portada ============ -->
+  <section class="slide" id="s01" data-title="Portada" data-who="Katheryn" data-time="0:45" data-tx="dissolve" data-thread="hero" data-block="Perfil de proyecto" data-ref="Octubre 2026" data-anchor="1530 540" data-mood="calm">
+    <div class="photo deep" aria-hidden="true"><img src="img/sala-rayos-x.jpg" alt=""></div>
+    <svg class="sigil" viewBox="0 0 900 900" aria-hidden="true">
+      <circle class="wave" cx="450" cy="450" r="420"/><circle class="wave" cx="450" cy="450" r="420"/><circle class="wave" cx="450" cy="450" r="420"/>
+      <g class="spin">
+        <circle class="ring" cx="450" cy="450" r="400" stroke-opacity=".16" stroke-dasharray="2 12"/>
+        <circle class="ring" cx="450" cy="450" r="300" stroke-opacity=".22"/>
+        <circle class="ring" cx="450" cy="450" r="220" stroke-opacity=".3" stroke-dasharray="60 14 6 14"/>
+      </g>
+      <g class="spin-r">
+        <circle class="ring" cx="450" cy="450" r="150" stroke-opacity=".42"/>
+        <circle class="ring" cx="450" cy="450" r="96" stroke-opacity=".55" stroke-dasharray="3 9"/>
+        <path class="ring" d="M450 20 V120 M450 780 V880 M20 450 H120 M780 450 H880" stroke-opacity=".4"/>
+      </g>
+      <g class="orbit"><circle cx="450" cy="150" r="6" fill="#f2c56a" style="filter: drop-shadow(0 0 8px #E0A32E)"/></g>
+      <g class="orbit-r"><circle cx="450" cy="230" r="4" fill="#F5F2EC"/></g>
+      <circle cx="450" cy="450" r="12" fill="#E0A32E" style="filter: drop-shadow(0 0 14px #E0A32E)"/>
+      <circle cx="450" cy="450" r="4" fill="#F5F2EC"/>
+    </svg>
+    <p class="a inst rv" style="--d:100ms"><b>UNACHI</b>Vicerrectoría de Investigación y Posgrado<br>Maestría en Investigación · MI 815 Enfoque Mixto de la Investigación</p>
+    <h1 class="a" data-split>Efecto de un programa de <em>optimización de la protección radiológica</em> en las prácticas de seguridad y la exposición ocupacional del personal de imagenología de la Clínica Princess, La Chorrera, 2027</h1>
+    <div class="a meta rv" style="--d:1300ms">
+      <div><b>Estudiantes</b><span class="names">Katheryn Esther Flores Amor<br>Douglas Gerald Barsallo D.</span></div>
+      <div><b>Facilitador</b><span class="names">Dr. Heriberto Franco A.</span></div>
+      <div><b>Fecha</b><span class="names">Octubre 2026</span></div>
+    </div>
+    <aside class="notes">
+      <p>Buenas tardes, Dr. Heriberto Franco y compañeros. Mi nombre es Katheryn Esther Flores Amor y, junto con Douglas Gerald Barsallo, presento el perfil de proyecto del curso MI 815, Enfoque Mixto de la Investigación, de la Maestría en Investigación de la UNACHI.</p>
+      <p>Nuestro estudio se titula «Efecto de un programa de optimización de la protección radiológica en las prácticas de seguridad y la exposición ocupacional del personal de imagenología de la Clínica Princess, La Chorrera, 2027».</p>
+      <p>Yo expondré la idea central, los antecedentes, el problema, la justificación, los objetivos y las hipótesis. Douglas presentará el marco teórico, la metodología, el cronograma, el presupuesto y el impacto esperado.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 02 · Idea central ============ -->
+  <section class="slide" id="s02" data-title="Idea central" data-who="Katheryn" data-time="1:00" data-tx="slash" data-thread="ceiling" data-block="Planteamiento" data-ref="Perfil · § 4.1–4.2" data-anchor="1500 300" data-mood="dose" data-states="1">
+    <p class="a kicker rv" style="left:150px; top:170px">Idea central</p>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <text class="ceil-l rv" x="1770" y="276" text-anchor="end" style="--d:600ms">LÍMITE DE DOSIS</text>
+      <g class="bars" data-at="1">
+        <rect x="190" y="858" width="44" height="42" style="--i:0"/><rect x="270" y="852" width="44" height="48" style="--i:1"/><rect x="350" y="862" width="44" height="38" style="--i:2"/>
+        <rect x="430" y="850" width="44" height="50" style="--i:3"/><rect x="510" y="856" width="44" height="44" style="--i:4"/><rect x="590" y="860" width="44" height="40" style="--i:5"/>
+        <rect x="670" y="848" width="44" height="52" style="--i:6"/><rect x="750" y="855" width="44" height="45" style="--i:7"/><rect x="830" y="859" width="44" height="41" style="--i:8"/>
+        <rect x="910" y="851" width="44" height="49" style="--i:9"/><rect x="990" y="857" width="44" height="43" style="--i:10"/>
+      </g>
+      <path class="cum draw" data-at="1" pathLength="1" style="--d:500ms" d="M190 900 L212 879 L292 855 L372 836 L452 811 L532 789 L612 769 L692 743 L772 721 L852 700 L932 676 L1012 654"/>
+      <text class="cum-l" data-at="1" x="1032" y="660">DOSIS ACUMULADA</text>
+      <g data-at="1"><circle class="head-ring" cx="1012" cy="654" r="8"/><circle class="head" cx="1012" cy="654" r="6"/></g>
+      <g class="quanta" data-at="1">
+        <circle cx="212" cy="850" r="4" style="--i:0"/><circle cx="452" cy="842" r="4" style="--i:1"/><circle cx="692" cy="840" r="4" style="--i:2"/><circle cx="292" cy="844" r="4" style="--i:3"/>
+        <circle cx="852" cy="851" r="4" style="--i:4"/><circle cx="532" cy="848" r="4" style="--i:5"/><circle cx="1012" cy="849" r="4" style="--i:6"/>
+      </g>
+      <line x1="150" y1="900.5" x2="1080" y2="900.5" stroke="rgba(245,242,236,.3)" data-at="1"/>
+    </svg>
+    <p class="a quote rv" style="--d:250ms; top:360px">El límite de dosis es <em>un techo,</em> no una meta.</p>
+    <p class="a cite quote-cite rv" style="--d:700ms; top:612px">(ICRP, 2007)</p>
+    <p class="a risk" data-at="1">Dosis bajas <b>acumuladas</b> elevan el riesgo de cáncer<br><span class="cite">(Richardson et al., 2023)</span></p>
+    <aside class="notes">
+      <p>Partimos de una idea central. La Comisión Internacional de Protección Radiológica establece un límite ocupacional de dosis, pero ese límite es un techo, no una meta (ICRP, 2007). Una instalación puede cumplirlo y, aun así, no haber optimizado su protección.</p>
+      <p><b>[Avanzar]</b> ¿Por qué importa? Porque los efectos estocásticos, como el cáncer, no tienen umbral conocido: su probabilidad crece con la dosis, y esa dosis se acumula durante toda la vida laboral. La cohorte INWORKS, con más de 300 000 trabajadores de Francia, el Reino Unido y Estados Unidos, encontró un aumento del riesgo de muerte por cáncer sólido a dosis ocupacionales bajas (Richardson et al., 2023).</p>
+      <p>Por eso la normativa internacional exige mantener las dosis tan bajas como sea razonablemente posible, aunque estén muy por debajo del límite. Las barras del esquema son ilustrativas: no representan datos de la clínica.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 03 · Antecedentes ============ -->
+  <section class="slide" id="s03" data-title="Antecedentes" data-who="Katheryn" data-time="1:30" data-tx="sweep" data-thread="timeline" data-block="Planteamiento" data-ref="Perfil · § 3" data-anchor="1580 600" data-mood="dose" data-states="3">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Antecedentes</h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <line class="lnk" x1="1580" y1="588" x2="1580" y2="514"/>
+      <line class="lnk" x1="730" y1="588" x2="730" y2="480" data-at="1"/>
+      <line class="lnk" x1="1120" y1="612" x2="1120" y2="650" data-at="2"/>
+      <line class="lnk" x1="340" y1="612" x2="340" y2="650" data-at="3"/>
+      <circle class="node" cx="1580" cy="600" r="11"/>
+      <circle class="node" cx="730" cy="600" r="11" data-at="1"/>
+      <circle class="node" cx="1120" cy="600" r="11" data-at="2"/>
+      <circle class="node pa" cx="340" cy="600" r="11" data-at="3"/>
+    </svg>
+    <div class="card hot rv" style="left:1390px; top:240px; --d:500ms">
+      <h3>Zheng et al. (2026)</h3>
+      <div class="fig">β = <span data-count="0.446" data-dec="3" data-dur="1600" data-delay="600">0,446</span></div>
+      <p>207 tecnólogos · conocimiento → práctica</p>
+    </div>
+    <div class="card" data-at="1" style="left:540px; top:240px">
+      <h3>Hankin y Jones (2020)</h3>
+      <div class="pips"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p>8 intervenciones: ↑&nbsp;conocimiento; ninguna midió la práctica</p>
+    </div>
+    <div class="card low" data-at="2" style="left:930px">
+      <h3>Kumar et al. (2021)</h3>
+      <div class="fig"><span data-count="22.5" data-dec="1" data-dur="700" data-delay="300">22,5</span> %<span class="to">→</span><span data-count="95" data-from="22.5" data-dur="1400" data-delay="500">95</span> %</div>
+      <div class="bar"><i></i><b></b></div>
+      <p>Protector de tiroides; luego se deteriora</p>
+    </div>
+    <div class="card low" data-at="3" style="left:150px">
+      <div class="lbl">Panamá</div>
+      <h3>Bernal Troetsch (2019)</h3>
+      <p>Solo descriptivos</p>
+    </div>
+    <aside class="notes">
+      <p>La literatura reciente muestra dos hallazgos: el personal conoce los principios de protección, pero no siempre los aplica; y la capacitación mejora los conocimientos, pero falta demostrar que mejora las prácticas y reduce la dosis.</p>
+      <p>Zheng et al. (2026) encuestaron a 207 tecnólogos de radiodiagnóstico en Shanghái. Con ecuaciones estructurales, el conocimiento predijo directamente la práctica (β = 0,446; p = 0,006), y los autores lo atribuyen a los protocolos institucionales más que a las actitudes.</p>
+      <p><b>[Avanzar]</b> Hankin y Jones (2020) revisaron las intervenciones educativas publicadas entre 2000 y 2018: de 1795 estudios, ocho cumplieron los criterios. Todos aumentaron los conocimientos, pero ninguno evaluó la retención ni el efecto en la práctica clínica.</p>
+      <p><b>[Avanzar]</b> Kumar et al. (2021) aplicaron un programa educativo a 40 trabajadores de un quirófano de urología en la India: el uso del protector de tiroides pasó de 22,5 % a 95 %, pero el efecto se deterioró con el tiempo.</p>
+      <p><b>[Avanzar]</b> En Panamá, Bernal Troetsch (2019) evaluó conocimientos con un diseño descriptivo. No identificamos estudios de intervención publicados ni estudios en clínicas privadas pequeñas del país.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 04 · Vacíos y respuesta ============ -->
+  <section class="slide" id="s04" data-title="Cuatro vacíos y respuesta" data-who="Katheryn" data-time="1:00" data-tx="sweep" data-thread="divider" data-block="Planteamiento" data-ref="Perfil · § 3.4" data-anchor="985 600" data-mood="dose" data-states="4">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Cuatro vacíos, <em>cuatro respuestas</em></h2>
+    <p class="a lbl hdr rv" style="left:150px; --d:200ms">Vacío</p>
+    <p class="a lbl hdr" data-at="1" style="left:1104px; color:var(--amber)">Respuesta</p>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs><marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="arrow-h" d="M0 0 L10 5 L0 10 Z"/></marker></defs>
+      <path class="arrow draw" data-at="1" pathLength="1" d="M870 416 H1050" marker-end="url(#ah4)"/>
+      <path class="arrow draw" data-at="2" pathLength="1" d="M870 546 H1050" marker-end="url(#ah4)"/>
+      <path class="arrow draw" data-at="3" pathLength="1" d="M870 676 H1050" marker-end="url(#ah4)"/>
+      <path class="arrow draw" data-at="4" pathLength="1" d="M870 806 H1050" marker-end="url(#ah4)"/>
+      <circle class="trav" data-at="1" r="5"><animateMotion dur="1.6s" repeatCount="indefinite" path="M870 416 H1040"/></circle>
+      <circle class="trav" data-at="2" r="5"><animateMotion dur="1.6s" begin="0.4s" repeatCount="indefinite" path="M870 546 H1040"/></circle>
+      <circle class="trav" data-at="3" r="5"><animateMotion dur="1.6s" begin="0.8s" repeatCount="indefinite" path="M870 676 H1040"/></circle>
+      <circle class="trav" data-at="4" r="5"><animateMotion dur="1.6s" begin="1.2s" repeatCount="indefinite" path="M870 806 H1040"/></circle>
+    </svg>
+    <div class="row" style="top:360px"><div class="gap rv" style="--d:300ms"><span class="n">1</span>Miden conocimiento</div><div class="ans" data-at="1">Observación directa</div></div>
+    <div class="row" style="top:490px"><div class="gap rv" style="--d:400ms"><span class="n">2</span>No miden dosis</div><div class="ans" data-at="2">Dosimetría ajustada</div></div>
+    <div class="row" style="top:620px"><div class="gap rv" style="--d:500ms"><span class="n">3</span>No miden sostenibilidad</div><div class="ans" data-at="3">Seguimiento a 3 meses</div></div>
+    <div class="row" style="top:750px"><div class="gap rv" style="--d:600ms"><span class="n">4</span>No explican el porqué</div><div class="ans" data-at="4">Entrevistas</div></div>
+    <aside class="notes">
+      <p>De esta revisión surgen cuatro vacíos, y cada uno define una decisión de nuestro diseño.</p>
+      <p><b>[1]</b> Las intervenciones miden conocimientos, no conductas: Hankin y Jones (2020) señalan que ningún estudio de su revisión evaluó la práctica. Nosotros la mediremos por observación directa.</p>
+      <p><b>[2]</b> Falta medir la dosis: Kumar et al. (2021) evaluaron el uso de protectores, pero no la exposición. Incorporamos la dosimetría personal ajustada por carga de trabajo.</p>
+      <p><b>[3]</b> Falta medir la sostenibilidad: el deterioro del efecto que reportan Kumar et al. (2021) exige una medición de seguimiento, que haremos a los tres meses.</p>
+      <p><b>[4]</b> Falta explicar el porqué: los estudios cuantitativos detectan la brecha entre saber y hacer, pero no sus causas. El componente cualitativo la explicará desde la experiencia del personal, mediante entrevistas (Creswell y Plano Clark, 2018).</p>
+    </aside>
+  </section>
+
+  <!-- ============ 05 · Problema y pregunta ============ -->
+  <section class="slide" id="s05" data-title="Problema y pregunta" data-who="Katheryn" data-time="1:15" data-tx="rise" data-thread="limit" data-block="Planteamiento" data-ref="Perfil · § 5" data-anchor="1400 360" data-mood="dose" data-states="1">
+    <h2 class="a title rv" style="font-size:72px; top:120px">El problema</h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <text class="state-l rv" x="1770" y="338" text-anchor="end" style="--d:500ms">LÍMITE</text>
+      <g class="rv" style="--d:400ms">
+        <rect class="dose" x="1110" y="560" width="70" height="80"/><rect class="dose" x="1230" y="545" width="70" height="95"/>
+        <rect class="dose" x="1350" y="570" width="70" height="70"/><rect class="dose" x="1470" y="552" width="70" height="88"/>
+        <rect class="dose" x="1590" y="565" width="70" height="75"/>
+        <line x1="1060" y1="640.5" x2="1770" y2="640.5" stroke="rgba(245,242,236,.35)"/>
+      </g>
+      <text class="qmark rv" x="1700" y="626" style="--d:1200ms">?</text>
+    </svg>
+    <div class="a pts">
+      <p class="rv" style="--d:300ms">La clínica <b>cumple los límites</b></p>
+      <p class="warn rv" style="--d:600ms">Optimización sin evaluación sistemática <span class="cite">(OIEA, 2018)</span></p>
+    </div>
+    <div class="a question" data-at="1">
+      <div class="lbl">Pregunta</div>
+      <p data-split>¿Cuál es el efecto del programa en las prácticas de seguridad y la exposición ocupacional del personal de imagenología de la Clínica Princess durante 2027?</p>
+    </div>
+    <aside class="notes">
+      <p>El problema de esta investigación no es el incumplimiento de la norma, sino la ausencia de una optimización verificada.</p>
+      <p>La Clínica Princess, en La Chorrera, cuenta con un servicio de rayos X convencional. El personal utiliza dosimetría personal y los registros muestran dosis por debajo de los límites. Sin embargo, la clínica no cuenta con una evaluación sistemática que demuestre que las prácticas y las dosis están optimizadas, como recomienda el OIEA (2018). Por eso el estudio parte de una verificación documental del programa de protección existente.</p>
+      <p>Cumplir el límite no demuestra que las dosis sean tan bajas como se puede lograr. Además, el personal no siempre traduce sus conocimientos en prácticas (Zheng et al., 2026) y el efecto de la capacitación se pierde si no se refuerza (Kumar et al., 2021).</p>
+      <p><b>[Avanzar]</b> De ahí nuestra pregunta: ¿cuál es el efecto de un programa de optimización de la protección radiológica en las prácticas de seguridad y la exposición ocupacional del personal de imagenología de la Clínica Princess, La Chorrera, durante 2027?</p>
+    </aside>
+  </section>
+
+  <!-- ============ 06 · Justificación ============ -->
+  <section class="slide" id="s06" data-title="Justificación y viabilidad" data-who="Katheryn" data-time="1:15" data-tx="sweep" data-thread="ground" data-block="Planteamiento" data-ref="Perfil · § 6" data-anchor="960 690" data-mood="dose">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Justificación</h2>
+    <div class="card rv" style="left:150px; --d:200ms"><span class="n">I</span><div class="lbl">Teórica</div><h3>Conocimiento, protocolos y práctica</h3></div>
+    <div class="card rv" style="left:710px; --d:350ms"><span class="n">II</span><div class="lbl">Metodológica</div><h3>Responde a los cuatro vacíos</h3></div>
+    <div class="card rv" style="left:1270px; --d:500ms"><span class="n">III</span><div class="lbl">Práctica</div><h3>Programa documentado y replicable</h3></div>
+    <div class="a via rv" style="--d:800ms">
+      <div class="h">Viabilidad</div>
+      <div class="it">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#E0A32E" stroke-width="2"><rect class="draw" pathLength="1" x="12" y="6" width="32" height="44" rx="2"/><circle cx="36" cy="29" r="2.5" fill="#E0A32E"/><path class="draw" pathLength="1" d="M6 50 H50"/></svg>
+        <span><b>Acceso</b> a la clínica</span>
+      </div>
+      <div class="it">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#E0A32E" stroke-width="2"><path class="draw" pathLength="1" d="M28 5 L48 13 V27 C48 40 39 48 28 52 C17 48 8 40 8 27 V13 Z"/><path class="draw" pathLength="1" d="M19 28 L26 35 L38 21"/></svg>
+        <span><b>Sesgo jerárquico</b> controlado: coinvestigador y observador externo</span>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>La investigación se justifica en tres planos.</p>
+      <p>En lo teórico, pondrá a prueba la relación entre conocimiento, protocolos institucionales y práctica descrita por Zheng et al. (2026) y Yashima y Chida (2023). Además, aportará datos de una población no estudiada en Panamá: el personal de clínicas privadas pequeñas.</p>
+      <p>En lo metodológico, responde a los cuatro vacíos: mide conductas por observación directa, incorpora la dosis ajustada por carga de trabajo, evalúa la sostenibilidad a los tres meses y explica los resultados con datos cualitativos.</p>
+      <p>En lo práctico, la clínica obtendrá un programa de optimización documentado y alineado con los requisitos del Ministerio de Salud de Panamá (2024); el personal y los pacientes recibirán menos dosis.</p>
+      <p>Es viable porque, como jefa de la clínica, tengo acceso a las instalaciones, al personal y a los registros dosimétricos. Para que esa relación jerárquica no influya, las entrevistas y observaciones las realizarán el coinvestigador y un observador externo, y los datos se analizarán de forma anónima.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 07 · Objetivos ============ -->
+  <section class="slide" id="s07" data-title="Objetivos" data-who="Katheryn" data-time="1:00" data-tx="slash" data-thread="rise" data-block="Objetivos e hipótesis" data-ref="Perfil · § 7" data-anchor="1560 650" data-mood="order" data-states="1">
+    <div class="a og rv" style="--d:150ms">
+      <p class="kicker">Objetivo general</p>
+      <p><em>Evaluar</em> el efecto del programa en las prácticas de seguridad y la exposición ocupacional.</p>
+    </div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <g data-at="1">
+        <circle class="rip" cx="300" cy="862" r="13"/><circle class="rip r2" cx="720" cy="791" r="13"/><circle class="rip r3" cx="1140" cy="720" r="13"/><circle class="rip r4" cx="1560" cy="650" r="13"/>
+        <circle class="nd" cx="300" cy="862" r="13"/><circle class="nd-c" cx="300" cy="862" r="4"/>
+        <circle class="nd" cx="720" cy="791" r="13"/><circle class="nd-c" cx="720" cy="791" r="4"/>
+        <circle class="nd" cx="1140" cy="720" r="13"/><circle class="nd-c" cx="1140" cy="720" r="4"/>
+        <circle class="nd" cx="1560" cy="650" r="13"/><circle class="nd-c" cx="1560" cy="650" r="4"/>
+      </g>
+    </svg>
+    <div class="oe" data-at="1" style="left:270px; top:640px; transition-delay:0ms"><div class="id">OE1</div><div class="v">Diagnosticar</div><p>la línea base</p></div>
+    <div class="oe" data-at="1" style="left:690px; top:569px; transition-delay:150ms"><div class="id">OE2</div><div class="v">Explorar</div><p>percepciones y barreras</p></div>
+    <div class="oe" data-at="1" style="left:1110px; top:498px; transition-delay:300ms"><div class="id">OE3</div><div class="v">Implementar</div><p>el programa</p></div>
+    <div class="oe" data-at="1" style="left:1530px; top:428px; width:280px; transition-delay:450ms"><div class="id">OE4</div><div class="v">Comparar</div><p>antes, después y a los 3 meses</p></div>
+    <aside class="notes">
+      <p>Nuestro objetivo general es evaluar el efecto de un programa de optimización de la protección radiológica en las prácticas de seguridad y la exposición ocupacional del personal de imagenología de la Clínica Princess, La Chorrera, durante 2027. En este diseño cuasiexperimental, el efecto se estima comparando las mediciones antes, después y a los tres meses del programa (Shadish et al., 2002).</p>
+      <p><b>[Avanzar]</b> Los objetivos específicos tienen un solo verbo y siguen el orden cronológico del estudio:</p>
+      <p>OE1, diagnosticar los conocimientos, las prácticas de seguridad y la exposición ocupacional antes de la intervención. OE2, explorar las percepciones, barreras y facilitadores del personal frente a las medidas de protección. OE3, implementar un programa de optimización fundamentado en el diagnóstico integrado. Y OE4, comparar los conocimientos, las prácticas y la exposición antes, después y a los tres meses.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 08 · Hipótesis ============ -->
+  <section class="slide" id="s08" data-title="Hipótesis" data-who="Katheryn" data-time="1:15" data-tx="sweep" data-thread="balance" data-block="Objetivos e hipótesis" data-ref="Perfil · § 8" data-anchor="960 480" data-mood="order" data-states="1">
+    <div class="a hi rv" style="--d:150ms"><div class="tag">Hi</div><p>El cumplimiento de las prácticas es <em class="accent">mayor después</em> del programa.</p></div>
+    <div class="a h0 rv" style="--d:450ms"><div class="tag">H0</div><p>No hay diferencia.</p></div>
+    <p class="a alpha" data-at="1">α = 0,05</p>
+    <table class="t" data-at="1">
+      <tr><th></th><th></th><th>Indicador</th><th>Prueba</th></tr>
+      <tr><td>Hi</td><td><b>Prácticas</b></td><td>Conductas 0–15</td><td>Modelo binomial de efectos mixtos</td></tr>
+      <tr><td>Hs1</td><td><b>Conocimientos</b></td><td>—</td><td>Wilcoxon</td></tr>
+      <tr><td>Hs2</td><td><b>Exposición</b></td><td>Hp(10) por 100 estudios y H*(10)</td><td>Wilcoxon</td></tr>
+    </table>
+    <aside class="notes">
+      <p>La hipótesis de investigación es que el cumplimiento de las prácticas de seguridad radiológica del personal de imagenología de la Clínica Princess es mayor después de la implementación del programa de optimización que antes de ella. La hipótesis nula plantea que no existe diferencia en el cumplimiento antes y después del programa.</p>
+      <p><b>[Avanzar]</b> La Hi se verifica por observación directa: en cada procedimiento se registran las conductas cumplidas, de 0 a 15, y se comparan con un modelo binomial de efectos mixtos, con el trabajador como efecto aleatorio.</p>
+      <p>La complementan dos hipótesis secundarias: Hs1, el puntaje de conocimientos es mayor después del programa; y Hs2, la exposición ocupacional es menor, medida como Hp(10) por cada 100 estudios y como H*(10) en la posición del operador. Ambas se contrastan con la prueba de Wilcoxon de rangos con signo. El nivel de significancia es de 0,05.</p>
+      <p>Con esto cedo la palabra a Douglas.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 09 · Marco teórico ============ -->
+  <section class="slide" id="s09" data-title="Marco teórico" data-who="Douglas" data-time="1:15" data-tx="slash" data-thread="axis" data-block="Marco teórico" data-ref="Perfil · § 4" data-anchor="1240 560" data-mood="field">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Marco teórico</h2>
+    <div class="pr rv" style="top:270px; --d:200ms"><span class="n">01</span><span class="h">Justificación</span></div>
+    <div class="pr hot rv" style="top:390px; --d:350ms"><span class="n">02</span><span class="h">Optimización · ALARA</span></div>
+    <div class="pr rv" style="top:570px; --d:500ms"><span class="n">03</span><span class="h">Limitación</span><span class="d"><b>20 mSv/año</b>cristalino 20 mSv/año</span></div>
+    <div class="photo" aria-hidden="true"><img src="img/tubo-colimador.jpg" alt=""></div>
+    <svg class="scene tdb" viewBox="0 0 1920 1080" aria-hidden="true">
+      <g class="rv" style="--d:600ms">
+        <circle class="clock" cx="1240" cy="370" r="46"/>
+        <path class="clock-a" d="M1240 370 L1240 324 A46 46 0 0 1 1279.8 347 Z"/>
+        <line class="hand" x1="1240" y1="370" x2="1240" y2="334"/>
+        <text x="1240" y="300">TIEMPO</text>
+      </g>
+      <g class="rv" style="--d:750ms">
+        <path class="rg" stroke-width="2.4" stroke-opacity=".9" d="M1287 516 A64 64 0 0 1 1287 604"/>
+        <path class="rg a2" stroke-width="1.8" stroke-opacity=".6" d="M1334 476 A128 128 0 0 1 1334 644"/>
+        <path class="rg a3" stroke-width="1.3" stroke-opacity=".38" d="M1396 426 A205 205 0 0 1 1396 694"/>
+        <path class="rg a4" stroke-width="1" stroke-opacity=".22" d="M1470 370 A295 295 0 0 1 1470 750"/>
+        <circle class="ph-dot" r="4"><animateMotion dur="1.6s" repeatCount="indefinite" path="M1252 560 L1636 560"/><animate attributeName="opacity" dur="1.6s" values="0;1;1;0" keyTimes="0;0.1;0.92;1" repeatCount="indefinite"/></circle>
+        <circle class="ph-dot" r="3"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M1250 552 L1636 470"/><animate attributeName="opacity" dur="1.6s" begin="0.5s" values="0;1;1;0" keyTimes="0;0.1;0.92;1" repeatCount="indefinite"/></circle>
+        <circle class="ph-dot" r="3"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite" path="M1250 568 L1636 650"/><animate attributeName="opacity" dur="1.6s" begin="1s" values="0;1;1;0" keyTimes="0;0.1;0.92;1" repeatCount="indefinite"/></circle>
+        <circle class="src" cx="1240" cy="560" r="12"/>
+      </g>
+      <g class="rv" style="--d:900ms">
+        <rect class="wall" x="1640" y="420" width="34" height="290"/>
+        <text x="1657" y="396">BLINDAJE</text>
+      </g>
+      <g class="rv" style="--d:1000ms">
+        <path d="M1240 760 H1600" stroke="none"/>
+        <path d="M1590 752 L1604 760 L1590 768" fill="none" stroke="#E0A32E" stroke-width="2"/>
+        <text x="1420" y="808">DISTANCIA</text>
+        <text class="sub" x="1420" y="840">1/d²</text>
+      </g>
+    </svg>
+    <div class="a norm rv" style="--d:1100ms">
+      <div class="h">Normativa</div>
+      <div><b>D.E. 770 de 2010</b></div>
+      <div><b>Propuesta MINSA 2024</b></div>
+      <div><b>Leyes 84 y 81 de 2019</b></div>
+    </div>
+    <aside class="notes">
+      <p>Gracias, Katheryn. El marco teórico se apoya en el sistema de protección radiológica de la ICRP (2007) y el OIEA (2014), con tres principios. La justificación exige que toda exposición produzca más beneficio que daño. La optimización, o principio ALARA, exige mantener las dosis tan bajas como sea razonablemente posible: es el foco del estudio, porque la clínica ya cumple los límites. La limitación fija 20 mSv por año, promediados en cinco años y sin superar 50 mSv en uno solo, y 20 mSv por año en el cristalino (ICRP, 2012; OIEA, 2014).</p>
+      <p>La optimización se concreta con tres herramientas físicas: menos tiempo de exposición, más distancia —la tasa de dosis disminuye con el cuadrado de la distancia— y blindaje (Bushberg et al., 2021).</p>
+      <p>En Panamá, el Decreto Ejecutivo 770 de 2010 exige capacitación reconocida por el MINSA; la propuesta de 2024 plantea 40 horas iniciales y 20 de actualización cada dos años; y las Leyes 84 y 81 de 2019 regulan la investigación para la salud y la protección de datos.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 10 · Diseño ============ -->
+  <section class="slide" id="s10" data-title="Diseño mixto de intervención" data-who="Douglas" data-time="1:30" data-tx="expand" data-origin="360 560" data-thread="flow" data-block="Metodología" data-ref="Perfil · § 10.1–10.2" data-anchor="1160 560" data-mood="flow" data-states="2">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Diseño mixto de <em>intervención</em></h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <circle class="nd rv" cx="360" cy="560" r="14" style="--d:300ms"/>
+      <circle class="nd rv" cx="760" cy="560" r="14" style="--d:500ms"/>
+      <circle class="nd prog rv" cx="1160" cy="560" r="22" style="--d:700ms"/>
+      <circle class="nd rv" cx="1560" cy="560" r="14" style="--d:900ms"/>
+      <circle class="rip" cx="360" cy="560" r="14" style="animation-delay:0s"/><circle class="rip" cx="760" cy="560" r="14" style="animation-delay:1.667s"/>
+      <circle class="rip" cx="1160" cy="560" r="22" style="animation-delay:3.333s"/><circle class="rip" cx="1560" cy="560" r="14" style="animation-delay:4.95s"/>
+      <circle class="pulse" r="6"><animateMotion dur="5s" repeatCount="indefinite" path="M360 560 H1560"/></circle>
+      <path class="brace draw" data-at="1" pathLength="1" d="M1160 586 V640 M520 676 Q520 648 548 648 H1772 Q1800 648 1800 676"/>
+    </svg>
+    <div class="ph rv" style="left:195px; --d:300ms"><div class="tag">CUAN</div><div class="h">Diagnóstico</div></div>
+    <div class="ph rv" style="left:595px; --d:500ms"><div class="tag qual">cual</div><div class="h">Exploración</div></div>
+    <div class="ph rv" style="left:995px; --d:700ms"><div class="tag">intervención</div><div class="h">Programa</div></div>
+    <div class="ph rv" style="left:1395px; --d:900ms"><div class="tag">CUAN + cual</div><div class="h">Evaluación mixta</div></div>
+    <div class="photo frame" data-at="1" aria-hidden="true"><img src="img/delantales.jpg" alt=""></div>
+    <div class="a comp" data-at="1" style="left:520px; width:1280px; justify-content:flex-start">
+      <span><b>20 h</b> de capacitación</span><span>Procedimientos</span><span>Señalización</span><span>Delantales</span><span>Revisión de dosis</span>
+    </div>
+    <div class="a notation" data-at="2">
+      <div class="n">CUAN <i>→</i> cual <i>→</i> [intervención] <i>→</i> CUAN + cual <i>→</i> integración</div>
+      <div class="cite">(Creswell y Plano Clark, 2018)</div>
+    </div>
+    <aside class="notes">
+      <p>Es una investigación aplicada, de alcance explicativo, con enfoque mixto y diseño mixto de intervención (Creswell y Plano Clark, 2018). Su núcleo es un diseño cuasiexperimental de un solo grupo con tres mediciones: antes, después y a los tres meses (Shadish et al., 2002).</p>
+      <p>Se desarrolla en cuatro fases. Fase 1, diagnóstico cuantitativo: cuestionario de conocimientos, observación de prácticas, registros dosimétricos de los 12 meses previos y tasa de dosis en las posiciones de trabajo. Fase 2, exploración cualitativa: entrevistas semiestructuradas que explican los resultados de la fase 1.</p>
+      <p><b>[Avanzar]</b> Fase 3, el programa, construido a partir de la integración de ambas fases: capacitación de 20 horas impartida por un oficial de protección radiológica idóneo; procedimientos operativos escritos; señalización; verificación radiográfica de la integridad de los delantales plomados; y revisión mensual de dosis con un nivel de investigación definido. Fase 4, evaluación mixta: se repiten las mediciones al terminar y a los tres meses, con entrevistas de cierre.</p>
+      <p><b>[Avanzar]</b> La notación resume la lógica del diseño: primero se mide, luego se explora el porqué, se interviene, se evalúa con ambos componentes y se integran los resultados.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 11 · Población e instrumentos ============ -->
+  <section class="slide" id="s11" data-title="Población e instrumentos" data-who="Douglas" data-time="1:15" data-tx="sweep" data-thread="split" data-block="Metodología" data-ref="Perfil · § 10.3–10.5" data-anchor="460 520" data-mood="flow" data-states="1">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Población e instrumentos</h2>
+    <div class="photo" aria-hidden="true"><img src="img/dosimetro-monitor.jpg" alt=""></div>
+    <div class="a pob rv" style="--d:200ms">
+      <div class="h">Censo del personal</div>
+      <div class="big-num">≥ <span data-count="60" data-dur="1500" data-delay="400">60</span></div>
+      <p>procedimientos por medición</p>
+      <div class="cite">(Chow et al., 2008)</div>
+    </div>
+    <div class="a ins">
+      <div class="row rv" style="--d:350ms"><svg viewBox="0 0 44 44" fill="none" stroke="#E0A32E" stroke-width="2"><rect x="8" y="5" width="28" height="34" rx="2"/><path d="M14 15 l3 3 l5 -6 M14 27 l3 3 l5 -6 M26 16 h5 M26 28 h5"/></svg><span>Lista de cotejo</span><em>15 conductas</em></div>
+      <div class="row rv" style="--d:450ms"><svg viewBox="0 0 44 44" fill="none" stroke="#E0A32E" stroke-width="2"><rect x="8" y="5" width="28" height="34" rx="2"/><path d="M14 14 h16 M14 21 h16 M14 28 h10"/></svg><span>Cuestionario</span><em>20 ítems</em></div>
+      <div class="row rv" style="--d:550ms"><svg viewBox="0 0 44 44" fill="none" stroke="#E0A32E" stroke-width="2"><rect x="12" y="8" width="20" height="30" rx="3"/><path d="M17 4 h10 v4 M17 20 h10"/><circle cx="22" cy="29" r="3"/></svg><span>Dosimetría personal</span><em></em></div>
+      <div class="row rv" style="--d:650ms"><svg viewBox="0 0 44 44" fill="none" stroke="#E0A32E" stroke-width="2"><rect x="6" y="14" width="32" height="24" rx="3"/><path d="M12 30 a10 10 0 0 1 20 0 M22 30 l5 -6 M16 14 V8 h12 v6"/></svg><span>Monitor calibrado</span><em></em></div>
+      <div class="row rv" style="--d:750ms"><svg viewBox="0 0 44 44" fill="none" stroke="#E0A32E" stroke-width="2"><path d="M7 9 h30 v20 h-14 l-8 7 v-7 h-8 Z"/><path d="M14 17 h16 M14 22 h10"/></svg><span>Guía de entrevista</span><em></em></div>
+    </div>
+    <div class="a val" data-at="1">
+      <span class="lbl">Validación</span>
+      <span class="st">V de Aiken ≥ 0,80</span><i class="ar"></i>
+      <span class="st v2">Piloto</span><i class="ar"></i>
+      <span class="st v3">KR-20</span><i class="ar"></i>
+      <span class="st v4">kappa ≥ 0,70</span>
+    </div>
+    <aside class="notes">
+      <p>Trabajaremos con un censo de todo el personal ocupacionalmente expuesto que cumpla los criterios: operar o asistir en estudios de rayos X, tener al menos seis meses en el puesto y firmar el consentimiento informado.</p>
+      <p>La unidad de análisis de la hipótesis principal es el procedimiento observado. Para pasar de un cumplimiento de 60 % a uno de 85 %, con α = 0,05 y potencia de 80 %, se requieren 49 procedimientos por medición (Chow et al., 2008); observaremos al menos 60 para compensar el agrupamiento por trabajador.</p>
+      <p>Los instrumentos son una lista de cotejo de 15 conductas, un cuestionario de 20 ítems, los registros de dosimetría personal, un monitor de radiación calibrado y una guía de entrevista de 8 a 10 preguntas.</p>
+      <p><b>[Avanzar]</b> Tres expertos los validarán con la V de Aiken, aceptando los ítems con V ≥ 0,80. Haremos una prueba piloto; la confiabilidad del cuestionario se estimará con KR-20, y la de la lista de cotejo, con kappa de Cohen, aceptable si κ ≥ 0,70.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 12 · Análisis y ética ============ -->
+  <section class="slide" id="s12" data-title="Análisis y ética" data-who="Douglas" data-time="1:15" data-tx="sweep" data-thread="merge" data-block="Metodología" data-ref="Perfil · § 10.7–10.8" data-anchor="1450 520" data-mood="flow">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Análisis y ética</h2>
+    <div class="card rv" style="left:150px; top:290px; --d:200ms">
+      <div class="lbl">Cuantitativo</div>
+      <div class="chips"><span>Modelo mixto</span><span>Wilcoxon</span><span>Friedman</span><span>Jamovi</span></div>
+    </div>
+    <div class="card rv" style="left:150px; top:580px; --d:400ms">
+      <div class="lbl">Cualitativo</div>
+      <p>Temático <span class="cite">(Braun y Clarke, 2006)</span></p>
+      <p>Rigor <span class="cite">(Lincoln y Guba, 1985)</span></p>
+    </div>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <path class="flow draw" pathLength="1" style="--d:700ms" d="M850 400 C990 400 1000 520 1130 520"/>
+      <circle class="flow-dot" r="5"><animateMotion dur="3.2s" repeatCount="indefinite" path="M850 400 C990 400 1000 520 1130 520"/></circle>
+      <circle class="flow-dot" r="5"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M850 690 C990 690 1000 560 1130 560"/></circle>
+    </svg>
+    <div class="card hot rv" style="left:1130px; top:400px; --d:900ms">
+      <div class="lbl" style="color:var(--amber)">Integración</div>
+      <h3>Matriz conjunta</h3>
+      <div class="cite">(Fetters et al., 2013)</div>
+    </div>
+    <div class="a ethic rv" style="--d:1200ms">
+      <svg width="58" height="58" viewBox="0 0 56 56" fill="none" stroke="#E0A32E" stroke-width="2"><path d="M28 5 L48 13 V27 C48 40 39 48 28 52 C17 48 8 40 8 27 V13 Z"/><path d="M19 28 L26 35 L38 21"/></svg>
+      <p><b>Ética</b>Comité de bioética</p>
+    </div>
+    <aside class="notes">
+      <p>En lo cuantitativo, la hipótesis principal se analizará con un modelo binomial de efectos mixtos y reportaremos la razón de probabilidades con su intervalo de confianza de 95 %. Conocimientos y exposición se compararán con la prueba de Wilcoxon, con su tamaño del efecto; si hay menos de 6 pares, esos contrastes se presentarán de forma descriptiva (Siegel y Castellan, 1988). El seguimiento se comparará con la prueba de Friedman. Usaremos Jamovi, con α = 0,05.</p>
+      <p>En lo cualitativo, aplicaremos el análisis temático en seis fases de Braun y Clarke (2006), con codificación por dos investigadores, y los criterios de rigor de Lincoln y Guba (1985).</p>
+      <p>La integración se hará con una matriz de presentación conjunta que indica si los temas cualitativos confirman, amplían o contradicen cada resultado cuantitativo (Fetters et al., 2013).</p>
+      <p>En lo ético, el protocolo se someterá a un comité de bioética acreditado, conforme a la Ley 84 de 2019. La participación será voluntaria, con consentimiento informado, y los datos se protegerán según la Ley 81 de 2019.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 13 · Cronograma ============ -->
+  <section class="slide" id="s13" data-title="Cronograma" data-who="Douglas" data-time="0:45" data-tx="slash" data-thread="months" data-block="Gestión" data-ref="Perfil · § 11" data-anchor="1500 350" data-mood="order">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Cronograma</h2>
+    <div class="gantt rv" style="--d:100ms" id="gantt"></div>
+    <aside class="notes">
+      <p>El proyecto se ejecuta de enero a diciembre de 2027, precedido por la aprobación ética en noviembre y diciembre de 2026.</p>
+      <p>En enero validamos los instrumentos; en febrero hacemos el diagnóstico y, en marzo, las entrevistas. De abril a julio se diseña e implementa el programa. En agosto, la medición posterior; en septiembre, las entrevistas de cierre; en octubre, el seguimiento a los tres meses; en noviembre, el análisis estadístico y la integración; y en diciembre, el informe final y el manuscrito para una revista indexada.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 14 · Presupuesto ============ -->
+  <section class="slide" id="s14" data-title="Presupuesto" data-who="Douglas" data-time="0:45" data-tx="rise" data-thread="stack" data-block="Gestión" data-ref="Perfil · § 12" data-anchor="600 600" data-mood="order">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Presupuesto</h2>
+    <div class="a total rv" style="--d:200ms">
+      <div class="big-num"><small>B/.</small><span data-count="3685" data-dur="1800" data-delay="300">3 685</span></div>
+      <p>Incluye <b>10 %</b> de imprevistos</p>
+    </div>
+    <div class="stack" id="stack"></div>
+    <div class="legend" id="legend"></div>
+    <aside class="notes">
+      <p>El costo estimado del proyecto es de B/. 3 685, financiado por los investigadores: un subtotal de B/. 3 350 más un 10 % de imprevistos, B/. 335.</p>
+      <p>Los rubros principales son la medición de la tasa de dosis con monitor calibrado, B/. 900; la capacitación por un oficial de protección radiológica, B/. 800; el transporte, B/. 360; y el observador externo, B/. 300. Los demás rubros —delantales, señalización, validación, grabadora, materiales, refrigerios e informe— suman B/. 990.</p>
+      <p>La clínica aporta, como contrapartida no monetaria, la dosimetría personal, las instalaciones, el equipo de rayos X y el tiempo del personal.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 15 · Impacto ============ -->
+  <section class="slide" id="s15" data-title="Impacto esperado" data-who="Douglas" data-time="0:45" data-tx="expand" data-origin="960 560" data-thread="core" data-block="Impacto" data-ref="Perfil · § 9" data-anchor="960 560" data-mood="field">
+    <h2 class="a title rv" style="left:150px; top:120px; font-size:72px">Impacto esperado</h2>
+    <svg class="scene" viewBox="0 0 1920 1080" aria-hidden="true">
+      <line class="spoke" x1="790" y1="410" x2="855" y2="455"/><line class="spoke" x1="1130" y1="410" x2="1065" y2="455"/>
+      <line class="spoke" x1="790" y1="710" x2="855" y2="665"/><line class="spoke" x1="1130" y1="710" x2="1065" y2="665"/>
+      <circle class="emit" cx="960" cy="560" r="66"/><circle class="emit e2" cx="960" cy="560" r="66"/><circle class="emit e3" cx="960" cy="560" r="66"/>
+      <circle class="core" cx="960" cy="560" r="66"/>
+      <circle cx="960" cy="560" r="10" fill="#E0A32E" style="filter: drop-shadow(0 0 12px #E0A32E)"/>
+    </svg>
+    <div class="card rv i1" style="left:150px; top:300px; --d:200ms"><div class="lbl">01</div><h3>Social y salud ocupacional</h3><p>Menos exposición acumulada</p></div>
+    <div class="card rv i2" style="left:1130px; top:300px; --d:350ms"><div class="lbl">02</div><h3>Educativo</h3><p>20 h de actualización</p></div>
+    <div class="card rv i3" style="left:150px; top:600px; --d:500ms"><div class="lbl">03</div><h3>Económico</h3><p>Menos repeticiones</p></div>
+    <div class="card hot rv i4" style="left:1130px; top:600px; --d:650ms"><div class="lbl">04</div><h3>Científico</h3><p>Modelo replicable</p></div>
+    <aside class="notes">
+      <p>Esperamos cuatro impactos. Social y en salud ocupacional: menor exposición acumulada del personal durante su vida laboral y menos dosis para los pacientes, gracias a una mejor colimación y a menos repeticiones.</p>
+      <p>Educativo: 20 horas de actualización alineadas con la propuesta del Ministerio de Salud y una cultura de seguridad que se transmite a los nuevos trabajadores. Económico: menos repeticiones ahorran tiempo de equipo e insumos, y un programa documentado facilita las inspecciones. Científico: instrumentos validados y un modelo replicable en instalaciones similares, porque no identificamos estudios de intervención publicados en clínicas privadas de Panamá.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 16 · Cierre ============ -->
+  <section class="slide" id="s16" data-title="Cierre y preguntas" data-who="Douglas" data-time="0:45" data-tx="dissolve" data-thread="horizon" data-block="Cierre" data-ref="Perfil · § 10.9" data-anchor="1500 540" data-mood="calm">
+    <div class="photo" aria-hidden="true"><img src="img/cierre.jpg" alt=""></div>
+    <div class="a close">
+      <p data-split style="--sd:200ms">Cumplir la norma es el punto de partida.</p>
+      <p data-split style="--sd:900ms"><em>Optimizar</em> es la meta.</p>
+    </div>
+    <i class="meta-line" aria-hidden="true"></i>
+    <div class="a thanks rv" style="--d:1600ms"><span>Gracias</span><span>Preguntas</span></div>
+    <aside class="notes">
+      <p>Cerramos con la idea que guía el proyecto: cumplir la norma es el punto de partida; optimizar es la meta. La clínica ya cumple los límites; nuestro aporte es demostrar, con datos y con la voz del personal, cuánto más se puede reducir la exposición y cómo sostener ese cambio. Muchas gracias por su atención; quedamos atentos a sus preguntas.</p>
+      <div class="qa">
+        <p><b>¿Por qué no hay grupo control?</b> Es un diseño cuasiexperimental de un solo grupo. La amenaza se mitiga con la serie de 12 meses de dosimetría previa, el registro de cambios de equipo y carga de trabajo, la medición de seguimiento a los tres meses y la triangulación con los datos cualitativos (Shadish et al., 2002).</p>
+        <p><b>¿Y si el dosímetro no detecta dosis?</b> Las lecturas de Hp(10) bajo el límite de detección se contrastan con la tasa de dosis H*(10), medida con un monitor calibrado en la posición real del operador y con técnicas radiográficas estandarizadas (kV y mAs).</p>
+        <p><b>¿Cómo evitar el sesgo de la jefa?</b> Las observaciones y entrevistas las realiza el coinvestigador, que no tiene relación jerárquica con el personal, junto con un observador externo capacitado; las observaciones son sin aviso y los datos se codifican y analizan de forma anónima.</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Cromo -->
+  <div class="chrome">
+    <svg class="ruler" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+    <div class="brand" aria-hidden="true"><span class="dot"></span><span id="c-block"></span></div>
+    <div class="ref" id="c-ref" aria-hidden="true"></div>
+    <div class="who" id="c-who" aria-hidden="true"></div>
+    <div class="dots" id="c-dots" aria-hidden="true"></div>
+    <div class="count" id="c-count" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i id="c-prog"></i></div>
+  </div>
+</main>
+
+<!-- Vista de presentador (?presentador) -->
+<div class="pv" id="pv">
+  <section>
+    <div class="slot" id="pv-slot"></div>
+    <h1 class="cur-title" id="pv-title"></h1>
+    <div class="cur-meta" id="pv-meta"></div>
+    <div class="lbl">Notas</div>
+    <div class="cur-notes" id="pv-notes"></div>
+  </section>
+  <section>
+    <div class="lbl">Tiempo total · máximo 18:00</div>
+    <div class="clock" id="pv-clock">00:00</div>
+    <div class="slide-clock" id="pv-sclock">en esta: 00:00</div>
+    <div class="lbl">Siguiente</div>
+    <div class="next" id="pv-next"></div>
+    <div class="btns">
+      <button data-cmd="prev">← Anterior</button>
+      <button data-cmd="next">Siguiente →</button>
+      <button data-cmd="reset">Reiniciar reloj</button>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="menu" role="dialog" aria-label="Índice de diapositivas">
+  <div class="panel"><h2>Índice</h2><ul class="menu-list" id="menu-list"></ul></div>
+</div>
+<div class="overlay" id="help" role="dialog" aria-label="Atajos de teclado">
+  <div class="panel">
+    <h2>Controles</h2>
+    <div class="keys">
+      <kbd>→ · Espacio · Clic</kbd><span>Avanzar (primero recorre los estados de la diapositiva)</span>
+      <kbd>← · Retroceso</kbd><span>Retroceder un estado o una diapositiva</span>
+      <kbd>Inicio · Fin</kbd><span>Primera / última</span>
+      <kbd>M</kbd><span>Índice de diapositivas</span>
+      <kbd>N</kbd><span>Notas del orador en esta pantalla</span>
+      <kbd>P</kbd><span>Vista de presentador en otra ventana (sincronizada, reloj de 18 min)</span>
+      <kbd>F</kbd><span>Pantalla completa</span>
+      <kbd>? · H</kbd><span>Esta ayuda</span>
+    </div>
+  </div>
+</div>
+<div class="notes-drawer" id="drawer"><div class="meta" id="d-meta"></div><div class="txt" id="d-txt"></div></div>
+<div class="hint" id="hint">→ AVANZAR · ← RETROCEDER · M ÍNDICE · N NOTAS · P PRESENTADOR · F PANTALLA COMPLETA · ? AYUDA</div>
+
+<script src="js/ambient.js?v=1"></script>
+<script src="js/thread.js?v=1"></script>
+<script src="js/scenes.js?v=3"></script>
+<script src="js/motion.js?v=2"></script>
+<script src="js/main.js?v=3"></script>
+</body>
+</html>

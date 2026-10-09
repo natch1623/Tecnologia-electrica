@@ -1,4 +1,6 @@
-# Publica presentacion/web en https://natch1623.github.io/Tecnologia-electrica/
+# Publica en GitHub Pages:
+#   presentacion/web          → https://natch1623.github.io/Tecnologia-electrica/
+#   presentacion-mi815/web    → https://natch1623.github.io/Tecnologia-electrica/perfil-mi815/
 name: Publicar presentación en GitHub Pages
 
 on:
@@ -6,6 +8,7 @@ on:
     branches: [main]
     paths:
       - "presentacion/web/**"
+      - "presentacion-mi815/web/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -27,8 +30,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Armar el sitio
+        run: |
+          mkdir -p _site
+          cp -r presentacion/web/. _site/
+          mkdir -p _site/perfil-mi815
+          cp -r presentacion-mi815/web/. _site/perfil-mi815/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: presentacion/web
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
