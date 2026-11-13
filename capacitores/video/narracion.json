@@ -1,0 +1,85 @@
+{
+  "titulo": "El Capacitor · ensayo narrado (15 min)",
+  "voz": "es-PA-RobertoNeural",
+  "velocidad": "-8%",
+  "duracion_objetivo_s": 900,
+  "nota": "Cada bloque es una pulsación de la flecha derecha. 'tecla': true = pulsar antes de hablar; 'espera' = segundos entre la pulsación y la primera palabra (deja ver la transición).",
+  "bloques": [
+    {
+      "slide": "01", "tecla": false, "espera": 3.5,
+      "texto": "Buenos días. Hoy cerramos el tema de materiales eléctricos con el dispositivo que junta todo lo que hemos visto: carga, campo, potencial, dieléctricos y energía. El capacitor. Y quiero empezar con una pregunta. Si tratamos a la Tierra como una esfera conductora, la Tierra es un capacitor. ¿De cuánto creen que es su capacitancia? Piénsenlo. Se los respondo en unos minutos."
+    },
+    {
+      "slide": "02", "tecla": true, "espera": 2.6,
+      "texto": "Fíjense en lo que acaba de pasar en pantalla: la carga se separó. Eso es un capacitor: dos conductores separados por un dieléctrico, que puede ser simplemente aire o vacío, con cargas iguales y opuestas, más Q y menos Q. Las líneas de campo nacen en la carga positiva y mueren en la negativa, así que entre los conductores hay un campo E y, por lo tanto, una diferencia de potencial V. La capacitancia se define como C igual a Q sobre V. La unidad es el faradio, un coulomb por voltio, y en la práctica trabajamos con micro, nano y picofaradios, porque un faradio es muchísimo. ¿Por qué podemos hablar de la diferencia de potencial entre las placas? Por lo que ya vimos de conductores: en equilibrio, el campo dentro es cero, la carga se va a la superficie y toda la superficie queda al mismo potencial. Y por la condición de frontera, justo en la cara del conductor, la componente normal de D es igual a la densidad superficial de carga: D normal igual a ro ese. Esa ecuación la vamos a usar varias veces."
+    },
+    {
+      "slide": "02", "tecla": true, "espera": 0.9,
+      "texto": "Ahora dupliquemos la carga. Miren: el doble de líneas de campo, el doble de voltaje, y la capacitancia no se movió. Esta es la idea clave de toda la clase: si duplico Q, el campo se duplica, el voltaje se duplica, y la razón entre los dos no cambia. La capacitancia depende solo de la geometría y del material. Es exactamente lo mismo que pasa con la resistencia: R no depende de la corriente que pase; depende del largo, del área y de la conductividad del conductor."
+    },
+    {
+      "slide": "03", "tecla": true, "espera": 2.8,
+      "texto": "¿Y cómo se calcula C? Esa superficie que acaban de ver es una superficie gaussiana, y es la llave del método. Todos los capacitores se resuelven con la misma receta de cuatro pasos. Uno: supongo que un conductor tiene más Q y el otro menos Q. No necesito saber cuánto; la dejo como letra. Dos: con la Ley de Gauss saco el campo E. Para eso escojo una superficie gaussiana que respete la simetría: un plano, un cilindro o una esfera. Por eso los casos clásicos son esos tres. Tres: integro E a lo largo de un camino de un conductor al otro para obtener V. Ojo con el signo: V es menos la integral de E punto de ele, yendo de la placa negativa a la positiva, para que salga positivo. Cuatro: divido Q entre V. Y aquí hay un truco: si al dividir la Q no se cancela, hay un error. Es una autocomprobación gratis; úsenla en el parcial. Hay también un camino inverso, que viene del tema anterior: supongo el voltaje, resuelvo la ecuación de Laplace, saco E con el gradiente y la carga con D normal igual a ro ese. Llega al mismo resultado."
+    },
+    {
+      "slide": "04", "tecla": true, "espera": 3.0,
+      "texto": "Primer caso: placas paralelas. Ese recorrido que hizo el punto de luz es justamente la integral de línea, y se convirtió en la separación d. Tenemos dos placas de área A separadas una distancia d. Suponemos que d es mucho menor que el tamaño de las placas; así las líneas de campo son rectas y despreciamos el efecto de borde. Con Gauss, igual que con la lámina infinita, el campo entre las placas es uniforme: ro ese sobre épsilon, que es Q sobre épsilon A. Como E es constante, la integral es simplemente E por d: V es Q por d sobre épsilon A. Dividimos, la Q se cancela, y queda C igual a épsilon A sobre d. Empecemos con cien centímetros cuadrados y cuatro milímetros de aire: veintidós picofaradios. Ahora vamos a mover las tres perillas que tiene un fabricante."
+    },
+    {
+      "slide": "04", "tecla": true, "espera": 0.6,
+      "texto": "Primera perilla: el área. La duplico a doscientos centímetros cuadrados y la capacitancia se duplica: cuarenta y cuatro picofaradios. Más área, más capacitancia."
+    },
+    {
+      "slide": "04", "tecla": true, "espera": 0.6,
+      "texto": "Segunda perilla: la separación. Acerco las placas a dos milímetros, la mitad, y la capacitancia vuelve a duplicarse: ochenta y ocho coma cinco picofaradios. Menos separación, más capacitancia."
+    },
+    {
+      "slide": "04", "tecla": true, "espera": 0.8,
+      "texto": "Tercera perilla: el material. Lleno el espacio con vidrio, de épsilon erre igual a cinco, y la capacitancia sube cinco veces: cuatrocientos cuarenta y tres picofaradios. Guarden este capacitor, porque vuelve: doscientos centímetros cuadrados, dos milímetros de vidrio, conectado a mil voltios. La carga es de cero coma cuatro cuatro tres microcoulombs, y el campo es de medio megavoltio por metro."
+    },
+    {
+      "slide": "05", "tecla": true, "espera": 2.8,
+      "texto": "Mismo método, otras simetrías. Las placas se enrollaron, y eso es un coaxial: un conductor interior de radio a y una pantalla de radio b, de largo L. La gaussiana es un cilindro de radio ro entre los dos: D por dos pi ro L igual a Q, así que el campo cae como uno sobre ro. Al integrar uno sobre ro aparece un logaritmo, y C queda dos pi épsilon L sobre el logaritmo natural de b sobre a. Con un conductor de un milímetro, una pantalla de tres coma cinco milímetros y polietileno, salen unos cien picofaradios por metro, que es justo el valor que trae la hoja técnica de un coaxial comercial. Y un detalle que vamos a retomar: como el campo va con uno sobre ro, es máximo pegado al conductor interior. Ahora la esfera: esfera interior de radio a y cascarón de radio b. La gaussiana es una esfera de radio r, y el campo cae como uno sobre r al cuadrado, igual que el de una carga puntual. Integrando, C es cuatro pi épsilon entre uno sobre a menos uno sobre b. Y si mando el cascarón exterior al infinito, uno sobre b se va a cero, y queda cuatro pi épsilon cero a: la capacitancia de una esfera aislada."
+    },
+    {
+      "slide": "05", "tecla": true, "espera": 0.9,
+      "texto": "Y aquí está la respuesta a la pregunta del inicio. El radio de la Tierra es de seis mil trescientos setenta kilómetros. Cuatro pi épsilon cero por ese radio da unos setecientos nueve microfaradios. Todo el planeta tiene menos capacitancia que un capacitor electrolítico que cabe en la mano. La moraleja es que la capacitancia no se gana con tamaño: se gana acercando los conductores y metiendo un buen dieléctrico."
+    },
+    {
+      "slide": "06", "tecla": true, "espera": 2.8,
+      "texto": "En todas esas fórmulas apareció épsilon. Veamos qué hace el material por dentro. El vacío entre las placas se congeló: ahora hay un dieléctrico. Y dentro de él, cada molécula es un pequeño dipolo, por ahora orientado al azar."
+    },
+    {
+      "slide": "06", "tecla": true, "espera": 0.6,
+      "texto": "Cuando aplicamos el campo, los dipolos giran y se alinean con E. Dentro del volumen, la punta positiva de un dipolo queda junto a la negativa del siguiente, y se cancelan. Pero en las caras no hay con qué cancelar, y aparecen cargas ligadas: negativas pegadas a la placa positiva y positivas pegadas a la negativa. Esas cargas ligadas cancelan parte de la carga libre. En nuestro capacitor de vidrio, la carga libre es de veintidós coma un microcoulombs por metro cuadrado, y la polarización neutraliza diecisiete coma siete. Solo un quinto sobrevive para producir campo. El campo baja cinco veces, el voltaje baja cinco veces con la misma carga, y por eso la capacitancia sube épsilon erre veces. Por eso usamos D igual a épsilon cero E más P: la Ley de Gauss para D solo ve la carga libre. D es igual a ro ese sin importar qué material haya, y al final dividimos entre épsilon para obtener E."
+    },
+    {
+      "slide": "07", "tecla": true, "espera": 2.2,
+      "texto": "Ahora, un defecto. Volvamos a nuestro capacitor de vidrio, pero entre el vidrio y la placa quedó una lámina de aire de una décima de milímetro, apenas el cinco por ciento del espesor, por un mal pegado o por una burbuja. Como las capas están apiladas, D es el mismo en las dos, y el aire tiene épsilon erre igual a uno. Entonces el campo en el aire es cinco veces el del vidrio. A mil voltios, el aire soporta dos coma cero ocho megavoltios por metro, cuatro veces más que sin el defecto, y esa lámina de una décima de milímetro se queda con doscientos ocho de los mil voltios. El aire rompe cerca de tres megavoltios por metro. Vamos a subir la tensión."
+    },
+    {
+      "slide": "07", "tecla": true, "espera": 0.7,
+      "texto": "Mil doscientos voltios: dos coma cinco megavoltios por metro en el aire. El vidrio sigue tranquilo, en medio megavoltio por metro. Pero el aire ya está cerca de su límite."
+    },
+    {
+      "slide": "07", "tecla": true, "espera": 1.2,
+      "texto": "Mil cuatrocientos cuarenta voltios: tres megavoltios por metro. El aire se ioniza, aunque el vidrio siga muy por debajo de su límite. Eso se llama descarga parcial, y es la forma en que envejecen los aislamientos de motores, cables y transformadores. No falla el aislante: falla la burbuja."
+    },
+    {
+      "slide": "08", "tecla": true, "espera": 2.6,
+      "texto": "Ya sabemos cuánta carga guarda un capacitor. Falta saber cuánta energía. Cargar un capacitor cuesta trabajo. Al principio, pasar carga de una placa a la otra es fácil, pero cada carga nueva tiene que subir contra el voltaje que ya dejaron las anteriores. Integrando de cero a Q sale Q al cuadrado sobre dos C, que es lo mismo que un medio de C V al cuadrado. El un medio aparece porque el voltaje fue creciendo durante la carga. Pero en lenguaje de campos hay otra forma de escribirlo: W es la integral de un medio de D punto E en todo el volumen. La energía no está en las placas: está en el campo, repartida en el dieléctrico, con una densidad de un medio de épsilon E al cuadrado, en joules por metro cúbico."
+    },
+    {
+      "slide": "08", "tecla": true, "espera": 0.6,
+      "texto": "Comprobemos con el capacitor de vidrio. Un medio de C V al cuadrado: un medio por cuatrocientos cuarenta y tres picofaradios por mil voltios al cuadrado, doscientos veintiún microjoules. Por campos: un medio de épsilon E al cuadrado da cinco coma cincuenta y tres joules por metro cúbico; multiplicado por un volumen de cuatro por diez a la menos cinco metros cúbicos, otra vez doscientos veintiún microjoules. Las dos fórmulas coinciden, como debe ser. Y esa misma densidad de energía es la presión con la que se atraen las placas."
+    },
+    {
+      "slide": "09", "tecla": true, "espera": 2.6,
+      "texto": "¿Dónde se van a encontrar esto como ingenieros electromecánicos? En los bancos de corrección del factor de potencia, que compensan la potencia reactiva de los motores de una planta. En el capacitor de arranque de los motores monofásicos, que desfasa la corriente de un devanado para que el motor arranque. Y en los cables de potencia, que son coaxiales: conductor, aislante y pantalla. Tienen capacitancia por metro y, como el campo va con uno sobre ro, es máximo junto al conductor, que es donde se diseña el aislamiento. Y una regla de seguridad: un capacitor desconectado puede seguir cargado. Un banco de cien microfaradios a cuatrocientos ochenta voltios guarda once coma cinco joules. Siempre se descarga y se verifica antes de tocarlo."
+    },
+    {
+      "slide": "09", "tecla": true, "espera": 0.8,
+      "texto": "Me quedo con tres ideas. Uno: la capacitancia depende solo de la geometría y del material, no de la carga ni del voltaje. Dos: todo capacitor se resuelve con la misma receta: supongo la carga, uso Gauss para el campo, integro para el voltaje y divido. Tres: la energía está en el campo. Y donde el campo se concentra, en un radio pequeño o en una burbuja de aire, ahí es donde falla el aislamiento. Muchas gracias. ¿Preguntas?"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# Audio intermedio, grabación y video final: se regeneran con grabar.py
+_cache/
+*.mp4
