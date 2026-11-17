@@ -4,183 +4,189 @@
 **Ubicación en el programa:** Tema 3) Materiales Eléctricos → a) ii) Dieléctricos → **iii) El Capacitor**
 **Bibliografía base:** Sadiku, *Elementos de Electromagnetismo* (cap. 5–6); Hayt, *Teoría Electromagnética* (cap. 6); Cheng, *Fundamentos de Electromagnetismo para Ingeniería*.
 
-El guion tiene tres partes: **(1)** lo que se dice slide por slide (15 min), **(2)** los problemas resueltos completos, como respaldo o anexo, y **(3)** preguntas que puede hacer el profesor, con su respuesta.
+El guion tiene tres partes: **(1)** lo que se dice slide por slide (15 min, 12 escenas), **(2)** los problemas resueltos completos, como respaldo o anexo, y **(3)** preguntas que puede hacer el profesor, con su respuesta.
 
 **Cómo leer este guion**
 
-- **[→]** = avanzar o revelar el siguiente elemento de la slide. El texto que sigue se dice **después** de pulsar.
-- **Reloj** = minuto en que debe empezar la slide · duración.
-- Las frases en *cursiva* son **transiciones obligatorias**: se dicen casi textuales.
-- Ritmo de referencia: ~130 palabras por minuto. Si al llegar a una slide van más de 20 s atrasados, recorten lo marcado *(opcional)*.
-- No se deducen fórmulas en vivo: las deducciones van escritas en la slide y se narran. El detalle está en la Parte 2.
+- **[→]** = pulsar flecha derecha. El texto que sigue se dice **después** de pulsar; entre paréntesis, lo que aparece en pantalla.
+- **Reloj** = minuto en que empieza la slide · duración. Calculado con la narración del video de ensayo (unas 130 palabras por minuto).
+- No se deducen fórmulas en vivo: van escritas en la slide y se narran. El detalle está en la Parte 2.
+- La narración de esta parte es la misma del video `capacitores/video/ensayo-capacitores.mp4`; se edita en `capacitores/video/narracion.json` y se regenera con `guion_desde_narracion.py`.
 
-**Hilo conductor:** *la capacitancia no depende de la carga ni del voltaje; depende solo de la geometría y del material. Todo capacitor se resuelve igual: Q → E → V → C.*
+**Hilo conductor:** *la capacitancia depende solo de la geometría y del material; todo capacitor se resuelve con Q → E → V → C; el dieléctrico es donde ocurre la magia y donde está el límite; en el circuito manda i = C dv/dt; y la energía vive en el campo.*
+
+---
+# Parte 1 · Guion slide por slide
 
 | Bloque | Slides | Tema | Reloj |
 | --- | --- | --- | --- |
-| I | 01–03 | Qué es un capacitor y cómo se calcula | 0:00 → 4:00 |
-| II | 04–05 | Placas, coaxial y esfera | 4:00 → 8:00 |
-| III | 06–07 | El dieléctrico y la burbuja de aire | 8:00 → 11:30 |
-| IV | 08–09 | Energía, aplicaciones y cierre | 11:30 → 15:00 |
+| I | 01–03 | Qué es un capacitor y cómo se calcula | 0:00 → 2:32 |
+| II | 04–05 | Las geometrías | 2:32 → 4:57 |
+| III | 06–07 | El dieléctrico y su límite | 4:57 → 8:36 |
+| IV | 08–10 | El capacitor en el circuito | 8:36 → 13:07 |
+| V | 11–12 | Energía y cierre | 13:07 → 14:54 |
 
-Si se presenta en grupo de cuatro, cada bloque es un integrante (~4 min cada uno, el III un poco menos).
-
----
-
-# Parte 1 · Guion slide por slide
-
-## Bloque I — Qué es un capacitor
-
-### 01 · Portada · reloj 0:00 · 0:45
-
-**En pantalla:** "El Capacitor — geometría, dieléctrico y energía", foto de un banco de capacitores de corrección de factor de potencia.
-
-> "Buenos días. Hoy cerramos materiales eléctricos con el dispositivo que junta todo lo del tema: carga, campo, potencial, dieléctricos y energía. El capacitor.
->
-> Una pregunta para empezar: si tratamos a la Tierra como una esfera conductora, es un capacitor. ¿De cuánto? Se los respondo en unos minutos."
-
-### 02 · Definición · reloj 0:45 · 1:45
-
-**En pantalla:** dos conductores con +Q y −Q, líneas de campo, **C = Q/V**. Tiene **1 estado**.
-
-> "Un capacitor son dos conductores separados por un dieléctrico —que puede ser simplemente aire o vacío—, con cargas iguales y opuestas, más Q y menos Q. Las líneas de campo nacen en la carga positiva y mueren en la negativa, así que entre los conductores hay un campo E y, por tanto, una diferencia de potencial V.
->
-> La capacitancia se define como **C = Q sobre V**. La unidad es el faradio, un coulomb por voltio, y en la práctica trabajamos con micro, nano y picofaradios, porque un faradio es muchísimo.
->
-> ¿Por qué podemos hablar de *la* diferencia de potencial entre las placas? Por lo que ya vimos de conductores: en equilibrio el campo dentro es cero, la carga se va a la superficie y toda la superficie queda al mismo potencial. Y por la condición de frontera, justo en la cara del conductor la componente normal de D es igual a la densidad de carga: **Dn = ρs**. Esa ecuación la vamos a usar varias veces."
-
-**[→]** *(se resalta: "C no depende de Q ni de V")*
-
-> "Y esta es la idea clave de toda la exposición: si duplico Q, el campo se duplica, el voltaje se duplica, y la razón entre los dos no cambia. **C depende solo de la geometría y del material.** Es exactamente lo mismo que pasa con la resistencia: R no depende de la corriente que pase, depende del largo, del área y de la conductividad del conductor."
-
-### 03 · El procedimiento · reloj 2:30 · 1:30
-
-**En pantalla:** cuatro pasos en línea: **±Q → E (Gauss) → V = −∫E·dl → C = Q/V**.
-
-> "¿Cómo se calcula C? Todos los capacitores se resuelven con la misma receta de cuatro pasos.
->
-> Uno: supongo que un conductor tiene más Q y el otro menos Q. No necesito saber cuánto; la dejo como letra.
->
-> Dos: con la Ley de Gauss saco el campo E. Para eso escojo una superficie gaussiana que respete la simetría: un plano, un cilindro o una esfera. Por eso los casos clásicos son esos tres.
->
-> Tres: integro E a lo largo de un camino de un conductor al otro para obtener V. Ojo con el signo: V es menos la integral de E·dl, yendo de la placa negativa a la positiva, para que salga positivo.
->
-> Cuatro: divido Q entre V.
->
-> Y aquí hay un truco: si al dividir **la Q no se cancela, hay un error.** Es una autocomprobación gratis, úsenla en el parcial.
->
-> Hay también un camino inverso, que viene del tema anterior: supongo el voltaje, resuelvo la ecuación de Laplace, ∇²V = 0, saco E con el gradiente, y la carga con ρs = Dn. Cuando conozco los potenciales y no las cargas, conviene más. Llega al mismo resultado."
-
-*Transición:* *"Apliquemos la receta a las tres geometrías clásicas."*
+Duración total con transiciones y pausas: **14:54**.
 
 ---
 
-## Bloque II — Las tres geometrías
+## Bloque I — Qué es un capacitor y cómo se calcula
 
-### 04 · Placas paralelas · reloj 4:00 · 1:45
+### 01 · Portada · reloj 0:00 · 0:37
 
-**En pantalla:** placas de área A y separación d; tres líneas: E = Q/(εA) · V = Qd/(εA) · **C = εA/d**. Abajo, el ejemplo numérico.
+**En pantalla:** Portada: las placas se encienden, cae el campo y aparece la pregunta de la Tierra.
 
-> "Primer caso: dos placas de área A separadas una distancia d. Suponemos que d es mucho menor que el tamaño de las placas, así las líneas de campo son rectas y despreciamos lo que pasa en los bordes.
->
-> Con Gauss, igual que con la lámina infinita, el campo entre las placas es uniforme: ρs sobre ε, que es Q sobre εA, y apunta de la placa positiva a la negativa. Como E es constante, la integral es simplemente E por d: V es Q·d sobre εA. Dividimos, la Q se cancela, y queda **C = εA/d**.
->
-> Léanla como ingenieros: más área, más capacitancia; más separación, menos; mejor dieléctrico, más. Esas son las tres perillas que tiene un fabricante."
+> "Buenos días. Hoy cerramos materiales eléctricos con el dispositivo que junta todo lo que hemos visto: carga, campo, potencial, dieléctricos y energía. El capacitor. Una pregunta para empezar: si tratamos a la Tierra como una esfera conductora, la Tierra es un capacitor. ¿De cuánto creen que es su capacitancia? Se los respondo en unos minutos."
 
-**[→]** *(aparece el ejemplo)*
+### 02 · Definición · reloj 0:37 · 1:11
 
-> "Un caso concreto que vamos a usar toda la exposición: 200 cm² de placa, 2 mm de vidrio con εr = 5, conectado a mil voltios. ε₀ por 5 por 0,02 entre 0,002: **C = 443 pF**. La carga es 0,443 microcoulombs, y el campo, mil voltios entre dos milímetros, **0,5 MV/m**. Con aire en lugar de vidrio serían 88,5 pF: cinco veces menos. Guarden estos números, que vuelven."
+**En pantalla:** Transición: el título se deshace en carga que se separa en las placas. Diagrama con +Q, −Q, líneas de campo y C = Q/V.
 
-### 05 · Coaxial y esférico · reloj 5:45 · 2:15
+> "Fíjense: la carga se separó. Eso es un capacitor: dos conductores separados por un dieléctrico, con cargas iguales y opuestas, más Q y menos Q. Entre ellos hay un campo E y, por lo tanto, una diferencia de potencial V. La capacitancia se define como C igual a Q sobre V, y se mide en faradios: un coulomb por voltio. Cada placa es una equipotencial, porque en un conductor en equilibrio el campo dentro es cero y la carga queda en la superficie, con D normal igual a ro ese."
 
-**En pantalla:** dos columnas.
+**[→]** *(Se duplica la carga: el doble de líneas, 2Q y 2V; C no cambia.)*
 
-| | Coaxial | Esférico |
-| --- | --- | --- |
-| E | Q/(2πεLρ) — cae como 1/ρ | Q/(4πεr²) — cae como 1/r² |
-| C | **2πεL / ln(b/a)** | **4πε / (1/a − 1/b)** |
+> "Ahora dupliquemos la carga: el doble de líneas de campo, el doble de voltaje, y la capacitancia no se movió. Esa es la idea clave: la capacitancia depende solo de la geometría y del material, igual que la resistencia depende del largo, del área y de la conductividad, y no de la corriente."
 
-Tiene **1 estado** (la Tierra).
+### 03 · El procedimiento · reloj 1:47 · 0:45
 
-> "Mismo método, otras simetrías.
->
-> El coaxial: un conductor interior de radio a y una pantalla de radio b, de largo L. La gaussiana es un cilindro de radio ρ entre los dos: D por 2πρL igual a Q, así que E cae como **1 sobre ρ**. Al integrar 1/ρ aparece un logaritmo, y C queda 2πεL sobre ln(b/a). Con un conductor de 1 mm, una pantalla de 3,5 mm y polietileno, εr = 2,25, salen **unos 100 pF por metro**, que es justo el valor que trae la hoja técnica de un coaxial comercial. Y un detalle que retomamos al final: como E va con 1/ρ, el campo es máximo pegado al conductor interior.
->
-> La esfera: esfera interior de radio a, cascarón de radio b. La gaussiana es una esfera de radio r; E cae como **1 sobre r²**, igual que el de una carga puntual. Integrando, C es 4πε entre (1/a − 1/b). Y si mando el cascarón exterior al infinito, 1/b se va a cero y queda **4πε₀a**: la capacitancia de una esfera aislada."
+**En pantalla:** Transición: superficie gaussiana que se expande. Constelación Q → E → V → C.
 
-**[→]** *(aparece la Tierra)*
-
-> "Respuesta a la pregunta del inicio: radio 6370 km… **unos 709 microfaradios**. Todo el planeta tiene menos capacitancia que un electrolítico que cabe en la mano. Moraleja: la capacitancia no se gana con tamaño, **se gana acercando los conductores y metiendo un buen dieléctrico.**"
-
-*Transición:* *"En las tres fórmulas aparece ε. Veamos qué hace el material por dentro."*
+> "Esa superficie que acaban de ver es una superficie gaussiana, y es la llave del método. Todo capacitor se resuelve con la misma receta. Uno: supongo más Q y menos Q en los conductores. Dos: con la Ley de Gauss, usando una superficie que respete la simetría, saco el campo E. Tres: integro E de un conductor al otro para obtener V. Cuatro: divido Q entre V. Si la Q no se cancela, hay un error: es una autocomprobación gratis."
 
 ---
 
-## Bloque III — El dieléctrico
+## Bloque II — Las geometrías
 
-### 06 · ¿Por qué el dieléctrico aumenta C? · reloj 8:00 · 1:45
+### 04 · Placas paralelas · reloj 2:32 · 1:18
 
-**En pantalla:** placas con cargas libres; dentro, dipolos alineados y cargas de polarización ±ρps en las caras. **D = ε₀E + P**. Tabla del ejemplo: D = 22,1 µC/m², P = 17,7 µC/m².
+**En pantalla:** Transición: un punto de luz recorre la integral de línea y se vuelve la cota d. C = εA/d con tres perillas; 22,1 pF.
 
-> "Meto el dieléctrico entre las placas, manteniendo la misma carga. El campo polariza el material: cada molécula se vuelve un pequeño dipolo alineado con E. Dentro del volumen, la punta positiva de un dipolo queda junto a la negativa del siguiente y se cancelan. Pero en las caras no hay con qué cancelar, y aparecen **cargas ligadas**: negativas pegadas a la placa positiva, positivas pegadas a la negativa.
->
-> Esas cargas ligadas cancelan parte de la carga libre. El campo neto baja εr veces, el voltaje baja εr veces con la misma Q, y entonces **C sube en un factor εr**.
->
-> En nuestro capacitor de vidrio: la carga libre es 22,1 microcoulombs por metro cuadrado, y la polarización neutraliza 17,7. Solo un quinto sobrevive para producir campo. Eso es εr = 5 en números.
->
-> Por eso usamos D = ε₀E + P: la Ley de Gauss para D solo ve la carga libre. D es igual a ρs sin importar qué material haya, y al final dividimos entre ε para obtener E.
->
-> *(opcional)* Si en vez de mantener la carga mantengo la fuente conectada, el voltaje no cambia y es la fuente la que entrega εr veces más carga. Distinto camino, mismo resultado: C sube εr veces."
+> "Primer caso: placas paralelas. El punto de luz recorrió la integral de línea y se convirtió en la separación d. Con Gauss, el campo entre las placas es uniforme: Q sobre épsilon A. Como E es constante, V es E por d. Dividimos y queda C igual a épsilon A sobre d. Empezamos con cien centímetros cuadrados y cuatro milímetros de aire: veintidós picofaradios. Movamos las tres perillas."
 
-### 07 · Dos dieléctricos: la burbuja de aire · reloj 9:45 · 1:45
+**[→]** *(Perilla 1: el área crece a 200 cm²; 44,3 pF.)*
 
-**En pantalla:** izquierda, capas apiladas (serie: C = A/(d₁/ε₁ + d₂/ε₂)); derecha, lado a lado (paralelo: C = (ε₁A₁ + ε₂A₂)/d). Debajo, la burbuja. Tiene **1 estado**.
+> "Duplico el área y la capacitancia se duplica: cuarenta y cuatro picofaradios."
 
-> "Con dos materiales mandan las condiciones de frontera. Si están apilados, E atraviesa la interfaz y se conserva D normal: equivale a dos capacitores en serie. Si están lado a lado, se conserva E tangencial: dos capacitores en paralelo.
->
-> En la serie hay una trampa: mismo D, distinto ε, entonces **el campo es mayor en el material de menor permitividad.**"
+**[→]** *(Perilla 2: la separación baja a 2 mm; 88,5 pF.)*
 
-**[→]** *(aparece la burbuja)*
+> "Reduzco la separación a la mitad y vuelve a duplicarse: ochenta y ocho coma cinco picofaradios."
 
-> "Volvamos a nuestro capacitor de vidrio, pero con un defecto: entre el vidrio y la placa quedó una lámina de aire de **0,1 mm**, el 5 % del espesor, por mal pegado o por una burbuja.
->
-> Como D es el mismo en las dos capas y el aire tiene εr = 1, el campo en el aire es cinco veces el del vidrio. Resolviendo, sale **2,08 MV/m** en el aire, cuatro veces los 0,5 que había sin defecto. Esa lámina de una décima de milímetro se queda con 208 de los mil voltios.
->
-> El aire rompe cerca de 3 MV/m. Si subo la tensión a **1440 voltios**, el aire se ioniza, aunque el vidrio siga muy por debajo de su límite.
->
-> Eso es una **descarga parcial**, y es como envejecen los aislamientos de motores, cables y transformadores: no falla el aislante, falla la burbuja."
+**[→]** *(Perilla 3: entra el vidrio (εr = 5); 443 pF. A 1000 V: Q = 0,443 µC, E = 0,5 MV/m.)*
 
-*Transición:* *"Sabemos cuánta carga guarda. Falta saber cuánta energía."*
+> "Y lleno el espacio con vidrio, de épsilon erre igual a cinco: cuatrocientos cuarenta y tres picofaradios. Guarden este capacitor: a mil voltios guarda cero coma cuatro cuatro tres microcoulombs, con un campo de medio megavoltio por metro."
+
+### 05 · Coaxial, esfera y la Tierra · reloj 3:50 · 1:07
+
+**En pantalla:** Transición: las placas se enrollan en el coaxial y se inflan en la esfera. Fórmulas de ambos.
+
+> "Mismo método, otras simetrías. En el coaxial, la gaussiana es un cilindro, el campo cae como uno sobre ro y aparece un logaritmo: C igual a dos pi épsilon L sobre el logaritmo natural de b sobre a. Un cable real da unos cien picofaradios por metro, con el campo máximo junto al conductor interior. En la esfera, el campo cae como uno sobre r al cuadrado; y si el cascarón exterior se va al infinito, queda cuatro pi épsilon cero a."
+
+**[→]** *(Aparece la Tierra: a = 6370 km, C ≈ 709 µF.)*
+
+> "Y la respuesta del inicio: con un radio de seis mil trescientos setenta kilómetros, la Tierra tiene unos setecientos nueve microfaradios. Menos que un electrolítico que cabe en la mano. La capacitancia no se gana con tamaño: se gana acercando los conductores y con un buen dieléctrico."
 
 ---
 
-## Bloque IV — Energía y cierre
+## Bloque III — El dieléctrico y su límite
 
-### 08 · Energía almacenada · reloj 11:30 · 1:45
+### 06 · El dieléctrico por dentro · reloj 4:57 · 1:57
 
-**En pantalla:** **W = ½CV² = Q²/(2C)** · **W = ½∫D·E dv** · **w = ½εE²**. Comprobación: 221 µJ = 221 µJ.
+**En pantalla:** Transición: el espacio entre placas se cristaliza. Dipolos al azar y la pregunta: ¿cómo un material que no conduce dispara la capacitancia?
 
-> "Cargar un capacitor cuesta trabajo. Al principio pasar carga de una placa a la otra es fácil, pero cada carga nueva tiene que subir contra el voltaje que ya dejaron las anteriores, q sobre C. Integrando de cero a Q sale Q² sobre 2C, que es lo mismo que **W = ½CV²**. El ½ aparece porque el voltaje fue creciendo durante la carga.
->
-> Pero en lenguaje de campos hay otra forma de escribirlo: W es la integral de ½ D·E en todo el volumen. **La energía no está en las placas; está en el campo**, repartida en el dieléctrico, con densidad ½εE² joules por metro cúbico.
->
-> Comprobemos con el vidrio. ½CV²: ½ por 443 pF por un millón, **221 microjoules**. Por campos: ½εE² da 5,53 J/m³, por un volumen de 4×10⁻⁵ m³, otra vez **221 microjoules**. Las dos fórmulas coinciden, como debe ser.
->
-> *(opcional)* Y esa misma densidad, ½εE², es la presión con que se atraen las placas."
+> "Y aquí está la verdadera magia. Muchos piensan que un capacitor es solo dos placas separadas por nada. Pero lo importante ocurre en ese espacio. Si dejamos aire, funciona; si metemos un dieléctrico, la capacitancia se dispara. ¿Cómo lo logra un material que, en teoría, no conduce electricidad?"
 
-### 09 · Aplicaciones y cierre · reloj 13:15 · 1:45
+**[→]** *(Los dipolos se alinean. Dos tarjetas: polarización electrónica o iónica y orientación de dipolos.)*
 
-**En pantalla:** tres tarjetas (corrección de factor de potencia · arranque de motores monofásicos · cables de potencia y aislamiento) y debajo las tres ideas finales.
+> "A escala microscópica, el material está formado por átomos y moléculas neutras, pero con centros de carga que pueden desplazarse. Con el campo de las placas ocurren dos cosas. En la polarización electrónica o iónica, la nube de electrones se deforma un poco respecto al núcleo. Y en los materiales polares, las moléculas que ya son dipolos giran y se alinean con el campo, como pequeñas brújulas eléctricas. Los dos mecanismos crean un campo interno que se opone al de las placas."
 
-> "¿Dónde se lo van a encontrar como electromecánicos?
->
-> En los bancos de **corrección de factor de potencia**, que compensan la potencia reactiva de los motores de una planta. En el capacitor de **arranque de los motores monofásicos**, que desfasa la corriente de un devanado para que el motor arranque. Y en los **cables de potencia**, que son coaxiales: conductor, aislante y pantalla. Tienen capacitancia por metro, y como el campo va con 1/ρ, es máximo junto al conductor, que es donde se diseña el aislamiento. Las pruebas de descargas parciales en mantenimiento buscan justo las burbujas que vimos.
->
-> Y una regla de seguridad: un capacitor desconectado puede seguir cargado. Un banco de 100 µF a 480 V guarda 11,5 joules. Se descarga y se verifica antes de tocar.
->
-> Tres ideas para llevarse: **C depende solo de la geometría y del material. Todo capacitor se resuelve con Q, Gauss, V y dividir. Y la energía está en el campo: donde el campo se concentra, ahí falla el aislamiento.**
->
-> Gracias. Preguntas."
+**[→]** *(Cargas ligadas en las caras, D = ε0E + P y barras: 22,1 libre, 17,7 neutralizada, 4,4 produce campo.)*
+
+> "El resultado aparece en las caras: cargas ligadas, negativas junto a la placa positiva y positivas junto a la negativa. En nuestro capacitor de vidrio, de veintidós coma un microcoulombs por metro cuadrado de carga libre, la polarización neutraliza diecisiete coma siete: solo un quinto produce campo. Con la misma carga hay menos voltaje, así que las placas guardan más carga por cada voltio: la capacitancia sube épsilon erre veces. Por eso usamos D igual a épsilon cero E más P: D solo ve la carga libre."
+
+### 07 · La grieta de aire y el límite del material · reloj 6:54 · 1:41
+
+**En pantalla:** Transición: una fisura recorre el hielo. Lámina de aire de 0,1 mm sobre 1,9 mm de vidrio; 1000 V, E en el aire 2,08 MV/m.
+
+> "Pero el material también tiene defectos. Supongamos una lámina de aire de una décima de milímetro entre el vidrio y la placa. Como las capas están apiladas, D es el mismo en las dos, y el aire, con épsilon erre igual a uno, soporta cinco veces más campo que el vidrio. A mil voltios son dos coma cero ocho megavoltios por metro, y el aire rompe cerca de tres. Subamos la tensión."
+
+**[→]** *(1200 V: 2,5 MV/m en el aire.)*
+
+> "Mil doscientos voltios: dos coma cinco megavoltios por metro en el aire, mientras el vidrio sigue tranquilo."
+
+**[→]** *(1440 V: 3 MV/m; la grieta se vuelve carmesí y se ioniza.)*
+
+> "Mil cuatrocientos cuarenta voltios: tres megavoltios por metro. El aire se ioniza aunque el vidrio esté lejos de su límite. Es una descarga parcial: no falla el aislante, falla la burbuja."
+
+**[→]** *(Panel: rigidez dieléctrica y tipos de capacitor (cerámica, poliéster, tantalio, electrolítico).)*
+
+> "Y eso nos lleva al límite de cualquier material: la rigidez dieléctrica. Si superamos el campo máximo, rompemos la estructura molecular, el aislante se ioniza y se vuelve conductor: es lo que vemos como un capacitor que explota o hace cortocircuito. Por eso elegir entre cerámica, poliéster, tantalio o electrolítico no es solo cuestión de tamaño: es entender las fronteras físicas de cada material."
+
+---
+
+## Bloque IV — El capacitor en el circuito
+
+### 08 · Respuesta en DC · reloj 8:36 · 1:33
+
+**En pantalla:** Transición: las placas se encogen hasta el símbolo y nace un circuito RC con interruptor abierto. i = C dv/dt.
+
+> "Ahora llevemos el capacitor al circuito. Todo parte de una ecuación: i igual a C por la derivada del voltaje respecto al tiempo. La corriente no depende del voltaje, sino de qué tan rápido cambia. Tiene lógica: la carga almacenada es C por v; si v no cambia, la carga no cambia y no hay flujo."
+
+**[→]** *(Se cierra el interruptor: la corriente fluye y se apaga; se dibujan v_C(t) e i(t), con τ, 63 % y 5τ.)*
+
+> "Cerramos el interruptor de este circuito RC. En el primer instante el capacitor está descargado, toda la tensión cae en la resistencia y la corriente es máxima: V sobre R. A medida que entra carga, el capacitor desarrolla su propio voltaje, que se opone a la fuente, y la corriente baja. Es una exponencial con constante de tiempo tau igual a R C: en un tau llega al sesenta y tres por ciento, y en cinco tau, al noventa y nueve."
+
+**[→]** *(Cargado: i = 0, circuito abierto; bloquea la componente continua.)*
+
+> "Cuando su voltaje iguala al de la fuente, la derivada es cero y la corriente también. El capacitor se comporta como un circuito abierto, y tiene sentido, porque entre las placas hay un dieléctrico. Por eso sirve para bloquear la componente continua, separar etapas y almacenar carga."
+
+### 09 · Respuesta en AC · reloj 10:08 · 1:42
+
+**En pantalla:** Transición: la batería se vuelve fuente senoidal, la resistencia se aplana y la exponencial ondula. v e i desfasadas 90°.
+
+> "Cambiemos la fuente por una senoidal. Como el voltaje nunca deja de cambiar, nunca hay estado estable. Derivando, la corriente es omega C V eme por coseno: una senoide adelantada noventa grados. ¿Por qué adelantada? Porque la corriente sigue la pendiente del voltaje: cuando el voltaje cruza por cero es cuando más rápido cambia, y ahí la corriente es máxima."
+
+**[→]** *(X_C = 1/(2πfC) y tabla para 100 µF: 26,5 Ω · 1,59 Ω · 0,159 Ω.)*
+
+> "De ahí sale la reactancia capacitiva: X C igual a uno sobre dos pi f C. A mayor frecuencia, menor oposición. Con cien microfaradios: veintiséis coma cinco ohmios a sesenta hertz, uno coma cincuenta y nueve a un kilohertz y cero coma ciento cincuenta y nueve a diez kilohertz. Si la frecuencia tiende a cero, la reactancia tiende a infinito, que es el caso de continua; a frecuencia alta, el capacitor es casi un cortocircuito."
+
+**[→]** *(Aparece p(t): doble de frecuencia, promedio cero. 100 µF, 120 V, 60 Hz → 4,52 A, 543 var.)*
+
+> "Un detalle de potencia: la potencia instantánea oscila al doble de la frecuencia y su promedio es cero. El capacitor no consume energía: la absorbe y la devuelve. Con cien microfaradios a ciento veinte voltios y sesenta hertz circulan cuatro coma cincuenta y dos amperios, y unos quinientos cuarenta y tres voltamperios reactivos."
+
+### 10 · Aplicaciones y corriente de desplazamiento · reloj 11:50 · 1:17
+
+**En pantalla:** Transición: la onda de corriente entra al dieléctrico como líneas de campo que laten. Lista de aplicaciones.
+
+> "Esa dependencia con la frecuencia es la base de sus aplicaciones. En un filtro RC desvía las altas frecuencias a tierra y deja pasar las bajas. En el acople deja pasar la señal y bloquea la continua. Con una bobina forma un circuito LC que resuena y sirve para sintonizar. Y en un banco de capacitores, su reactiva cancela la de los motores y mejora el factor de potencia."
+
+**[→]** *(Corriente de desplazamiento: i = A ∂D/∂t = (εA/d) dv/dt = C dv/dt.)*
+
+> "Pero queda una pregunta de teoría electromagnética: si ninguna carga cruza el dieléctrico, ¿cómo circula corriente en alterna? La respuesta es la corriente de desplazamiento de Maxwell: un campo D que varía equivale a una corriente. Para placas paralelas, i es A por la derivada de D, que es épsilon A sobre d por la derivada de v: C por dv dt, la misma ecuación con la que empezamos, ahora deducida desde los campos. Y con dieléctrico pasa épsilon erre veces más corriente."
+
+---
+
+## Bloque V — Energía y cierre
+
+### 11 · Energía almacenada · reloj 13:07 · 0:54
+
+**En pantalla:** Transición: las líneas de campo se ensanchan hasta llenar el volumen. W = ½CV² y W = ½∫D·E dv.
+
+> "Falta la energía. Cargar un capacitor cuesta trabajo, porque cada carga nueva sube contra el voltaje que dejaron las anteriores. Integrando sale un medio de C V al cuadrado. Y en lenguaje de campos, es la integral de un medio de D punto E en el volumen: la energía no está en las placas, está en el campo, con densidad un medio de épsilon E al cuadrado."
+
+**[→]** *(Comprobación: 221 µJ por circuito = 221 µJ por campos.)*
+
+> "Comprobemos con el capacitor de vidrio: un medio de C V al cuadrado da doscientos veintiún microjoules; un medio de épsilon E al cuadrado, por el volumen, otra vez doscientos veintiún microjoules. Las dos fórmulas coinciden."
+
+### 12 · Cierre · reloj 14:01 · 0:53
+
+**En pantalla:** Transición: la luz se drena y se divide en tres estrellas. Tres ideas.
+
+> "Me quedo con tres ideas. Uno: la capacitancia depende solo de la geometría y del material. Dos: su comportamiento depende del tiempo, porque i es C dv dt: abierto en continua, conduce en alterna. Tres: la energía está en el campo, y donde el campo se concentra, ahí falla el aislamiento."
+
+**[→]** *(Seguridad (100 µF a 480 V guardan 11,5 J) y «Gracias · Preguntas».)*
+
+> "Y una regla de seguridad: un capacitor desconectado puede seguir cargado. Cien microfaradios a cuatrocientos ochenta voltios guardan once coma cinco joules. Siempre se descarga y se verifica antes de tocarlo. Muchas gracias. ¿Preguntas?"
 
 ---
 
@@ -236,6 +242,35 @@ F = ½ε₀E²A = ½(8,854×10⁻¹²)(2,5×10¹¹)(0,02) = **0,0221 N** (atract
 
 ---
 
+## Problema 7 · Carga de un circuito RC (DC)
+
+R = 10 kΩ, C = 100 µF, V = 12 V, capacitor inicialmente descargado.
+
+1. τ = RC = (10×10³)(100×10⁻⁶) = **1 s**
+2. i(0) = V/R = 12/10 000 = **1,2 mA** (el capacitor descargado se comporta como un cortocircuito)
+3. v_C(t) = V(1 − e^(−t/τ)) → v_C(τ) = 12(1 − e⁻¹) = **7,59 V** (63 %)
+4. v_C(5τ) = 12(1 − e⁻⁵) = **11,92 V** (99,3 %): en la práctica, cargado
+5. En régimen permanente dv/dt = 0 → i = C dv/dt = **0**: circuito abierto.
+
+## Problema 8 · Reactancia y potencia reactiva (AC)
+
+C = 100 µF, V = 120 V (eficaz), f = 60 Hz.
+
+1. X_C = 1/(2πfC) = 1/(2π · 60 · 100×10⁻⁶) = **26,5 Ω**
+2. I = V/X_C = 120/26,5 = **4,52 A**
+3. Q = V·I = 120 · 4,52 ≈ **543 var** (capacitiva). Potencia activa promedio: **0 W**.
+4. Misma C a 1 kHz: X_C = **1,59 Ω**; a 10 kHz: **0,159 Ω**. Si f → 0, X_C → ∞ (caso DC).
+5. Desfase: v = V_m sen ωt → i = C dv/dt = ωC V_m cos ωt: la corriente **adelanta 90°**.
+
+## Problema 9 · Corriente de desplazamiento en el capacitor de vidrio
+
+El capacitor del Problema 1 (443 pF, A = 200 cm²) con 1000 V eficaces a 60 Hz.
+
+1. I = ωCV = 2π · 60 · 443×10⁻¹² · 1000 = **0,167 mA**
+2. Densidad de corriente de desplazamiento: J_d = ∂D/∂t → |J_d| = I/A = 1,67×10⁻⁴ / 0,02 = **8,35 mA/m²**
+3. Comprobación: i = A ∂D/∂t = A ε ∂E/∂t = (εA/d) dv/dt = C dv/dt. Con aire (εr = 1) la corriente sería 5 veces menor.
+
+---
 # Parte 3 · Preguntas probables y respuesta corta
 
 **¿Si duplico el voltaje, cambia la capacitancia?**
@@ -264,3 +299,21 @@ Gauss cuando hay simetría y supongo la carga. Laplace cuando conozco los potenc
 
 **¿Capas en serie o en paralelo?**
 Capas apiladas paralelas a las placas (E atraviesa las dos) → serie: 1/C = d₁/(ε₁A) + d₂/(ε₂A). Materiales lado a lado (E paralelo a la interfaz) → paralelo: C = ε₁A₁/d + ε₂A₂/d.
+
+**¿Cuáles son los mecanismos de polarización de un dieléctrico?**
+Polarización electrónica o iónica: el campo deforma la nube electrónica (o desplaza iones) y separa los centros de carga. Orientación: en materiales polares, los dipolos permanentes giran y se alinean con el campo. Ambos crean un campo interno opuesto al de las placas.
+
+**¿Qué es la rigidez dieléctrica?**
+El campo máximo que soporta un aislante antes de romperse. Si se supera, la estructura molecular se rompe, el material se ioniza y conduce (cortocircuito). El aire ronda los 3 MV/m.
+
+**¿Por qué un capacitor es un circuito abierto en DC?**
+Porque i = C dv/dt: cuando el voltaje deja de cambiar, la corriente es cero. Físicamente, entre las placas hay un aislante.
+
+**¿Por qué en AC la corriente adelanta 90°?**
+Porque la corriente sigue la pendiente del voltaje: es máxima cuando el voltaje cruza por cero (donde más rápido cambia) y nula en el pico.
+
+**¿El capacitor consume potencia en AC?**
+No: p(t) oscila al doble de la frecuencia con promedio cero. Absorbe energía en un cuarto de ciclo y la devuelve en el siguiente; solo intercambia potencia reactiva.
+
+**Si ninguna carga cruza el dieléctrico, ¿cómo hay corriente en AC?**
+Por la corriente de desplazamiento de Maxwell: un D que varía en el tiempo equivale a una densidad de corriente ∂D/∂t. Para placas paralelas, A ∂D/∂t = C dv/dt, la misma corriente que circula por los cables.

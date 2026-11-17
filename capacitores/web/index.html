@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -202,7 +202,21 @@
       <div class="col">
         <p class="kicker rv" style="--d:100ms">06 · El dieléctrico</p>
         <h2 class="rv" style="--d:200ms">El material se polariza</h2>
-        <p class="eq-l rv" style="--d:380ms"><span class="it">D</span> = <span class="it">ε</span><sub>0</sub><span class="it">E</span> + <span class="it">P</span></p>
+        <p class="hook">Dos placas separadas por… ¿nada? La magia ocurre en ese espacio. ¿Cómo un material que <em>no conduce</em> dispara la capacitancia?</p>
+        <div class="mech">
+          <div class="mcard">
+            <svg viewBox="-60 -40 120 80" aria-hidden="true"><ellipse class="cloud" cx="0" cy="0" rx="30" ry="30"/><circle class="nuc" r="7"/><text x="44" y="6" class="arr">E ↓</text></svg>
+            <p class="mt">Polarización electrónica o iónica</p>
+            <p class="md">La nube de electrones se deforma: el centro de carga negativa se separa del núcleo.</p>
+          </div>
+          <div class="mcard">
+            <svg viewBox="-60 -40 120 80" aria-hidden="true"><g class="comp"><line x1="-16" y1="0" x2="16" y2="0"/><circle class="dn" cx="-20" cy="0" r="8"/><circle class="dp" cx="20" cy="0" r="8"/></g><text x="44" y="6" class="arr">E ↓</text></svg>
+            <p class="mt">Orientación de dipolos</p>
+            <p class="md">Las moléculas polares giran y se alinean con el campo, como brújulas eléctricas.</p>
+          </div>
+          <p class="mnote">Ambos crean un campo interno que se <em>opone</em> al de las placas.</p>
+        </div>
+        <p class="eq-l eq6"><span class="it">D</span> = <span class="it">ε</span><sub>0</sub><span class="it">E</span> + <span class="it">P</span></p>
         <div class="bars">
           <div class="bar-row"><span class="bk">Carga libre</span><span class="bv">22,1 µC/m²</span><div class="bar"><i style="--w:100%"></i></div></div>
           <div class="bar-row neg"><span class="bk">Neutralizada por <span class="it">P</span></span><span class="bv">17,7 µC/m²</span><div class="bar"><i style="--w:80%"></i></div></div>
@@ -241,6 +255,136 @@
           <div class="meter-bar"><i id="meter-fill"></i><b></b></div>
         </div>
         <p class="s07-final">Descarga parcial: no falla el aislante, <em>falla la burbuja</em>.</p>
+        <div class="limit">
+          <p class="lim-t">Cada material tiene su límite: la <em>rigidez dieléctrica</em></p>
+          <p class="lim-d">Si el campo la supera, la estructura molecular se rompe, el aislante se ioniza y conduce: cortocircuito.</p>
+          <div class="chips">
+            <div><b>Cerámica</b><span>compacto, buena respuesta en alta frecuencia</span></div>
+            <div><b>Poliéster</b><span>película plástica, estable y económico</span></div>
+            <div><b>Tantalio</b><span>óxido muy delgado: mucha C en poco volumen</span></div>
+            <div><b>Electrolítico</b><span>la mayor C por volumen; tiene polaridad</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · Respuesta en DC -->
+    <section class="slide sdc" data-id="sdc" data-state="0" aria-label="Respuesta en DC">
+      <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g class="circ">
+          <path class="wire" pathLength="1" d="M860 518 L860 300 L640 300"/>
+          <path class="res" id="res-dc" d="M640 300 L627 316 L600 284 L573 316 L547 284 L520 316 L493 284 L480 300"/>
+          <path class="wire" pathLength="1" d="M480 300 L400 300"/>
+          <circle class="node" cx="400" cy="300" r="5"/><circle class="node" cx="340" cy="300" r="5"/>
+          <line class="blade" id="sw-dc" x1="340" y1="300" x2="400" y2="300"/>
+          <path class="wire" pathLength="1" d="M340 300 L260 300 L260 512"/>
+          <line class="batt" x1="222" y1="512" x2="298" y2="512"/><line class="batt" x1="242" y1="532" x2="278" y2="532"/>
+          <path class="wire" pathLength="1" d="M860 562 L860 780 L260 780 L260 532"/>
+          <text class="clbl" x="560" y="258" text-anchor="middle">R</text>
+          <text class="clbl" x="370" y="258" text-anchor="middle">S</text>
+          <text class="clbl" x="960" y="552">C</text>
+          <text class="clbl" x="170" y="534">V</text>
+          <text class="clbl sm" x="306" y="504">+</text>
+          <g id="dots-dc" class="dots"></g>
+        </g>
+        <g class="graph">
+          <line class="ax" x1="1100" y1="660" x2="1795" y2="660"/><line class="ax" x1="1100" y1="400" x2="1100" y2="660"/>
+          <text class="axl" x="1795" y="692" text-anchor="end">t</text>
+          <g class="tau">
+            <line class="dash" x1="1236" y1="508" x2="1236" y2="660"/><line class="dash" x1="1100" y1="508" x2="1236" y2="508"/>
+            <text class="axl" x="1236" y="694" text-anchor="middle">τ = RC</text>
+            <text class="axl" x="1090" y="514" text-anchor="end">63 %</text>
+            <text class="axl" x="1780" y="694" text-anchor="end">5τ · 99 %</text>
+          </g>
+          <path class="gv" id="gv-dc" pathLength="1"/>
+          <path class="gi" id="gi-dc" pathLength="1"/>
+          <text class="lg v" x="1800" y="432">v<tspan class="sb">C</tspan></text>
+          <text class="lg i" x="1800" y="652">i</text>
+        </g>
+      </svg>
+      <div class="hd">
+        <p class="kicker rv" style="--d:100ms">08 · Corriente continua</p>
+        <h2 class="rv" style="--d:200ms">El capacitor se carga</h2>
+        <p class="eq-l rv" style="--d:380ms"><span class="it">i</span> = <span class="it">C</span> d<span class="it">v</span>/d<span class="it">t</span></p>
+      </div>
+      <div class="notes">
+        <p class="n0">La corriente depende de qué tan rápido <em>cambia</em> el voltaje, no del voltaje.</p>
+        <p class="n1">Al cerrar: <span class="it">i</span> = <span class="it">V</span>/<span class="it">R</span>. En un τ llega al 63 %; en 5τ, al 99 %.</p>
+        <p class="n2">Cargado: d<span class="it">v</span>/d<span class="it">t</span> = 0 → <span class="it">i</span> = 0. <em>Circuito abierto</em>: bloquea la componente continua.</p>
+      </div>
+    </section>
+
+    <!-- 09 · Respuesta en AC -->
+    <section class="slide sac" data-id="sac" data-state="0" aria-label="Respuesta en AC">
+      <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g class="circ">
+          <path class="wire" d="M260 498 L260 300 L860 300 L860 518"/>
+          <path class="wire" d="M260 582 L260 780 L860 780 L860 562"/>
+          <circle class="src" cx="260" cy="540" r="42"/>
+          <path class="srcw" d="M232 540 C 244 516, 252 516, 260 540 S 276 564, 288 540"/>
+          <text class="clbl" x="960" y="552">C</text>
+          <text class="clbl" x="150" y="550">v(t)</text>
+          <g id="dots-ac" class="dots"></g>
+        </g>
+        <g class="graph">
+          <line class="ax" x1="1100" y1="545" x2="1795" y2="545"/><line class="ax" x1="1100" y1="410" x2="1100" y2="680"/>
+          <text class="axl" x="1806" y="551">t</text>
+          <path class="gp" id="gp-ac"/>
+          <path class="gv" id="gv-ac"/>
+          <path class="gi" id="gi-ac"/>
+          <g class="lead">
+            <line class="dash" x1="1440" y1="420" x2="1440" y2="670"/><line class="dash" x1="1525" y1="420" x2="1525" y2="670"/>
+            <path class="brk" d="M1440 412 L1525 412"/>
+            <text class="axl" x="1482" y="400" text-anchor="middle">90°</text>
+          </g>
+          <text class="lg v" x="1800" y="440">v</text>
+          <text class="lg i" x="1800" y="480">i</text>
+          <text class="lg p" x="1800" y="520">p</text>
+        </g>
+      </svg>
+      <div class="hd">
+        <p class="kicker rv" style="--d:100ms">09 · Corriente alterna</p>
+        <h2 class="rv" style="--d:200ms">La corriente se adelanta 90°</h2>
+        <p class="eq-m rv" style="--d:380ms"><span class="it">v</span> = <span class="it">V</span><sub>m</sub> sen ω<span class="it">t</span> → <span class="it">i</span> = ω<span class="it">C V</span><sub>m</sub> cos ω<span class="it">t</span></p>
+      </div>
+      <div class="notes ac-notes">
+        <p class="n0">La corriente sigue la <em>pendiente</em> del voltaje: máxima cuando <span class="it">v</span> cruza por cero.</p>
+        <div class="n1">
+          <p class="xc"><span class="it">X</span><sub>C</sub> = 1 / (2π<span class="it">fC</span>)</p>
+          <table class="xt"><tr><th>100 µF</th><td>60 Hz</td><td>1 kHz</td><td>10 kHz</td></tr><tr><th><span class="it">X</span><sub>C</sub></th><td>26,5 Ω</td><td>1,59 Ω</td><td>0,159 Ω</td></tr></table>
+          <p class="xn"><span class="it">f</span> → 0: <span class="it">X</span><sub>C</sub> → ∞ (DC) · <span class="it">f</span> alta: casi un cortocircuito</p>
+        </div>
+        <div class="n2">
+          <p class="pw"><span class="it">p</span> oscila al doble de la frecuencia y su promedio es <em>cero</em>: absorbe y devuelve energía.</p>
+          <p class="pe">100 µF · 120 V · 60 Hz → <span class="it">X</span><sub>C</sub> ≈ 26,5 Ω · <span class="it">I</span> ≈ 4,52 A · <span class="it">Q</span> ≈ 543 var</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · Aplicaciones y corriente de desplazamiento -->
+    <section class="slide sapp" data-id="sapp" data-state="0" aria-label="Aplicaciones y Maxwell">
+      <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g id="dlines" class="dlines"></g>
+        <line class="wire" x1="560" y1="296" x2="560" y2="170"/><line class="wire" x1="560" y1="784" x2="560" y2="910"/>
+        <path class="iarr" d="M548 236 L560 214 L572 236 Z"/><path class="iarr" d="M548 846 L560 868 L572 846 Z"/>
+        <text class="clbl" x="590" y="234">i</text><text class="clbl" x="590" y="866">i</text>
+        <text class="idlbl" x="560" y="556" text-anchor="middle">i<tspan class="sb">d</tspan> = A ∂D/∂t</text>
+      </svg>
+      <div class="col">
+        <p class="kicker rv" style="--d:100ms">10 · Aplicaciones</p>
+        <h2 class="rv" style="--d:200ms">Todo depende de la frecuencia</h2>
+        <div class="apps10 rv" style="--d:400ms">
+          <div><b>Filtro RC</b><span>desvía las altas a tierra · <span class="it">f</span><sub>c</sub> = 1/(2π<span class="it">RC</span>)</span></div>
+          <div><b>Acople</b><span>deja pasar la señal y bloquea la DC</span></div>
+          <div><b>Circuito LC</b><span>resuena en <span class="it">f</span><sub>0</sub> = 1/(2π√<span class="it">LC</span>) · sintoniza</span></div>
+          <div><b>Banco de capacitores</b><span>cancela la reactiva de los motores · mejora el FP</span></div>
+        </div>
+        <div class="maxw">
+          <p class="mq">Si ninguna carga cruza el dieléctrico, ¿cómo circula corriente en AC?</p>
+          <p class="mk">Corriente de desplazamiento de Maxwell</p>
+          <p class="me"><span class="it">i</span> = <span class="it">A</span> ∂<span class="it">D</span>/∂<span class="it">t</span> = (<span class="it">εA</span>/<span class="it">d</span>) d<span class="it">v</span>/d<span class="it">t</span> = <span class="it">C</span> d<span class="it">v</span>/d<span class="it">t</span></p>
+          <p class="mn">Con dieléctrico pasa <span class="it">ε</span><sub>r</sub> veces más corriente: <span class="it">C</span> = <span class="it">ε</span><sub>r</sub><span class="it">C</span><sub>0</sub></p>
+        </div>
       </div>
     </section>
 
@@ -263,7 +407,7 @@
         <text class="vol-val" x="560" y="610" text-anchor="middle">5,53 J/m³</text>
       </svg>
       <div class="col">
-        <p class="kicker rv" style="--d:100ms">08 · Energía</p>
+        <p class="kicker rv" style="--d:100ms">11 · Energía</p>
         <h2 class="rv" style="--d:200ms">La energía vive en el campo</h2>
         <p class="eq-l rv" style="--d:380ms"><span class="it">W</span> = ½ <span class="it">C V</span>²</p>
         <p class="eq-m rv" style="--d:500ms"><span class="it">W</span> = ½ ∫ <span class="it">D</span> · <span class="it">E</span> d<span class="it">v</span></p>
@@ -275,42 +419,22 @@
       </div>
     </section>
 
-    <!-- 09 · Aplicaciones y cierre -->
-    <section class="slide s09" data-id="s09" data-state="0" aria-label="Aplicaciones y cierre">
-      <p class="kicker s09-k k0">09 · En la práctica</p>
-      <p class="kicker s09-k k1">09 · Para llevarse</p>
+    <!-- 12 · Cierre -->
+    <section class="slide s09" data-id="s09" data-state="0" aria-label="Cierre">
+      <p class="kicker s09-k">12 · Para llevarse</p>
       <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
-        <g class="apps">
-          <g class="icon">
-            <line x1="330" y1="480" x2="510" y2="480"/><line x1="330" y1="600" x2="510" y2="600"/>
-            <line x1="360" y1="480" x2="360" y2="530"/><line x1="338" y1="530" x2="382" y2="530"/><line x1="338" y1="546" x2="382" y2="546"/><line x1="360" y1="546" x2="360" y2="600"/>
-            <line x1="420" y1="480" x2="420" y2="530"/><line x1="398" y1="530" x2="442" y2="530"/><line x1="398" y1="546" x2="442" y2="546"/><line x1="420" y1="546" x2="420" y2="600"/>
-            <line x1="480" y1="480" x2="480" y2="530"/><line x1="458" y1="530" x2="502" y2="530"/><line x1="458" y1="546" x2="502" y2="546"/><line x1="480" y1="546" x2="480" y2="600"/>
-          </g>
-          <g class="icon">
-            <circle cx="940" cy="540" r="58"/><circle cx="940" cy="540" r="22"/>
-            <line x1="998" y1="540" x2="1030" y2="540"/><line x1="1030" y1="516" x2="1030" y2="564"/><line x1="1044" y1="516" x2="1044" y2="564"/><line x1="1044" y1="540" x2="1070" y2="540"/>
-          </g>
-          <g class="icon">
-            <circle class="ic-fill" cx="1500" cy="540" r="18"/><circle cx="1500" cy="540" r="44"/><circle class="ic-v" cx="1500" cy="540" r="58"/><circle class="ic-dim" cx="1500" cy="540" r="68"/>
-          </g>
-        </g>
         <g class="stars9">
           <g class="st9" style="--x:420px"><circle class="halo9" r="34"/><path d="M0 -20 L4.5 -4.5 L20 0 L4.5 4.5 L0 20 L-4.5 4.5 L-20 0 L-4.5 -4.5 Z"/></g>
           <g class="st9" style="--x:960px"><circle class="halo9" r="34"/><path d="M0 -20 L4.5 -4.5 L20 0 L4.5 4.5 L0 20 L-4.5 4.5 L-20 0 L-4.5 -4.5 Z"/></g>
           <g class="st9" style="--x:1500px"><circle class="halo9" r="34"/><path d="M0 -20 L4.5 -4.5 L20 0 L4.5 4.5 L0 20 L-4.5 4.5 L-20 0 L-4.5 -4.5 Z"/></g>
         </g>
       </svg>
-      <div class="app-t" style="--x:420px"><p class="at">Factor de potencia</p><p class="an">Bancos que compensan la reactiva de los motores</p></div>
-      <div class="app-t" style="--x:960px"><p class="at">Motores monofásicos</p><p class="an">El capacitor de arranque desfasa la corriente</p></div>
-      <div class="app-t" style="--x:1500px"><p class="at">Cables de potencia</p><p class="an">Son coaxiales: campo máximo junto al conductor</p></div>
-      <p class="safety"><span class="sf-k">Seguridad</span> Desconectado puede seguir cargado: 100 µF a 480 V guardan 11,5 J. Descargar y verificar.</p>
       <div class="idea" style="--x:420px;--i:0"><p class="in">I</p><p class="it-t"><span class="it">C</span> depende solo de la geometría y del material</p></div>
-      <div class="idea" style="--x:960px;--i:1"><p class="in">II</p><p class="it-t">Una sola receta:<br><span class="nw"><span class="it">Q</span> → <span class="it">E</span> → <span class="it">V</span> → <span class="it">C</span></span></p></div>
+      <div class="idea" style="--x:960px;--i:1"><p class="in">II</p><p class="it-t">Y del tiempo: <span class="it">i</span> = <span class="it">C</span> d<span class="it">v</span>/d<span class="it">t</span>, abierto en DC, conduce en AC</p></div>
       <div class="idea" style="--x:1500px;--i:2"><p class="in">III</p><p class="it-t">La energía está en el campo, y ahí falla el aislamiento</p></div>
+      <p class="safety"><span class="sf-k">Seguridad</span> Desconectado puede seguir cargado: 100 µF a 480 V guardan 11,5 J. Descargar y verificar.</p>
       <p class="thanks">Gracias · Preguntas</p>
     </section>
-
     <!-- Persistent plates: they belong to every scene -->
     <div class="plate plate-top" id="plate-top" aria-hidden="true"></div>
     <div class="plate plate-bot" id="plate-bot" aria-hidden="true"></div>

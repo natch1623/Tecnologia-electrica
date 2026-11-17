@@ -1,4 +1,4 @@
-﻿/* El Capacitor · TEM I — motor de la presentación (demo: slides 01–03). */
+/* El Capacitor · TEM I — motor de la presentación (demo: slides 01–03). */
 (() => {
   'use strict';
 
@@ -12,7 +12,7 @@
   const gauss = document.getElementById('gauss');
   const hudN = document.getElementById('hud-n');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const TOTAL = 9;
+  const TOTAL = 12;
   const SVGNS = 'http://www.w3.org/2000/svg';
 
   const ICE = '143,227,255', ABYSS = '168,139,255', STAR = '242,244,250';
@@ -519,7 +519,7 @@
   }
   function s06Dip(st) { for (const d of dipoles) d.g.style.transform = `translate(${d.x}px,${d.y}px) rotate(${st ? 90 : d.rnd}deg)`; }
   CTRL.s06 = {
-    states: 1,
+    states: 2,
     render(st, inst) { s06.dataset.state = st; if (inst) noTr(s06, () => s06Dip(st)); else s06Dip(st); },
     reset() { this.render(0, true); },
   };
@@ -560,16 +560,16 @@
     })(t0);
   }
   CTRL.s07 = {
-    states: 2,
-    render(st, inst) {
-      const a = S07[s07cur], b = S07[st], ms = inst ? 1 : 1000;
+    states: 3,
+    render(st, inst, dir) {
+      const a = S07[Math.min(s07cur, 2)], b = S07[Math.min(st, 2)], ms = inst ? 1 : 1000;
       s07.dataset.state = st;
       countTo(s07f.v, a.V, b.V, v => String(Math.round(v)), ms);
       countTo(s07f.ea, a.ea, b.ea, v => nf2.format(v), ms);
       countTo(s07f.eg, a.eg, b.eg, v => nf2.format(v), ms);
       countTo(s07f.va, a.va, b.va, v => String(Math.round(v)), ms);
       if (inst) noTr(s07, () => { s07f.m.style.width = `${b.ea / 3 * 100}%`; }); else s07f.m.style.width = `${b.ea / 3 * 100}%`;
-      if (st === 2 && !inst) setTimeout(() => { if (s07.dataset.state === '2' && slides[idx] === s07) ionize(); }, 650);
+      if (st === 2 && !inst && dir > 0) setTimeout(() => { if (s07.dataset.state === '2' && slides[idx] === s07) ionize(); }, 650);
       if (st !== 2) ionizeStop();
       s07cur = st;
     },
@@ -767,8 +767,8 @@
   };
 
   /* ---------- 07 → 08 · Llenado ---------- */
-  T['s07>s08'] = async (from, to) => {
-    const hot = from.dataset.state === '2';
+  T['sapp>s08'] = async (from, to) => {
+    const hot = false;
     leaveSlide(from);
     fadeOut([from.querySelector('.col')], 400);
     fxClear();
@@ -935,7 +935,7 @@
     leaveSlide(from);
     const pts = crackPts;
     from.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' });
-    CTRL.s06.reset(); CTRL.s06.render(1, true);
+    CTRL.s06.reset(); CTRL.s06.render(2, true);
     to.classList.add('is-entering');
     await tween(800, t => {
       const xTip = lerp(920, 200, ease.io(t));
@@ -954,12 +954,12 @@
   };
 
   // 08 → 07 · El volumen de energía se adelgaza de nuevo en líneas de campo.
-  T['s08>s07'] = async (from, to) => {
+  T['s08>sapp'] = async (from, to) => {
     leaveSlide(from);
     fadeOut([from.querySelector('.col'), ...from.querySelectorAll('.vol-lbl, .vol-val')], 350);
     from.querySelectorAll('.vol, .vol-dots').forEach(e => e.style.opacity = 0);
     fxClear();
-    CTRL.s07.reset(); CTRL.s07.render(2, true);
+    CTRL.sapp.reset(); CTRL.sapp.render(1, true);
     const xs = []; for (let x = 212; x <= 908; x += 24) xs.push(x);
     to.classList.add('is-entering');
     to.style.opacity = 0;
@@ -1011,6 +1011,203 @@
       fxc.fillStyle = g; fxc.fillRect(cx - w / 2, cy - h / 2, w, h);
     });
     CTRL.s08.reset(); CTRL.s08.render(1, true);
+    to.classList.add('is-entering');
+    activate(to);
+    await fadeFx(500);
+  };
+
+  /* =====================================================================
+     08–10 · Respuesta en DC, respuesta en AC y aplicaciones
+     ===================================================================== */
+  const sdc = byId('sdc'), sac = byId('sac'), sapp = byId('sapp');
+  PLATES.sdc = { x: 785, w: 150, top: 520, bot: 560, op: 1 };
+  PLATES.sac = PLATES.sdc;
+  PLATES.sapp = P6;
+
+  const GX0 = 1100, GX1 = 1780;
+  const pathFrom = (fn, n = 170) => { let d = ''; for (let i = 0; i <= n; i++) { const x = lerp(GX0, GX1, i / n); d += `${i ? ' L' : 'M'}${x.toFixed(1)} ${fn(x).toFixed(1)}`; } return d; };
+  const TAUPX = 136;
+  const dcV = x => 660 - 240 * (1 - Math.exp(-(x - GX0) / TAUPX));
+  const dcI = x => 660 - 240 * Math.exp(-(x - GX0) / TAUPX);
+  const PER = 340, AY = 545, AMP = 110;
+  const acV = x => AY - AMP * Math.sin(2 * Math.PI * (x - GX0) / PER);
+  const acI = x => AY - AMP * Math.cos(2 * Math.PI * (x - GX0) / PER);
+  const acP = x => AY - AMP * .5 * Math.sin(4 * Math.PI * (x - GX0) / PER);
+  document.getElementById('gv-dc').setAttribute('d', pathFrom(dcV));
+  document.getElementById('gi-dc').setAttribute('d', pathFrom(dcI));
+  document.getElementById('gv-ac').setAttribute('d', pathFrom(acV));
+  document.getElementById('gi-ac').setAttribute('d', pathFrom(acI));
+  document.getElementById('gp-ac').setAttribute('d', pathFrom(acP));
+  const zig = a => `M640 300 L627 ${300 + a} L600 ${300 - a} L573 ${300 + a} L547 ${300 - a} L520 ${300 + a} L493 ${300 - a} L480 300`;
+
+  /* Puntos de corriente que recorren el circuito */
+  function makeLoop(pts, hidden) {
+    const segs = []; let L = 0;
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i], b = pts[(i + 1) % pts.length], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      segs.push({ a, b, len, s0: L, hide: hidden.includes(i) }); L += len;
+    }
+    return { segs, L };
+  }
+  function loopAt(loop, s) {
+    s = ((s % loop.L) + loop.L) % loop.L;
+    for (const g of loop.segs) if (s <= g.s0 + g.len) { const k = (s - g.s0) / g.len; return { x: lerp(g.a[0], g.b[0], k), y: lerp(g.a[1], g.b[1], k), hide: g.hide }; }
+    return { x: 0, y: 0, hide: true };
+  }
+  const LOOP_DC = makeLoop([[260, 512], [260, 300], [860, 300], [860, 518], [860, 562], [860, 780], [260, 780], [260, 532]], [3, 7]);
+  const LOOP_AC = makeLoop([[260, 498], [260, 300], [860, 300], [860, 518], [860, 562], [860, 780], [260, 780], [260, 582]], [3, 7]);
+  function makeDots(id, n) { const g = document.getElementById(id); return Array.from({ length: n }, () => svg('circle', { r: 5, opacity: 0 }, g)); }
+  const dotsDC = makeDots('dots-dc', 18), dotsAC = makeDots('dots-ac', 18);
+  let dotRaf = 0;
+  function dotsStop() { cancelAnimationFrame(dotRaf); dotRaf = 0; [...dotsDC, ...dotsAC].forEach(d => d.setAttribute('opacity', 0)); }
+  function dotsRun(mode) {
+    dotsStop();
+    if (reduced) return;
+    const dots = mode === 'dc' ? dotsDC : dotsAC, loop = mode === 'dc' ? LOOP_DC : LOOP_AC;
+    const t0 = performance.now(); let off = 0, last = t0;
+    (function f(now) {
+      const t = (now - t0) / 1000, dt = (now - last) / 1000; last = now;
+      let alpha = 1;
+      if (mode === 'dc') { const sp = 320 * Math.exp(-t / .68); off += sp * dt; alpha = clamp(sp / 60); }
+      else off = 70 * Math.sin(2 * Math.PI * .45 * t);
+      dots.forEach((d, i) => {
+        const p = loopAt(loop, off + i * loop.L / dots.length);
+        d.setAttribute('cx', p.x.toFixed(1)); d.setAttribute('cy', p.y.toFixed(1));
+        d.setAttribute('opacity', p.hide ? 0 : (.9 * alpha).toFixed(2));
+      });
+      if (mode === 'dc' && t > 4.2) { dotsStop(); return; }
+      dotRaf = requestAnimationFrame(f);
+    })(t0);
+  }
+
+  CTRL.sdc = {
+    states: 2,
+    plates: () => PLATES.sdc,
+    render(st, inst) {
+      if (inst) noTr(sdc, () => { sdc.dataset.state = st; }); else sdc.dataset.state = st;
+      if (st === 1 && !inst) setTimeout(() => { if (sdc.dataset.state === '1' && slides[idx] === sdc) dotsRun('dc'); }, 450);
+      if (st !== 1) dotsStop();
+    },
+    reset() { dotsStop(); noTr(sdc, () => { sdc.dataset.state = 0; }); },
+    leave() { dotsStop(); },
+  };
+  CTRL.sac = {
+    states: 2,
+    plates: () => PLATES.sac,
+    render(st) { sac.dataset.state = st; if (!dotRaf) setTimeout(() => { if (slides[idx] === sac || sac.classList.contains('is-entering') || sac.classList.contains('is-active')) dotsRun('ac'); }, 300); },
+    reset() { dotsStop(); sac.dataset.state = 0; },
+    leave() { dotsStop(); },
+  };
+  const dl = document.getElementById('dlines');
+  for (let i = 0; i < 10; i++) { const x = 236 + i * 72; svg('line', { x1: x, x2: x, y1: 312, y2: 768, style: `--d:${i * 140}ms` }, dl); }
+  CTRL.sapp = { states: 1, plates: () => P6, render(st) { sapp.dataset.state = st; }, reset() { sapp.dataset.state = 0; } };
+
+  /* 07 → 08 · Del campo al circuito: las placas se vuelven un símbolo y nace el circuito */
+  T['s07>sdc'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 600);
+    CTRL.sdc.reset();
+    movePlates(PLATES.sdc, 1400, 250);
+    await wait(750);
+    deactivate(from); cancelAnims(from); CTRL.s07.reset();
+    to.classList.add('is-entering');
+    activate(to);
+    await wait(1000);
+  };
+  T['sdc>s07'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 500);
+    movePlates(P6, 1400, 200);
+    await wait(900);
+    deactivate(from); cancelAnims(from); CTRL.sdc.reset();
+    CTRL.s07.reset(); CTRL.s07.render(3, true);
+    to.classList.add('is-entering');
+    activate(to);
+    const inA = to.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, fill: 'forwards' });
+    await inA.finished; inA.cancel();
+  };
+
+  /* 08 → 09 · Oscilación: la fuente se vuelve senoidal, la resistencia se aplana y la exponencial ondula */
+  function morphDCAC(from, to, forward) {
+    const hideSel = '.res, .gv, .gi, .batt, .blade, .node, .tau, .lg, .src, .srcw, .lead, .gp';
+    from.querySelectorAll(hideSel).forEach(e => e.style.opacity = 0);
+    fadeOut([...from.querySelectorAll('.hd, .notes, .clbl')], 350);
+    return tween(1500, t => {
+      const k0 = ease.io(t), k = forward ? k0 : 1 - k0;
+      const v = pathFrom(x => lerp(dcV(x), acV(x), k)), i = pathFrom(x => lerp(dcI(x), acI(x), k));
+      const r = 42 * k, bo = 1 - k;
+      ov.innerHTML =
+        `<path d="${zig(16 * (1 - k))}" fill="none" stroke="rgba(242,244,250,.85)" stroke-width="3" stroke-linejoin="round"/>` +
+        `<path d="M400 300 L480 300" stroke="rgba(242,244,250,.72)" stroke-width="3" opacity="${k}"/><path d="M260 300 L400 300" stroke="rgba(242,244,250,.72)" stroke-width="3"/>` +
+        `<g opacity="${bo}"><line x1="222" y1="512" x2="298" y2="512" stroke="#f2f4fa" stroke-width="4"/><line x1="242" y1="532" x2="278" y2="532" stroke="#f2f4fa" stroke-width="4"/></g>` +
+        `<circle cx="260" cy="540" r="${r}" fill="none" stroke="#f2f4fa" stroke-width="3" opacity="${k}"/>` +
+        `<path d="M232 540 C 244 516, 252 516, 260 540 S 276 564, 288 540" fill="none" stroke="#8fe3ff" stroke-width="3" opacity="${clamp((k - .6) / .4)}"/>` +
+        `<path d="${v}" fill="none" stroke="#8fe3ff" stroke-width="3.5" stroke-linecap="round"/><path d="${i}" fill="none" stroke="#a88bff" stroke-width="3.5" stroke-linecap="round"/>`;
+    });
+  }
+  T['sdc>sac'] = async (from, to) => {
+    leaveSlide(from);
+    CTRL.sac.reset();
+    await morphDCAC(from, to, true);
+    to.classList.add('is-entering');
+    activate(to); CTRL.sac.render(0);
+    await wait(650);
+    await ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }).finished;
+    deactivate(from); cancelAnims(from); from.querySelectorAll('[style*="opacity"]').forEach(e => e.style.opacity = '');
+    ovClear(); CTRL.sdc.reset();
+  };
+  T['sac>sdc'] = async (from, to) => {
+    leaveSlide(from);
+    await morphDCAC(from, to, false);
+    CTRL.sdc.reset(); CTRL.sdc.render(2, true);
+    to.classList.add('is-entering');
+    noTr(to, () => activate(to));
+    deactivate(from); cancelAnims(from); from.querySelectorAll('[style*="opacity"]').forEach(e => e.style.opacity = '');
+    CTRL.sac.reset();
+    await ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }).finished;
+    ovClear();
+  };
+
+  /* 09 → 10 · Corriente de desplazamiento: la onda de corriente entra al dieléctrico como campo variable */
+  const DXS = Array.from({ length: 10 }, (_, i) => 236 + i * 72);
+  function displacement(k, pts) {
+    fxc.clearRect(0, 0, W, H);
+    fxc.globalCompositeOperation = 'lighter';
+    const a = ease.io(clamp(k / .6)), b = ease.io(clamp((k - .5) / .5));
+    fxc.fillStyle = `rgb(${ICE})`; fxc.strokeStyle = `rgba(${ICE},.8)`; fxc.lineWidth = 1.8;
+    fxc.shadowColor = `rgba(${ICE},.9)`; fxc.shadowBlur = 12;
+    for (const p of pts) {
+      const tx = DXS[p.j], u = 1 - a;
+      const x = u * u * p.x + 2 * u * a * p.cx + a * a * tx, y = u * u * p.y + 2 * u * a * p.cy + a * a * 540;
+      if (b <= 0) { fxc.beginPath(); fxc.arc(x, y, 3.2, 0, Math.PI * 2); fxc.fill(); }
+      else { fxc.beginPath(); fxc.moveTo(tx, 540 - 228 * b); fxc.lineTo(tx, 540 + 228 * b); fxc.stroke(); }
+    }
+    fxc.shadowBlur = 0; fxc.globalCompositeOperation = 'source-over';
+  }
+  const dispPts = () => Array.from({ length: 40 }, (_, n) => { const x = lerp(GX0, GX1, n / 39); return { x, y: acI(x), j: n % 10, cx: lerp(x, 560, .5) + rand(-120, 120), cy: rand(180, 900) }; });
+  T['sac>sapp'] = async (from, to) => {
+    leaveSlide(from);
+    CTRL.sapp.reset();
+    from.querySelector('#gi-ac').style.opacity = 0;
+    fadeOut([from], 450);
+    fxClear();
+    movePlates(P6, 1400, 150);
+    const pts = dispPts();
+    await tween(1600, t => displacement(t, pts));
+    deactivate(from); cancelAnims(from); from.querySelector('#gi-ac').style.opacity = '';
+    to.classList.add('is-entering');
+    activate(to);
+    await fadeFx(600);
+  };
+  T['sapp>sac'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 400);
+    fxClear();
+    movePlates(PLATES.sac, 1400, 200);
+    const pts = dispPts();
+    CTRL.sac.reset(); CTRL.sac.render(2);
+    await tween(1600, t => displacement(1 - t, pts));
+    deactivate(from); cancelAnims(from); CTRL.sapp.reset();
     to.classList.add('is-entering');
     activate(to);
     await fadeFx(500);
