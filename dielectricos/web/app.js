@@ -28,16 +28,18 @@
     const number = `<span class="slide-number">${String(i + 1).padStart(2, '0')}</span>`;
     if (i === 0) return `<section class="slide dark cover" data-slide="1" aria-label="1 de 12: ${title}">${coverConstruct()}<p class="cover-top">Electromagnetismo</p><div class="cover-layout"><div><h1>Clasificación<br>de dieléctricos</h1><p class="subtitle">${escape(d.lines[0])}</p><p class="authors">${escape(d.lines[1])}</p></div></div>${number}</section>`;
     let body;
-    if (i === 2) body = `<div class="classification-map"><div class="map-core"><span>Un mismo</span><strong>material</strong></div>${d.table.slice(1).map(([criterion, categories], n) => `<div class="map-item map-item-${n}"><span>${escape(criterion)}</span><strong>${escape(categories)}</strong></div>`).join('')}</div>`;
-    else if (i === 6) body = `<ul class="mechanism-list">${d.table.slice(1).map(([name, text]) => `<li><h3>${escape(name)}</h3><p>${escape(text)}</p></li>`).join('')}</ul>`;
-    else if (i === 7) body = `<div class="material-states">${d.table.slice(1).map(([state, example, use], n) => `<article class="material-state material-state-${n}"><span class="state-symbol" aria-hidden="true">${['◇','≈','∴'][n]}</span><h3>${escape(state)}</h3><p>${escape(example)}</p><span class="state-use">${escape(use)}</span></article>`).join('')}</div>`;
+    if (i === 2) body = `<div class="classification-map">${window.DielectricPhenomena.mapLinks()}<div class="map-core"><span>Un mismo</span><strong>material</strong></div>${d.table.slice(1).map(([criterion, categories], n) => `<div class="map-item map-item-${n}"><span>${escape(criterion)}</span><strong>${escape(categories)}</strong></div>`).join('')}</div>`;
+    else if (i === 5) body = `<div class="columns ph-comparison-panels">${['nonpolar','polar'].map((type,n)=>`<div><h3>${n?'Polar':'No polar'}</h3>${window.DielectricPhenomena.compare(type)}<p>${n?'Dipolos permanentes':'Sin dipolo permanente'}</p><p class="ph-key-claim">${n?'El campo favorece su orientación':'El campo induce dipolos'}</p></div>`).join('')}</div><p class="ph-both">Ambos pueden polarizarse.</p>`;
+    else if (i === 6) body = `<ul class="mechanism-list">${d.table.slice(1).map(([name, text],n) => `<li><h3>${escape(name)}</h3>${window.DielectricPhenomena.mechanism(n)}<p>${escape(text)}</p></li>`).join('')}</ul>`;
+    else if (i === 7) body = `<div class="material-states">${d.table.slice(1).map(([state, example, use], n) => `<article class="material-state material-state-${n}"><h3>${escape(state)}</h3>${window.DielectricPhenomena.particles(n)}<p>${escape(example)}</p><span class="state-use">${escape(use)}</span></article>`).join('')}</div>`;
     else if (d.table) body = table(d, i);
-    else if (d.columns) body = `<div class="columns">${d.columns.map(([heading, text]) => `<div><h3>${escape(heading[0] + heading.slice(1).toLowerCase())}</h3>${text.split('\n\n').map(p => `<p>${escape(p)}</p>`).join('')}</div>`).join('')}</div>`;
+    else if (d.columns) body = `<div class="columns ${i===9?'ph-properties':''}">${d.columns.map(([heading, text],n) => `<div><h3>${escape(heading[0] + heading.slice(1).toLowerCase())}</h3>${text.split('\n\n').map(p => `<p>${escape(p)}</p>`).join('')}${i===9?(n?window.DielectricPhenomena.position():window.DielectricPhenomena.direction()):''}${i===9?`<p class="ph-figure-note">${n?'Se compara la misma propiedad en lugares distintos.':'Respuesta para igual intensidad de campo.'}</p>`:''}</div>`).join('')}</div>`;
     else body = `<ul class="${i === 10 ? 'case-list' : i === 11 ? 'conclusions' : 'text-list'}">${d.lines.map(x => `<li>${escape(x)}</li>`).join('')}</ul>`;
     if (i === 3 || i === 4) body = `<div class="explanation">${body}</div><div class="science" data-science="${i === 3 ? 'nonpolar' : 'polar'}"></div>`;
-    else if (i === 1) body = `<div class="definition-layout">${body}<div class="field-emblem" aria-label="Campo eléctrico"><i></i><i></i><i></i><strong>E</strong><span>Campo eléctrico</span></div></div>`;
+    else if (i === 1) body = `<div class="definition-layout">${body}<div class="ph-definition">${window.DielectricPhenomena.definition()}</div></div>`;
+    else if (i === 10) body = `<div class="ph-case-layout"><div>${window.DielectricPhenomena.glass()}</div><div>${body}</div></div>`;
     else if (d.compare) body += `<div class="states">${d.compare.map(([label, text]) => `<div><span>${escape(label.toLowerCase())}</span><strong>${escape(text)}</strong></div>`).join('')}</div>`;
-    if (i === 11) body += `<div class="sources">${d.source.map(sourceLink).join('')}</div>`;
+    if (i === 11) body += window.DielectricPhenomena.summary()+`<div class="sources">${d.source.map(sourceLink).join('')}</div>`;
     return `<section class="slide ${i === 11 ? 'dark ending' : ''}" data-slide="${i + 1}" aria-label="${i + 1} de 12: ${title}" hidden><h2>${title}</h2><div class="body ${i === 3 || i === 4 ? 'motion-layout' : ''}">${body}</div>${d.bottom ? `<p class="takeaway">${escape(d.bottom)}</p>` : ''}${number}</section>`;
   }
   $('#stage').innerHTML = slides.map(render).join('');
@@ -164,6 +166,7 @@
   $('#timer-reset').onclick = () => { started = null; accumulated = 0; $('#timer-toggle').textContent = 'Iniciar ensayo'; updateClock(); };
   setInterval(updateClock, 1000);
   window.DielectricMotion?.init();
+  window.DielectricPhenomena?.init();
   window.DielectricKinetic?.init();
   resize();
   fromHash(false);

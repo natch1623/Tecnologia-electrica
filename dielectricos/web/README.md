@@ -29,3 +29,7 @@ El énfasis de ideas, las gráficas y la aplicación del campo eléctrico se mue
 - `construct.css`: núcleo animado de portada.
 
 No requiere instalación ni compilación. Los PDF del curso, documentos de trabajo e imágenes de referencia no forman parte del sitio publicado.
+
+## Gráficos explicativos
+
+Cada diapositiva tiene una combinación de fondo propia. Los modelos moleculares comparan sin campo y con campo al mismo tiempo. Hay esquemas de los cuatro mecanismos, partículas de cada estado físico, gráficas P–E con guías, comparaciones de dirección/posición y una red amorfa de vidrio. Son esquemas cualitativos y su movimiento se ralentiza para la exposición. Implementación en phenomena.js y phenomena.css.

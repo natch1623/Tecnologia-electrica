@@ -89,7 +89,7 @@ window.DIELECTRICOS = [
       ]
     ],
     "bottom": "No polar también puede polarizarse.",
-    "note": "Comparar la distribución de carga antes y después de aplicar el campo. En el modelo introductorio, al retirar el campo desaparece el dipolo inducido. Esta descripción se refiere a moléculas y no pretende reducir todos los sólidos a ese modelo. Reservar tiempo para explicar los dos estados."
+    "note": "Comparar la distribución de carga antes y después de aplicar el campo. En el modelo introductorio, al retirar el campo desaparece el dipolo inducido. Esta descripción se refiere a moléculas y no pretende reducir todos los sólidos a ese modelo. Reservar tiempo para explicar los dos estados. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales."
   },
   {
     "title": "Dieléctricos polares",
@@ -105,7 +105,7 @@ window.DIELECTRICOS = [
       "Ejemplos moleculares: H₂O y HCl."
     ],
     "bottom": "Sin campo, dipolos desordenados pueden dar un promedio nulo.",
-    "note": "El dipolo ya existe antes de aplicar el campo. En líquidos y gases polares ordinarios, orientaciones distintas pueden compensarse en promedio. El campo produce una orientación parcial. El agua se usa como ejemplo molecular, no como recomendación de aislamiento: el agua común contiene iones."
+    "note": "El dipolo ya existe antes de aplicar el campo. En líquidos y gases polares ordinarios, orientaciones distintas pueden compensarse en promedio. El campo produce una orientación parcial. El agua se usa como ejemplo molecular, no como recomendación de aislamiento: el agua común contiene iones. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales."
   },
   {
     "title": "Comparación principal",
@@ -213,7 +213,7 @@ window.DIELECTRICOS = [
       486
     ],
     "bottom": "La elección depende de las condiciones de funcionamiento.",
-    "note": "El estado físico describe la forma de uso. El sólido puede aportar resistencia mecánica, el líquido puede retirar calor y el gas puede ocupar separaciones. Humedad, temperatura y esfuerzo eléctrico condicionan el desempeño. Evitar afirmar que un estado es siempre mejor que otro."
+    "note": "El estado físico describe la forma de uso. El sólido puede aportar resistencia mecánica, el líquido puede retirar calor y el gas puede ocupar separaciones. Humedad, temperatura y esfuerzo eléctrico condicionan el desempeño. Evitar afirmar que un estado es siempre mejor que otro. Las partículas son un esquema de cada estado físico, no una estructura o separación medida de los materiales citados."
   },
   {
     "title": "Respuesta lineal y no lineal",
@@ -253,7 +253,7 @@ window.DIELECTRICOS = [
       ]
     ],
     "bottom": "Un medio puede ser homogéneo y anisótropo.",
-    "note": "Comparar girar la dirección del campo con mover el punto de observación. Un cristal uniforme puede mantener sus propiedades en todas las posiciones y responder de modo distinto según el eje. Una muestra con capas distintas es heterogénea a la escala que permite distinguirlas."
+    "note": "Comparar girar la dirección del campo con mover el punto de observación. Un cristal uniforme puede mantener sus propiedades en todas las posiciones y responder de modo distinto según el eje. Una muestra con capas distintas es heterogénea a la escala que permite distinguirlas. Los contornos de respuesta y las regiones son esquemas cualitativos, no datos medidos ni una representación tensorial completa."
   },
   {
     "title": "Ejemplo de clasificación combinada",

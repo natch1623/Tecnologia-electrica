@@ -8,6 +8,7 @@
     return el;
   }
   function svgDiagram(type, id) {
+    if(window.DielectricPhenomena) return window.DielectricPhenomena.molecular(type,id);
     const arrow = `<defs><marker id="${id}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor"/></marker></defs>`;
     const field = `<g class="dm-field"><line x1="90" y1="35" x2="400" y2="35" marker-end="url(#${id})"/><text x="250" y="22" text-anchor="middle">Campo externo E</text></g>`;
     let scene;
@@ -76,18 +77,19 @@
     slide.querySelectorAll('.columns > div').forEach(function (column, index) {
       if (column.querySelector('.dm-response')) return;
       const chart = document.createElementNS(SVG, 'svg');
-      chart.setAttribute('viewBox', '0 0 260 125');
+      chart.setAttribute('viewBox', '0 0 340 205');
       chart.setAttribute('role', 'img');
       chart.setAttribute('aria-label', index === 0 ? 'Esquema cualitativo de P frente a E: relación proporcional recta.' : 'Esquema cualitativo de P frente a E: ejemplo de relación no lineal sin histéresis.');
       chart.classList.add('dm-response');
-      const d = index === 0 ? 'M35 95 L210 20' : 'M35 95 Q155 95 210 20';
-      chart.innerHTML = `<path class="dm-chart-axis" d="M35 10 V95 H238"/><text x="14" y="19">P</text><text x="242" y="101">E</text><text x="20" y="109">0</text><path class="dm-chart-curve" d="${d}"/><circle class="dm-chart-point" cx="0" cy="0" r="4.5"/><text class="dm-chart-caption" x="140" y="122" text-anchor="middle">Esquema cualitativo</text>`;
+      const d = index === 0 ? 'M40 155 L290 30' : 'M40 155 Q165 155 290 30';
+      const examples=[.33,.66].map(t=>({x:40+250*t,y:155-125*(index?t*t:t)}));
+      chart.innerHTML = `<path class="dm-chart-axis" d="M40 15V155H315"/><text x="17" y="26">P</text><text x="319" y="163">E</text><text x="22" y="171">0</text>${examples.map(({x,y},n)=>`<path class="ph-chart-guide" d="M${x} 155V${y}H40"/><circle class="ph-chart-sample" cx="${x}" cy="${y}" r="4"/><text class="ph-chart-label" x="${x}" y="181" text-anchor="middle">E${n?'₂':'₁'}</text>`).join('')}<path class="dm-chart-curve" d="${d}"/><circle class="dm-chart-point" cx="0" cy="0" r="5"/><text class="dm-chart-caption" x="180" y="203" text-anchor="middle">${index?'Ejemplo de respuesta no proporcional':'Igual proporción entre P y E'}</text>`;
       const curve = chart.querySelector('.dm-chart-curve');
       const point = chart.querySelector('.dm-chart-point');
       let animation = null;
       function reset() {
         if (animation) { animation.cancel(); animation = null; }
-        point.style.transform = 'translate(35px, 95px)';
+        point.style.transform = 'translate(40px, 155px)';
         chart.classList.remove('dm-chart-active');
       }
       chart._dmRun = function () {
