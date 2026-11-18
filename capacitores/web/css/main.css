@@ -426,3 +426,38 @@ sub { font-size: .55em; vertical-align: -.25em; line-height: 0; font-style: norm
 .mk { margin: 30px 0 0; font: 400 22px/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: var(--ice); }
 .me { margin: 18px 0 0; font: 300 46px/1.2 var(--serif); }
 .mn { margin: 22px 0 0; font: 300 24px/1.35 var(--sans); color: var(--mist); }
+
+/* 11 · Capacitores en semiconductores */
+.ssem .mos, .ssem .pn { transition: opacity .7s ease; }
+.ssem .pn { opacity: 0; }
+.ssem[data-state="1"] .mos { opacity: 0; }
+.ssem[data-state="1"] .pn { opacity: 1; transition-delay: .3s; }
+.sub { fill: rgba(168,139,255,.1); stroke: rgba(168,139,255,.4); stroke-width: 1.4; }
+.chan { stroke: var(--ice); stroke-width: 3; opacity: .65; transition: opacity .6s ease; }
+.ssem[data-state="2"] .chan { opacity: .25; }
+.ox, .oxlab, .gatelab { transition: transform 1s var(--ease-io); }
+.ox rect { fill: rgba(143,227,255,.16); stroke: rgba(143,227,255,.55); stroke-width: 1.2; transition: fill .8s ease, stroke .8s ease; }
+.ssem[data-state="2"] .ox rect { fill: rgba(201,180,255,.22); stroke: rgba(201,180,255,.7); }
+.oxl line { stroke: var(--ice); stroke-width: 1.5; opacity: .75; }
+.ox-t { font: 400 22px var(--sans); letter-spacing: .08em; fill: var(--mist); transition: opacity .6s ease; }
+.ox-t.hk { opacity: 0; fill: #c9b4ff; }
+.ssem[data-state="2"] .ox-t.si { opacity: 0; } .ssem[data-state="2"] .ox-t.hk { opacity: 1; transition-delay: .5s; }
+.sem-l { font: 400 22px var(--sans); letter-spacing: .14em; text-transform: uppercase; fill: var(--mist); }
+.pside { fill: rgba(168,139,255,.13); stroke: rgba(168,139,255,.45); stroke-width: 1.4; }
+.nside { fill: rgba(143,227,255,.1); stroke: rgba(143,227,255,.45); stroke-width: 1.4; }
+.dep { transform: translateX(560px) scaleX(1); }
+.dep rect { fill: rgba(7,10,20,.72); stroke: var(--star); stroke-width: 1.4; stroke-dasharray: 8 7; vector-effect: non-scaling-stroke; }
+.dep .wdim { stroke: var(--ice); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.ssem[data-state="1"] .dep { animation: wgrow 3.4s var(--ease-io) .8s infinite alternate; }
+@keyframes wgrow { from { transform: translateX(560px) scaleX(1); } to { transform: translateX(560px) scaleX(2.3); } }
+.pn-l { font: italic 300 96px var(--serif); fill: rgba(242,244,250,.7); }
+.wlab { font: italic 400 42px var(--serif); fill: var(--ice); }
+.lead-w { stroke: rgba(242,244,250,.72); stroke-width: 3; }
+.ssem .sp { position: absolute; left: 0; top: 170px; width: 760px; opacity: 0; transform: translate3d(0, 14px, 0); transition: opacity .7s var(--ease-out), transform .9s var(--ease-out); }
+.ssem.is-active[data-state="0"] .sp0, .ssem[data-state="1"] .sp1, .ssem[data-state="2"] .sp2 { opacity: 1; transform: none; transition-delay: .5s; }
+.ssem .sp .eq-l { margin: 0; font-size: 84px; }
+.sp-t { margin: 0; font: 300 44px/1.2 var(--serif); }
+.sp-t em, .sp-n em { color: var(--ice); }
+.sp-d { margin: 28px 0 0; font: 300 27px/1.4 var(--sans); color: var(--mist); }
+.sp-d b { font-weight: 400; color: var(--ice); }
+.sp-n { margin: 26px 0 0; font: 300 36px/1.25 var(--serif); color: var(--star); }

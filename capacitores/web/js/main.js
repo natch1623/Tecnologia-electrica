@@ -12,7 +12,7 @@
   const gauss = document.getElementById('gauss');
   const hudN = document.getElementById('hud-n');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const TOTAL = 12;
+  const TOTAL = 13;
   const SVGNS = 'http://www.w3.org/2000/svg';
 
   const ICE = '143,227,255', ABYSS = '168,139,255', STAR = '242,244,250';
@@ -1211,6 +1211,107 @@
     to.classList.add('is-entering');
     activate(to);
     await fadeFx(500);
+  };
+
+  /* =====================================================================
+     11 · Capacitores en semiconductores
+     ===================================================================== */
+  const ssem = byId('ssem');
+  const MOS = [
+    { x: 260, w: 600, top: 400, bot: 440, op: 1 },
+    { x: 260, w: 600, top: 400, bot: 440, op: 0 },
+    { x: 260, w: 600, top: 320, bot: 440, op: 1 },
+  ];
+  PLATES.ssem = MOS[0];
+  const oxG = document.getElementById('ox'), oxL = document.getElementById('ox-lines');
+  const oxLab = document.getElementById('ox-lab'), gateLab = document.getElementById('gate-lab');
+  for (let i = 0; i < 14; i++) { const x = 290 + i * (540 / 13); svg('line', { x1: x, x2: x, y1: .12, y2: .88, 'vector-effect': 'non-scaling-stroke' }, oxL); }
+  function semGeometry(st) {
+    const g = MOS[st === 1 ? 0 : st];
+    oxG.style.transform = `translate(0px,${g.top + 2}px) scale(1,${g.bot - g.top - 4})`;
+    oxLab.style.transform = `translate(0px,${(g.top + g.bot) / 2}px)`;
+    gateLab.style.transform = `translate(0px,${g.top}px)`;
+  }
+  CTRL.ssem = {
+    states: 2,
+    plates: st => MOS[st],
+    render(st, inst, dir, noPlates) {
+      ssem.dataset.state = st;
+      if (inst) noTr(ssem, () => semGeometry(st)); else semGeometry(st);
+      if (!noPlates) { if (inst) applyPlates(MOS[st]); else movePlates(MOS[st], 1000, 0); }
+    },
+    reset() { this.render(0, true, 0, true); },
+  };
+
+  /* 10 → 11 · Miniaturización: la separación cae de milímetros a nanómetros */
+  const fmtD = d => d >= 1e-3 ? `${nf1.format(d * 1e3)} mm` : d >= 1e-6 ? `${Math.round(d * 1e6)} µm` : `${Math.max(2, Math.round(d * 1e9))} nm`;
+  function miniDraw(k) {
+    const d = 2e-3 * Math.pow(10, -6 * k);
+    const y = lerp(540, 420, ease.io(k));
+    ov.innerHTML = `<text x="1000" y="${y + 16}" style="font:italic 400 56px var(--serif);fill:#f2f4fa">d ≈ ${fmtD(d)}</text>` +
+      `<text x="1000" y="${y + 66}" style="font:400 22px var(--sans);letter-spacing:.2em;fill:#8fe3ff" opacity="${clamp((k - .7) / .3)}">UN MILLÓN DE VECES MÁS DELGADO</text>`;
+  }
+  T['sapp>ssem'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 450);
+    CTRL.ssem.reset();
+    movePlates(MOS[0], 1800, 150, EASE_IO);
+    await tween(1900, t => miniDraw(t));
+    deactivate(from); cancelAnims(from); CTRL.sapp.reset();
+    to.classList.add('is-entering');
+    activate(to);
+    await wait(500);
+    await ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }).finished;
+    ovClear();
+  };
+  T['ssem>sapp'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 400);
+    movePlates(P6, 1800, 150, EASE_IO);
+    await tween(1900, t => miniDraw(1 - t));
+    deactivate(from); cancelAnims(from); CTRL.ssem.reset();
+    CTRL.sapp.reset(); CTRL.sapp.render(1, true);
+    to.classList.add('is-entering');
+    activate(to);
+    await ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }).finished;
+    ovClear();
+  };
+
+  /* 11 → 12 · Las placas vuelven a escala humana y el campo llena el volumen */
+  function drawBands(widen) {
+    const xs = []; for (let x = 212; x <= 908; x += 24) xs.push(x);
+    fxc.clearRect(0, 0, W, H);
+    const grad = fxc.createLinearGradient(0, 304, 0, 776);
+    grad.addColorStop(0, `rgba(${ICE},${.25 + .2 * widen})`); grad.addColorStop(.5, `rgba(201,212,255,${.12 + .12 * widen})`); grad.addColorStop(1, `rgba(${ABYSS},${.25 + .2 * widen})`);
+    fxc.fillStyle = grad;
+    const w = lerp(2, 25, widen);
+    for (const x of xs) fxc.fillRect(x - w / 2, 304, w, 472);
+  }
+  T['ssem>s08'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from], 450);
+    fxClear();
+    CTRL.s08.reset();
+    await movePlates(P6, 1000, 100, EASE_IO);
+    deactivate(from); cancelAnims(from); CTRL.ssem.reset();
+    await tween(1200, t => drawBands(ease.io(t)));
+    to.classList.add('is-entering');
+    activate(to);
+    await fadeFx(600);
+  };
+  T['s08>ssem'] = async (from, to) => {
+    leaveSlide(from);
+    fadeOut([from.querySelector('.col'), ...from.querySelectorAll('.vol-lbl, .vol-val')], 350);
+    from.querySelectorAll('.vol, .vol-dots').forEach(e => e.style.opacity = 0);
+    fxClear();
+    await tween(1100, t => drawBands(1 - ease.io(t)));
+    deactivate(from); cancelAnims(from); from.querySelectorAll('.vol, .vol-dots').forEach(e => e.style.opacity = '');
+    await fadeFx(250);
+    CTRL.ssem.reset(); CTRL.ssem.render(2, true, 0, true);
+    movePlates(MOS[2], 1100, 0, EASE_IO);
+    to.classList.add('is-entering');
+    activate(to);
+    await wait(1100);
   };
 
   /* ---------- Navegación genérica ---------- */

@@ -1,96 +1,233 @@
 {
-  "titulo": "El Capacitor · ensayo narrado (15 min, 12 escenas)",
+  "titulo": "El Capacitor · ensayo narrado (15 min, 13 escenas)",
   "voz": "es-PA-RobertoNeural",
-  "velocidad": "-8%",
+  "velocidad": "-5%",
   "duracion_objetivo_s": 900,
   "nota": "Cada bloque es una pulsación de la flecha derecha. 'tecla': true = pulsar antes de hablar; 'espera' = segundos entre la pulsación y la primera palabra (deja ver la transición). 'pantalla' describe lo que se ve, para el guion.",
   "bloques": [
-    { "slide": "01", "tecla": false, "espera": 3.5,
+    {
+      "slide": "01",
+      "tecla": false,
+      "espera": 3.5,
       "pantalla": "Portada: las placas se encienden, cae el campo y aparece la pregunta de la Tierra.",
-      "texto": "Buenos días. Hoy cerramos materiales eléctricos con el dispositivo que junta todo lo que hemos visto: carga, campo, potencial, dieléctricos y energía. El capacitor. Una pregunta para empezar: si tratamos a la Tierra como una esfera conductora, la Tierra es un capacitor. ¿De cuánto creen que es su capacitancia? Se los respondo en unos minutos." },
-    { "slide": "02", "tecla": true, "espera": 2.6,
+      "texto": "Buenos días. Hoy cerramos materiales eléctricos con el dispositivo que junta todo lo que hemos visto: carga, campo, potencial, dieléctricos y energía. El capacitor. Una pregunta para empezar: si tratamos a la Tierra como una esfera conductora, la Tierra es un capacitor. ¿De cuánto creen que es su capacitancia? Se los respondo en unos minutos."
+    },
+    {
+      "slide": "02",
+      "tecla": true,
+      "espera": 2.6,
       "pantalla": "Transición: el título se deshace en carga que se separa en las placas. Diagrama con +Q, −Q, líneas de campo y C = Q/V.",
-      "texto": "Fíjense: la carga se separó. Eso es un capacitor: dos conductores separados por un dieléctrico, con cargas iguales y opuestas, más Q y menos Q. Entre ellos hay un campo E y, por lo tanto, una diferencia de potencial V. La capacitancia se define como C igual a Q sobre V, y se mide en faradios: un coulomb por voltio. Cada placa es una equipotencial, porque en un conductor en equilibrio el campo dentro es cero y la carga queda en la superficie, con D normal igual a ro ese." },
-    { "slide": "02", "tecla": true, "espera": 0.9,
+      "texto": "Fíjense: la carga se separó. Eso es un capacitor: dos conductores separados por un dieléctrico, con cargas iguales y opuestas, más Q y menos Q. Entre ellos hay un campo E y, por lo tanto, una diferencia de potencial V. La capacitancia se define como C igual a Q sobre V, y se mide en faradios: un coulomb por voltio."
+    },
+    {
+      "slide": "02",
+      "tecla": true,
+      "espera": 0.9,
       "pantalla": "Se duplica la carga: el doble de líneas, 2Q y 2V; C no cambia.",
-      "texto": "Ahora dupliquemos la carga: el doble de líneas de campo, el doble de voltaje, y la capacitancia no se movió. Esa es la idea clave: la capacitancia depende solo de la geometría y del material, igual que la resistencia depende del largo, del área y de la conductividad, y no de la corriente." },
-    { "slide": "03", "tecla": true, "espera": 2.8,
+      "texto": "Ahora dupliquemos la carga: el doble de líneas de campo, el doble de voltaje, y la capacitancia no se movió. Esa es la idea clave: la capacitancia depende solo de la geometría y del material, igual que la resistencia depende del largo, del área y de la conductividad, y no de la corriente."
+    },
+    {
+      "slide": "03",
+      "tecla": true,
+      "espera": 2.8,
       "pantalla": "Transición: superficie gaussiana que se expande. Constelación Q → E → V → C.",
-      "texto": "Esa superficie que acaban de ver es una superficie gaussiana, y es la llave del método. Todo capacitor se resuelve con la misma receta. Uno: supongo más Q y menos Q en los conductores. Dos: con la Ley de Gauss, usando una superficie que respete la simetría, saco el campo E. Tres: integro E de un conductor al otro para obtener V. Cuatro: divido Q entre V. Si la Q no se cancela, hay un error: es una autocomprobación gratis." },
-    { "slide": "04", "tecla": true, "espera": 3.0,
+      "texto": "Esa superficie que acaban de ver es una superficie gaussiana, y es la llave del método. Todo capacitor se resuelve con la misma receta. Uno: supongo más Q y menos Q en los conductores. Dos: con la Ley de Gauss, usando una superficie que respete la simetría, saco el campo E. Tres: integro E de un conductor al otro para obtener V. Cuatro: divido Q entre V. Si la Q no se cancela, hay un error: es una autocomprobación gratis."
+    },
+    {
+      "slide": "04",
+      "tecla": true,
+      "espera": 3.0,
       "pantalla": "Transición: un punto de luz recorre la integral de línea y se vuelve la cota d. C = εA/d con tres perillas; 22,1 pF.",
-      "texto": "Primer caso: placas paralelas. El punto de luz recorrió la integral de línea y se convirtió en la separación d. Con Gauss, el campo entre las placas es uniforme: Q sobre épsilon A. Como E es constante, V es E por d. Dividimos y queda C igual a épsilon A sobre d. Empezamos con cien centímetros cuadrados y cuatro milímetros de aire: veintidós picofaradios. Movamos las tres perillas." },
-    { "slide": "04", "tecla": true, "espera": 0.6,
+      "texto": "Primer caso: placas paralelas. El punto de luz recorrió la integral de línea y se convirtió en la separación d. Con Gauss, el campo entre las placas es uniforme: Q sobre épsilon A. Como E es constante, V es E por d. Dividimos y queda C igual a épsilon A sobre d. Empezamos con cien centímetros cuadrados y cuatro milímetros de aire: veintidós picofaradios. Movamos las tres perillas."
+    },
+    {
+      "slide": "04",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Perilla 1: el área crece a 200 cm²; 44,3 pF.",
-      "texto": "Duplico el área y la capacitancia se duplica: cuarenta y cuatro picofaradios." },
-    { "slide": "04", "tecla": true, "espera": 0.6,
+      "texto": "Duplico el área y la capacitancia se duplica: cuarenta y cuatro picofaradios."
+    },
+    {
+      "slide": "04",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Perilla 2: la separación baja a 2 mm; 88,5 pF.",
-      "texto": "Reduzco la separación a la mitad y vuelve a duplicarse: ochenta y ocho coma cinco picofaradios." },
-    { "slide": "04", "tecla": true, "espera": 0.8,
+      "texto": "Reduzco la separación a la mitad y vuelve a duplicarse: ochenta y ocho coma cinco picofaradios."
+    },
+    {
+      "slide": "04",
+      "tecla": true,
+      "espera": 0.8,
       "pantalla": "Perilla 3: entra el vidrio (εr = 5); 443 pF. A 1000 V: Q = 0,443 µC, E = 0,5 MV/m.",
-      "texto": "Y lleno el espacio con vidrio, de épsilon erre igual a cinco: cuatrocientos cuarenta y tres picofaradios. Guarden este capacitor: a mil voltios guarda cero coma cuatro cuatro tres microcoulombs, con un campo de medio megavoltio por metro." },
-    { "slide": "05", "tecla": true, "espera": 2.8,
+      "texto": "Y lleno el espacio con vidrio, de épsilon erre igual a cinco: cuatrocientos cuarenta y tres picofaradios. Guarden este capacitor: a mil voltios guarda cero coma cuatro cuatro tres microcoulombs, con un campo de medio megavoltio por metro."
+    },
+    {
+      "slide": "05",
+      "tecla": true,
+      "espera": 2.8,
       "pantalla": "Transición: las placas se enrollan en el coaxial y se inflan en la esfera. Fórmulas de ambos.",
-      "texto": "Mismo método, otras simetrías. En el coaxial, la gaussiana es un cilindro, el campo cae como uno sobre ro y aparece un logaritmo: C igual a dos pi épsilon L sobre el logaritmo natural de b sobre a. Un cable real da unos cien picofaradios por metro, con el campo máximo junto al conductor interior. En la esfera, el campo cae como uno sobre r al cuadrado; y si el cascarón exterior se va al infinito, queda cuatro pi épsilon cero a." },
-    { "slide": "05", "tecla": true, "espera": 0.9,
+      "texto": "Mismo método, otras simetrías. En el coaxial, la gaussiana es un cilindro, el campo cae como uno sobre ro y aparece un logaritmo: C igual a dos pi épsilon L sobre el logaritmo natural de b sobre a. Un cable real da unos cien picofaradios por metro. En la esfera, el campo cae como uno sobre r al cuadrado; y si el cascarón exterior se va al infinito, queda cuatro pi épsilon cero a."
+    },
+    {
+      "slide": "05",
+      "tecla": true,
+      "espera": 0.9,
       "pantalla": "Aparece la Tierra: a = 6370 km, C ≈ 709 µF.",
-      "texto": "Y la respuesta del inicio: con un radio de seis mil trescientos setenta kilómetros, la Tierra tiene unos setecientos nueve microfaradios. Menos que un electrolítico que cabe en la mano. La capacitancia no se gana con tamaño: se gana acercando los conductores y con un buen dieléctrico." },
-    { "slide": "06", "tecla": true, "espera": 2.8,
+      "texto": "Y la respuesta del inicio: con un radio de seis mil trescientos setenta kilómetros, la Tierra tiene unos setecientos nueve microfaradios. Menos que un electrolítico que cabe en la mano. La capacitancia no se gana con tamaño: se gana acercando los conductores y con un buen dieléctrico."
+    },
+    {
+      "slide": "06",
+      "tecla": true,
+      "espera": 2.8,
       "pantalla": "Transición: el espacio entre placas se cristaliza. Dipolos al azar y la pregunta: ¿cómo un material que no conduce dispara la capacitancia?",
-      "texto": "Y aquí está la verdadera magia. Muchos piensan que un capacitor es solo dos placas separadas por nada. Pero lo importante ocurre en ese espacio. Si dejamos aire, funciona; si metemos un dieléctrico, la capacitancia se dispara. ¿Cómo lo logra un material que, en teoría, no conduce electricidad?" },
-    { "slide": "06", "tecla": true, "espera": 0.6,
+      "texto": "Y aquí está la verdadera magia. Muchos piensan que un capacitor es solo dos placas separadas por nada. Pero lo importante ocurre en ese espacio. Si dejamos aire, funciona; si metemos un dieléctrico, la capacitancia se dispara. ¿Cómo lo logra un material que, en teoría, no conduce electricidad?"
+    },
+    {
+      "slide": "06",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Los dipolos se alinean. Dos tarjetas: polarización electrónica o iónica y orientación de dipolos.",
-      "texto": "A escala microscópica, el material está formado por átomos y moléculas neutras, pero con centros de carga que pueden desplazarse. Con el campo de las placas ocurren dos cosas. En la polarización electrónica o iónica, la nube de electrones se deforma un poco respecto al núcleo. Y en los materiales polares, las moléculas que ya son dipolos giran y se alinean con el campo, como pequeñas brújulas eléctricas. Los dos mecanismos crean un campo interno que se opone al de las placas." },
-    { "slide": "06", "tecla": true, "espera": 0.6,
+      "texto": "A escala microscópica, los átomos son neutros, pero sus centros de carga pueden desplazarse. Con el campo ocurren dos cosas. En la polarización electrónica o iónica, la nube de electrones se deforma un poco respecto al núcleo. Y en los materiales polares, las moléculas que ya son dipolos giran y se alinean con el campo, como pequeñas brújulas eléctricas. Los dos mecanismos crean un campo interno que se opone al de las placas."
+    },
+    {
+      "slide": "06",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Cargas ligadas en las caras, D = ε0E + P y barras: 22,1 libre, 17,7 neutralizada, 4,4 produce campo.",
-      "texto": "El resultado aparece en las caras: cargas ligadas, negativas junto a la placa positiva y positivas junto a la negativa. En nuestro capacitor de vidrio, de veintidós coma un microcoulombs por metro cuadrado de carga libre, la polarización neutraliza diecisiete coma siete: solo un quinto produce campo. Con la misma carga hay menos voltaje, así que las placas guardan más carga por cada voltio: la capacitancia sube épsilon erre veces. Por eso usamos D igual a épsilon cero E más P: D solo ve la carga libre." },
-    { "slide": "07", "tecla": true, "espera": 2.2,
+      "texto": "El resultado aparece en las caras: cargas ligadas, negativas junto a la placa positiva y positivas junto a la negativa. En nuestro capacitor de vidrio, de veintidós coma un microcoulombs por metro cuadrado de carga libre, la polarización neutraliza diecisiete coma siete: solo un quinto produce campo. Con la misma carga hay menos voltaje, así que las placas guardan más carga por cada voltio: la capacitancia sube épsilon erre veces."
+    },
+    {
+      "slide": "07",
+      "tecla": true,
+      "espera": 2.2,
       "pantalla": "Transición: una fisura recorre el hielo. Lámina de aire de 0,1 mm sobre 1,9 mm de vidrio; 1000 V, E en el aire 2,08 MV/m.",
-      "texto": "Pero el material también tiene defectos. Supongamos una lámina de aire de una décima de milímetro entre el vidrio y la placa. Como las capas están apiladas, D es el mismo en las dos, y el aire, con épsilon erre igual a uno, soporta cinco veces más campo que el vidrio. A mil voltios son dos coma cero ocho megavoltios por metro, y el aire rompe cerca de tres. Subamos la tensión." },
-    { "slide": "07", "tecla": true, "espera": 0.7,
+      "texto": "Pero el material también tiene defectos. Supongamos una lámina de aire de una décima de milímetro entre el vidrio y la placa. Como las capas están apiladas, D es el mismo en las dos, y el aire, con épsilon erre igual a uno, soporta cinco veces más campo que el vidrio. A mil voltios son dos coma cero ocho megavoltios por metro, y el aire rompe cerca de tres. Subamos la tensión."
+    },
+    {
+      "slide": "07",
+      "tecla": true,
+      "espera": 0.7,
       "pantalla": "1200 V: 2,5 MV/m en el aire.",
-      "texto": "Mil doscientos voltios: dos coma cinco megavoltios por metro en el aire, mientras el vidrio sigue tranquilo." },
-    { "slide": "07", "tecla": true, "espera": 1.2,
+      "texto": "Mil doscientos voltios: dos coma cinco megavoltios por metro en el aire, mientras el vidrio sigue tranquilo."
+    },
+    {
+      "slide": "07",
+      "tecla": true,
+      "espera": 1.2,
       "pantalla": "1440 V: 3 MV/m; la grieta se vuelve carmesí y se ioniza.",
-      "texto": "Mil cuatrocientos cuarenta voltios: tres megavoltios por metro. El aire se ioniza aunque el vidrio esté lejos de su límite. Es una descarga parcial: no falla el aislante, falla la burbuja." },
-    { "slide": "07", "tecla": true, "espera": 0.8,
+      "texto": "Mil cuatrocientos cuarenta voltios: tres megavoltios por metro. El aire se ioniza aunque el vidrio esté lejos de su límite. Es una descarga parcial: no falla el aislante, falla la burbuja."
+    },
+    {
+      "slide": "07",
+      "tecla": true,
+      "espera": 0.8,
       "pantalla": "Panel: rigidez dieléctrica y tipos de capacitor (cerámica, poliéster, tantalio, electrolítico).",
-      "texto": "Y eso nos lleva al límite de cualquier material: la rigidez dieléctrica. Si superamos el campo máximo, rompemos la estructura molecular, el aislante se ioniza y se vuelve conductor: es lo que vemos como un capacitor que explota o hace cortocircuito. Por eso elegir entre cerámica, poliéster, tantalio o electrolítico no es solo cuestión de tamaño: es entender las fronteras físicas de cada material." },
-    { "slide": "08", "tecla": true, "espera": 2.4,
+      "texto": "Y eso nos lleva al límite de cualquier material: la rigidez dieléctrica. Si superamos el campo máximo, rompemos la estructura molecular, el aislante se ioniza y se vuelve conductor: el capacitor explota o hace cortocircuito. Por eso elegir entre cerámica, poliéster, tantalio o electrolítico no es solo cuestión de tamaño: es entender las fronteras físicas de cada material."
+    },
+    {
+      "slide": "08",
+      "tecla": true,
+      "espera": 2.4,
       "pantalla": "Transición: las placas se encogen hasta el símbolo y nace un circuito RC con interruptor abierto. i = C dv/dt.",
-      "texto": "Ahora llevemos el capacitor al circuito. Todo parte de una ecuación: i igual a C por la derivada del voltaje respecto al tiempo. La corriente no depende del voltaje, sino de qué tan rápido cambia. Tiene lógica: la carga almacenada es C por v; si v no cambia, la carga no cambia y no hay flujo." },
-    { "slide": "08", "tecla": true, "espera": 0.5,
+      "texto": "Ahora llevemos el capacitor al circuito. Todo parte de una ecuación: i igual a C por la derivada del voltaje respecto al tiempo. La corriente no depende del voltaje, sino de qué tan rápido cambia. Tiene lógica: la carga almacenada es C por v; si v no cambia, la carga no cambia y no hay flujo."
+    },
+    {
+      "slide": "08",
+      "tecla": true,
+      "espera": 0.5,
       "pantalla": "Se cierra el interruptor: la corriente fluye y se apaga; se dibujan v_C(t) e i(t), con τ, 63 % y 5τ.",
-      "texto": "Cerramos el interruptor de este circuito RC. En el primer instante el capacitor está descargado, toda la tensión cae en la resistencia y la corriente es máxima: V sobre R. A medida que entra carga, el capacitor desarrolla su propio voltaje, que se opone a la fuente, y la corriente baja. Es una exponencial con constante de tiempo tau igual a R C: en un tau llega al sesenta y tres por ciento, y en cinco tau, al noventa y nueve." },
-    { "slide": "08", "tecla": true, "espera": 0.6,
+      "texto": "Cerramos el interruptor de este circuito RC. En el primer instante el capacitor está descargado, toda la tensión cae en la resistencia y la corriente es máxima: V sobre R. A medida que entra carga, el capacitor desarrolla su propio voltaje, que se opone a la fuente, y la corriente baja. Es una exponencial con constante de tiempo tau igual a R C: en un tau llega al sesenta y tres por ciento, y en cinco tau, al noventa y nueve."
+    },
+    {
+      "slide": "08",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Cargado: i = 0, circuito abierto; bloquea la componente continua.",
-      "texto": "Cuando su voltaje iguala al de la fuente, la derivada es cero y la corriente también. El capacitor se comporta como un circuito abierto, y tiene sentido, porque entre las placas hay un dieléctrico. Por eso sirve para bloquear la componente continua, separar etapas y almacenar carga." },
-    { "slide": "09", "tecla": true, "espera": 2.8,
+      "texto": "Cuando su voltaje iguala al de la fuente, la derivada es cero y la corriente también. El capacitor se comporta como un circuito abierto, y tiene sentido, porque entre las placas hay un dieléctrico. Por eso sirve para bloquear la componente continua, separar etapas y almacenar carga."
+    },
+    {
+      "slide": "09",
+      "tecla": true,
+      "espera": 2.8,
       "pantalla": "Transición: la batería se vuelve fuente senoidal, la resistencia se aplana y la exponencial ondula. v e i desfasadas 90°.",
-      "texto": "Cambiemos la fuente por una senoidal. Como el voltaje nunca deja de cambiar, nunca hay estado estable. Derivando, la corriente es omega C V eme por coseno: una senoide adelantada noventa grados. ¿Por qué adelantada? Porque la corriente sigue la pendiente del voltaje: cuando el voltaje cruza por cero es cuando más rápido cambia, y ahí la corriente es máxima." },
-    { "slide": "09", "tecla": true, "espera": 0.6,
+      "texto": "Cambiemos la fuente por una senoidal. Como el voltaje nunca deja de cambiar, nunca hay estado estable. Derivando, la corriente es omega C V eme por coseno: una senoide adelantada noventa grados. ¿Por qué adelantada? Porque la corriente sigue la pendiente del voltaje: cuando el voltaje cruza por cero es cuando más rápido cambia, y ahí la corriente es máxima."
+    },
+    {
+      "slide": "09",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "X_C = 1/(2πfC) y tabla para 100 µF: 26,5 Ω · 1,59 Ω · 0,159 Ω.",
-      "texto": "De ahí sale la reactancia capacitiva: X C igual a uno sobre dos pi f C. A mayor frecuencia, menor oposición. Con cien microfaradios: veintiséis coma cinco ohmios a sesenta hertz, uno coma cincuenta y nueve a un kilohertz y cero coma ciento cincuenta y nueve a diez kilohertz. Si la frecuencia tiende a cero, la reactancia tiende a infinito, que es el caso de continua; a frecuencia alta, el capacitor es casi un cortocircuito." },
-    { "slide": "09", "tecla": true, "espera": 0.6,
+      "texto": "De ahí sale la reactancia capacitiva: X C igual a uno sobre dos pi f C. A mayor frecuencia, menor oposición. Con cien microfaradios: veintiséis coma cinco ohmios a sesenta hertz, uno coma cincuenta y nueve a un kilohertz y cero coma ciento cincuenta y nueve a diez kilohertz. En continua, la reactancia es infinita."
+    },
+    {
+      "slide": "09",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Aparece p(t): doble de frecuencia, promedio cero. 100 µF, 120 V, 60 Hz → 4,52 A, 543 var.",
-      "texto": "Un detalle de potencia: la potencia instantánea oscila al doble de la frecuencia y su promedio es cero. El capacitor no consume energía: la absorbe y la devuelve. Con cien microfaradios a ciento veinte voltios y sesenta hertz circulan cuatro coma cincuenta y dos amperios, y unos quinientos cuarenta y tres voltamperios reactivos." },
-    { "slide": "10", "tecla": true, "espera": 2.6,
+      "texto": "Un detalle de potencia: la potencia instantánea oscila al doble de la frecuencia y su promedio es cero. El capacitor no consume energía: la absorbe y la devuelve. Con cien microfaradios a ciento veinte voltios y sesenta hertz circulan cuatro coma cincuenta y dos amperios, y unos quinientos cuarenta y tres voltamperios reactivos."
+    },
+    {
+      "slide": "10",
+      "tecla": true,
+      "espera": 2.6,
       "pantalla": "Transición: la onda de corriente entra al dieléctrico como líneas de campo que laten. Lista de aplicaciones.",
-      "texto": "Esa dependencia con la frecuencia es la base de sus aplicaciones. En un filtro RC desvía las altas frecuencias a tierra y deja pasar las bajas. En el acople deja pasar la señal y bloquea la continua. Con una bobina forma un circuito LC que resuena y sirve para sintonizar. Y en un banco de capacitores, su reactiva cancela la de los motores y mejora el factor de potencia." },
-    { "slide": "10", "tecla": true, "espera": 0.6,
+      "texto": "Esa dependencia con la frecuencia es la base de sus aplicaciones. En un filtro RC desvía las altas frecuencias a tierra y deja pasar las bajas. En el acople deja pasar la señal y bloquea la continua. Con una bobina forma un circuito LC que resuena y sirve para sintonizar. Y en un banco de capacitores, su reactiva cancela la de los motores y mejora el factor de potencia."
+    },
+    {
+      "slide": "10",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Corriente de desplazamiento: i = A ∂D/∂t = (εA/d) dv/dt = C dv/dt.",
-      "texto": "Pero queda una pregunta de teoría electromagnética: si ninguna carga cruza el dieléctrico, ¿cómo circula corriente en alterna? La respuesta es la corriente de desplazamiento de Maxwell: un campo D que varía equivale a una corriente. Para placas paralelas, i es A por la derivada de D, que es épsilon A sobre d por la derivada de v: C por dv dt, la misma ecuación con la que empezamos, ahora deducida desde los campos. Y con dieléctrico pasa épsilon erre veces más corriente." },
-    { "slide": "11", "tecla": true, "espera": 2.4,
-      "pantalla": "Transición: las líneas de campo se ensanchan hasta llenar el volumen. W = ½CV² y W = ½∫D·E dv.",
-      "texto": "Falta la energía. Cargar un capacitor cuesta trabajo, porque cada carga nueva sube contra el voltaje que dejaron las anteriores. Integrando sale un medio de C V al cuadrado. Y en lenguaje de campos, es la integral de un medio de D punto E en el volumen: la energía no está en las placas, está en el campo, con densidad un medio de épsilon E al cuadrado." },
-    { "slide": "11", "tecla": true, "espera": 0.5,
+      "texto": "Pero queda una pregunta de teoría electromagnética: si ninguna carga cruza el dieléctrico, ¿cómo circula corriente en alterna? La respuesta es la corriente de desplazamiento de Maxwell: un campo D que varía equivale a una corriente. Para placas paralelas, i es A por la derivada de D, que es épsilon A sobre d por la derivada de v: C por dv dt: la misma ecuación del inicio, ahora desde los campos. Y con dieléctrico pasa épsilon erre veces más corriente."
+    },
+    {
+      "slide": "11",
+      "tecla": true,
+      "espera": 3.2,
+      "pantalla": "Transición: las placas se acercan de milímetros a nanómetros («un millón de veces más delgado»). Capacitor MOS: compuerta, SiO₂ y silicio; C_ox = ε_ox/t_ox.",
+      "texto": "¿Y dónde están la mayoría de los capacitores del mundo? Dentro de los chips. Acabamos de reducir la separación un millón de veces, de milímetros a nanómetros. Esto es un capacitor MOS: una compuerta de metal, un óxido aislante y el silicio debajo. Su capacitancia por área es épsilon del óxido sobre su espesor: con dos nanómetros de dióxido de silicio da uno coma siete microfaradios por centímetro cuadrado. La compuerta de cada transistor es un capacitor, y en una memoria DRAM cada bit es un capacitor de unos veinte femtofaradios."
+    },
+    {
+      "slide": "11",
+      "tecla": true,
+      "espera": 0.6,
+      "pantalla": "Unión pn: la zona de agotamiento (W) es el dieléctrico y se ensancha con la polarización inversa: varactor.",
+      "texto": "En una unión pn también hay un capacitor: la zona de agotamiento, sin portadores libres, hace de dieléctrico. Si aumento la polarización inversa, esa zona se ensancha y la capacitancia baja: es el varactor, un capacitor controlado por voltaje que sintoniza los circuitos LC que vimos."
+    },
+    {
+      "slide": "11",
+      "tecla": true,
+      "espera": 0.6,
+      "pantalla": "El óxido se vuelve high-k (HfO₂, εr ≈ 25) y más grueso: misma C sin efecto túnel.",
+      "texto": "Y aquí también hay un límite: con pocos nanómetros de óxido, los electrones lo atraviesan por efecto túnel. La solución fue cambiar el dieléctrico por uno de alta permitividad, como el óxido de hafnio, con épsilon erre cerca de veinticinco: la misma capacitancia con un óxido seis veces más grueso."
+    },
+    {
+      "slide": "12",
+      "tecla": true,
+      "espera": 2.4,
+      "pantalla": "Transición: las placas vuelven a escala humana y las líneas de campo se ensanchan hasta llenar el volumen. W = ½CV² y W = ½∫D·E dv.",
+      "texto": "Falta la energía. Cargar un capacitor cuesta trabajo, porque cada carga nueva sube contra el voltaje que dejaron las anteriores. Integrando sale un medio de C V al cuadrado. Y en lenguaje de campos, es la integral de un medio de D punto E en el volumen: la energía no está en las placas, está en el campo, con densidad un medio de épsilon E al cuadrado."
+    },
+    {
+      "slide": "12",
+      "tecla": true,
+      "espera": 0.5,
       "pantalla": "Comprobación: 221 µJ por circuito = 221 µJ por campos.",
-      "texto": "Comprobemos con el capacitor de vidrio: un medio de C V al cuadrado da doscientos veintiún microjoules; un medio de épsilon E al cuadrado, por el volumen, otra vez doscientos veintiún microjoules. Las dos fórmulas coinciden." },
-    { "slide": "12", "tecla": true, "espera": 2.6,
+      "texto": "Comprobemos con el capacitor de vidrio: un medio de C V al cuadrado da doscientos veintiún microjoules; un medio de épsilon E al cuadrado, por el volumen, otra vez doscientos veintiún microjoules. Las dos fórmulas coinciden."
+    },
+    {
+      "slide": "13",
+      "tecla": true,
+      "espera": 2.6,
       "pantalla": "Transición: la luz se drena y se divide en tres estrellas. Tres ideas.",
-      "texto": "Me quedo con tres ideas. Uno: la capacitancia depende solo de la geometría y del material. Dos: su comportamiento depende del tiempo, porque i es C dv dt: abierto en continua, conduce en alterna. Tres: la energía está en el campo, y donde el campo se concentra, ahí falla el aislamiento." },
-    { "slide": "12", "tecla": true, "espera": 0.6,
+      "texto": "Me quedo con tres ideas. Uno: la capacitancia depende solo de la geometría y del material. Dos: su comportamiento depende del tiempo, porque i es C dv dt: abierto en continua, conduce en alterna. Tres: la energía está en el campo, y donde el campo se concentra, ahí falla el aislamiento."
+    },
+    {
+      "slide": "13",
+      "tecla": true,
+      "espera": 0.6,
       "pantalla": "Seguridad (100 µF a 480 V guardan 11,5 J) y «Gracias · Preguntas».",
-      "texto": "Y una regla de seguridad: un capacitor desconectado puede seguir cargado. Cien microfaradios a cuatrocientos ochenta voltios guardan once coma cinco joules. Siempre se descarga y se verifica antes de tocarlo. Muchas gracias. ¿Preguntas?" }
+      "texto": "Y una regla de seguridad: un capacitor desconectado puede seguir cargado. Cien microfaradios a cuatrocientos ochenta voltios guardan once coma cinco joules. Siempre se descarga y se verifica antes de tocarlo. Muchas gracias. ¿Preguntas?"
+    }
   ]
 }

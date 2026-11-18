@@ -15,13 +15,13 @@ TITULOS = {
     "01": "Portada", "02": "Definición", "03": "El procedimiento", "04": "Placas paralelas",
     "05": "Coaxial, esfera y la Tierra", "06": "El dieléctrico por dentro", "07": "La grieta de aire y el límite del material",
     "08": "Respuesta en DC", "09": "Respuesta en AC", "10": "Aplicaciones y corriente de desplazamiento",
-    "11": "Energía almacenada", "12": "Cierre",
+    "11": "Capacitores en semiconductores", "12": "Energía almacenada", "13": "Cierre",
 }
 BLOQUES = [("I", "Qué es un capacitor y cómo se calcula", ["01", "02", "03"]),
            ("II", "Las geometrías", ["04", "05"]),
            ("III", "El dieléctrico y su límite", ["06", "07"]),
-           ("IV", "El capacitor en el circuito", ["08", "09", "10"]),
-           ("V", "Energía y cierre", ["11", "12"])]
+           ("IV", "El capacitor en el circuito y en el chip", ["08", "09", "10", "11"]),
+           ("V", "Energía y cierre", ["12", "13"])]
 
 
 def mmss(s):

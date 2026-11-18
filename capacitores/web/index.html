@@ -388,6 +388,55 @@
       </div>
     </section>
 
+    <!-- 11 · Capacitores en semiconductores -->
+    <section class="slide ssem" data-id="ssem" data-state="0" aria-label="Capacitores en semiconductores">
+      <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g class="mos">
+          <rect class="sub" x="200" y="442" width="720" height="360"/>
+          <text class="sem-l" x="560" y="770" text-anchor="middle">Silicio tipo p</text>
+          <line class="chan" x1="270" y1="450" x2="850" y2="450"/>
+          <g class="ox" id="ox">
+            <rect x="260" y="0" width="600" height="1" vector-effect="non-scaling-stroke"/>
+            <g class="oxl" id="ox-lines"></g>
+          </g>
+          <g class="oxlab" id="ox-lab"><text class="ox-t si" x="890" y="6">SiO₂ · t<tspan class="sb">ox</tspan></text><text class="ox-t hk" x="890" y="6">HfO₂ · high-k</text></g>
+          <g class="gatelab" id="gate-lab"><text class="sem-l" x="560" y="-22" text-anchor="middle">Compuerta (metal)</text></g>
+        </g>
+        <g class="pn">
+          <rect class="pside" x="200" y="420" width="360" height="300"/>
+          <rect class="nside" x="560" y="420" width="360" height="300"/>
+          <g class="dep">
+            <rect x="-60" y="420" width="120" height="300"/>
+            <line class="wdim" x1="-60" y1="748" x2="60" y2="748"/>
+          </g>
+          <text class="pn-l" x="330" y="590" text-anchor="middle">p</text>
+          <text class="pn-l" x="790" y="590" text-anchor="middle">n</text>
+          <text class="sem-l" x="560" y="400" text-anchor="middle">zona de agotamiento</text>
+          <text class="wlab" x="560" y="790" text-anchor="middle">W</text>
+          <line class="lead-w" x1="140" y1="570" x2="200" y2="570"/><line class="lead-w" x1="920" y1="570" x2="980" y2="570"/>
+        </g>
+      </svg>
+      <div class="col">
+        <p class="kicker rv" style="--d:100ms">11 · Semiconductores</p>
+        <h2 class="rv" style="--d:200ms">Dentro del chip</h2>
+        <div class="sp sp0">
+          <p class="eq-l"><span class="it">C</span><sub>ox</sub> = <span class="it">ε</span><sub>ox</sub> / <span class="it">t</span><sub>ox</sub></p>
+          <p class="sp-d">SiO₂ (<span class="it">ε</span><sub>r</sub> = 3,9) con <span class="it">t</span><sub>ox</sub> = 2 nm → <b>1,73 µF/cm²</b></p>
+          <p class="sp-n">La compuerta de cada transistor MOS es un capacitor. En una DRAM, cada bit es un capacitor de unos 20 fF.</p>
+        </div>
+        <div class="sp sp1">
+          <p class="eq-l"><span class="it">C</span><sub>j</sub> = <span class="it">εA</span> / <span class="it">W</span></p>
+          <p class="sp-d">La zona de agotamiento, sin portadores libres, es el dieléctrico de la unión pn.</p>
+          <p class="sp-n">Más polarización inversa → <span class="it">W</span> crece → <span class="it">C</span> baja: el <em>varactor</em>, un capacitor controlado por voltaje que sintoniza circuitos LC.</p>
+        </div>
+        <div class="sp sp2">
+          <p class="sp-t">El límite: con pocos nanómetros de óxido, los electrones lo atraviesan por <em>efecto túnel</em>.</p>
+          <p class="sp-d">Solución: dieléctricos <b>high-k</b> como HfO₂ (<span class="it">ε</span><sub>r</sub> ≈ 25).</p>
+          <p class="sp-n">Como <span class="it">C</span> = <span class="it">ε</span>/<span class="it">t</span>, se logra la misma capacitancia con un óxido unas 6 veces más grueso.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- 08 · Energía -->
     <section class="slide s08" data-id="s08" data-state="0" aria-label="Energía almacenada">
       <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
@@ -407,7 +456,7 @@
         <text class="vol-val" x="560" y="610" text-anchor="middle">5,53 J/m³</text>
       </svg>
       <div class="col">
-        <p class="kicker rv" style="--d:100ms">11 · Energía</p>
+        <p class="kicker rv" style="--d:100ms">12 · Energía</p>
         <h2 class="rv" style="--d:200ms">La energía vive en el campo</h2>
         <p class="eq-l rv" style="--d:380ms"><span class="it">W</span> = ½ <span class="it">C V</span>²</p>
         <p class="eq-m rv" style="--d:500ms"><span class="it">W</span> = ½ ∫ <span class="it">D</span> · <span class="it">E</span> d<span class="it">v</span></p>
@@ -421,7 +470,7 @@
 
     <!-- 12 · Cierre -->
     <section class="slide s09" data-id="s09" data-state="0" aria-label="Cierre">
-      <p class="kicker s09-k">12 · Para llevarse</p>
+      <p class="kicker s09-k">13 · Para llevarse</p>
       <svg class="full" viewBox="0 0 1920 1080" aria-hidden="true">
         <g class="stars9">
           <g class="st9" style="--x:420px"><circle class="halo9" r="34"/><path d="M0 -20 L4.5 -4.5 L20 0 L4.5 4.5 L0 20 L-4.5 4.5 L-20 0 L-4.5 -4.5 Z"/></g>
