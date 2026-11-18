@@ -33,3 +33,7 @@ No requiere instalación ni compilación. Los PDF del curso, documentos de traba
 ## Gráficos explicativos
 
 Cada diapositiva tiene una combinación de fondo propia. Los modelos moleculares comparan sin campo y con campo al mismo tiempo. Hay esquemas de los cuatro mecanismos, partículas de cada estado físico, gráficas P–E con guías, comparaciones de dirección/posición y una red amorfa de vidrio. Son esquemas cualitativos y su movimiento se ralentiza para la exposición. Implementación en phenomena.js y phenomena.css.
+
+## Transiciones orgánicas
+
+Las once transiciones y la apertura se dibujan con curvas, fibras luminosas, pliegues que se estrechan y rayos ramificados. Sustituyen la escenografía geométrica anterior. `organic.js` dibuja la luz y `transitions.js` coordina navegación, limpieza y cancelación. No se copian los gráficos científicos.
