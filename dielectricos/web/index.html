@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111629">
+  <meta name="description" content="Clasificación de dieléctricos. Presentación para dos integrantes, con 13 minutos previstos de exposición.">
+  <title>Clasificación de dieléctricos</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="transitions.css">
+  <link rel="stylesheet" href="kinetic.css">
+  <link rel="stylesheet" href="ornate.css">
+  <link rel="stylesheet" href="electric.css">
+  <link rel="stylesheet" href="construct.css">
+  <script src="contenido.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="transitions.js" defer></script>
+  <script src="ornate.js" defer></script>
+  <script src="kinetic.js" defer></script>
+  <script src="electric.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#stage">Ir a la diapositiva</a>
+  <main id="viewport" aria-label="Presentación de clasificación de dieléctricos">
+    <div id="frame"><div id="stage" tabindex="-1"></div></div>
+  </main>
+  <footer class="toolbar" aria-label="Controles de presentación" hidden>
+    <div class="navigation">
+      <button id="previous" aria-label="Diapositiva anterior" title="Anterior (←)">←</button>
+      <button id="open-index" aria-label="Abrir índice" title="Índice (M)"><span id="counter">01 / 12</span></button>
+      <button id="next" aria-label="Diapositiva siguiente" title="Siguiente (→)">→</button>
+    </div>
+    <p id="presenter" class="presenter"></p>
+    <nav class="tools" aria-label="Herramientas">
+      <button id="open-notes" title="Notas (N)">Notas</button>
+      <button id="plain" aria-pressed="false">Vista plana</button>
+      <a href="revision.html" target="_blank" rel="noopener">Propuestas</a>
+      <button id="fullscreen" title="Pantalla completa (F)" aria-label="Activar pantalla completa">⛶</button>
+      <button id="open-help" title="Ayuda (?)" aria-label="Mostrar ayuda">?</button>
+    </nav>
+  </footer>
+  <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+  <p id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+
+  <dialog id="index-dialog" aria-labelledby="index-title">
+    <div class="dialog-top"><h2 id="index-title">Índice</h2><button data-close aria-label="Cerrar índice">×</button></div>
+    <p class="muted">12 diapositivas. 13 minutos previstos y 2 minutos de margen.</p>
+    <div id="index-list"></div>
+  </dialog>
+  <dialog id="notes-dialog" aria-labelledby="notes-title">
+    <div class="dialog-top"><h2 id="notes-title">Notas del expositor</h2><button data-close aria-label="Cerrar notas">×</button></div>
+    <div class="timer"><span id="clock">0:00</span><span class="muted">13:00 previstos · máximo 15:00</span><button id="timer-toggle">Iniciar ensayo</button><button id="timer-reset">Reiniciar</button></div>
+    <div id="notes-content"></div>
+  </dialog>
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-top"><h2 id="help-title">Controles</h2><button data-close aria-label="Cerrar ayuda">×</button></div>
+    <dl class="shortcuts"><dt>→ / espacio / Av Pág</dt><dd>Avanzar</dd><dt>← / Re Pág</dt><dd>Retroceder</dd><dt>Inicio / Fin</dt><dd>Primera / última diapositiva</dd><dt>M</dt><dd>Índice</dd><dt>N</dt><dd>Notas y cronómetro de ensayo</dd><dt>F</dt><dd>Pantalla completa</dd><dt>Esc</dt><dd>Cerrar ventana o salir de pantalla completa</dd></dl>
+    <p>En el móvil puedes usar las flechas o deslizar horizontalmente. Las transiciones más llamativas separan los bloques. «Vista plana» permite revisar el contenido sin transiciones.</p>
+  </dialog>
+  <noscript>Activa JavaScript para navegar por la presentación. También puedes consultar el guion en la carpeta output.</noscript>
+</body>
+</html>

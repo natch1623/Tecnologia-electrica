@@ -1,0 +1,68 @@
+/* Eleven distinct forward scenes; new dtx names deliberately avoid older theme overrides. */
+#stage.dt-running{isolation:isolate;overflow:hidden}
+.dt-overlay.dtx-scene{position:absolute;inset:0;z-index:80;overflow:hidden;pointer-events:none;user-select:none;contain:layout paint style;color:#cfafff}
+.dt-overlay.dtx-scene *{box-sizing:border-box;pointer-events:none}
+.dtx-scene .dtx-night{position:absolute;inset:0;background:radial-gradient(ellipse at 77% 23%,#693aa760,transparent 58%),radial-gradient(ellipse at 20% 80%,#26468370,transparent 55%),linear-gradient(125deg,#080c23,#27143f);opacity:0}
+.dtx-scene .dtx-night:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 39px,#c09aff08 40px,transparent 41px),repeating-linear-gradient(45deg,transparent 0 79px,#e6ce9b06 80px,transparent 81px)}
+.dtx-scene .dtx-frame{position:absolute;inset:25px;border:1px solid #d6b8ff33;opacity:0}
+.dtx-scene .dtx-frame:before,.dtx-scene .dtx-frame:after{content:"";position:absolute;inset:12px;border:1px solid #e4c88f22;clip-path:polygon(0 0,22% 0,22% 2%,2% 2%,2% 22%,0 22%,0 0,100% 100%,78% 100%,78% 98%,98% 98%,98% 78%,100% 78%,100% 100%)}
+.dtx-scene .dtx-frame:after{inset:-8px;transform:scaleX(-1);border-color:#d9adff55}
+.dtx-scene .dtx-fleck{position:absolute;width:7px;height:16px;background:#d9b8ff;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);filter:drop-shadow(0 0 7px #aa69ff);opacity:0}
+.dtx-scene .dtx-star{position:absolute;width:24px;height:24px;opacity:0;background:linear-gradient(transparent 45%,#f0d9ae 49% 51%,transparent 55%),linear-gradient(90deg,transparent 45%,#c9a0ff 49% 51%,transparent 55%);filter:drop-shadow(0 0 5px #b98dff)}
+.dtx-scene .dtx-orbit{position:absolute;left:50%;top:50%;width:620px;height:620px;margin:-310px;border:1px solid #b98eff55;border-top:3px solid #d4b0ff;border-right-color:transparent;border-radius:50%;box-shadow:0 -5px 24px #a265ff25;opacity:0}
+.dtx-scene .dtx-orbit.gold{width:700px;height:700px;margin:-350px;border-color:#d8bc8944;border-left:2px solid #e2c58b;border-bottom-color:transparent}
+.dtx-scene .dtx-veil{position:absolute;inset:-30%;background:linear-gradient(125deg,#090c23 10%,#241638 55%,#543277 74%,#d8b4ff 75%,#251632 75.3%);clip-path:polygon(0 0,100% 0,100% 65%,83% 70%,65% 78%,40% 100%,0 100%);transform-origin:80% 20%}
+.dtx-scene .dtx-veil.secondary{background:linear-gradient(125deg,#14152e,#39235a 72%,#e6c992 72.2%,#13152d 72.4%);inset:-36%}
+.dtx-scene .dtx-stitch{position:absolute;height:1px;background:linear-gradient(90deg,transparent,#d8b5ff,#f0e0ff,transparent);box-shadow:0 0 14px #ba76ff;transform-origin:left}
+.dtx-scene .dtx-wire{position:absolute;height:3px;background:linear-gradient(90deg,transparent,#ae70ef 25%,#edd9ff 55%,#8f65f5 80%,transparent);clip-path:polygon(0 40%,18% 40%,22% 0,28% 80%,33% 30%,47% 30%,53% 100%,61% 35%,100% 35%,100% 65%,63% 65%,54% 100%,47% 65%,32% 65%,28% 100%,22% 25%,19% 60%,0 60%);filter:drop-shadow(0 0 7px #c893ff);transform-origin:left center}
+.dtx-scene .dtx-wire.thick{height:28px}
+.dtx-scene .dtx-cut-panel{position:absolute;inset:0;background:linear-gradient(130deg,#0a0d29,#36204e);clip-path:polygon(0 0,100% 0,0 100%)}
+.dtx-scene .dtx-cut-panel.lower{clip-path:polygon(100% 0,100% 100%,0 100%);background:linear-gradient(320deg,#090c23,#301b4b)}
+.dtx-scene .dtx-blade{position:absolute;left:-10%;top:50%;width:120%;height:3px;background:#ede1ff;box-shadow:0 0 10px 3px #cb9aff,0 0 35px #a351ff;transform-origin:15% center;opacity:0}
+.dtx-scene .dtx-blade.gold{height:1px;background:#e9ce99;box-shadow:0 0 13px #d7b282}
+.dtx-scene .dtx-ribbon{position:absolute;inset:-25% -15%;background:linear-gradient(135deg,#090c24 30%,#352155 57%,#a974e24d 58%,#0a0d26 59%);clip-path:polygon(0 32%,100% 0,100% 30%,0 100%);border-top:1px solid #ca9bff;opacity:0}
+.dtx-scene .dtx-ribbon.gold{background:linear-gradient(135deg,#11132f,#3d2d3d,#d3b57a60);clip-path:polygon(0 60%,100% 20%,100% 34%,0 85%)}
+.dtx-scene .dtx-bracket{position:absolute;width:170px;height:110px;border-top:2px solid #d2abff;border-left:2px solid #d2abff;filter:drop-shadow(0 0 9px #bc75ff88);opacity:0}
+.dtx-scene .dtx-crosshair{position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px;border:1px solid #dec79277;border-radius:50%;opacity:0}
+.dtx-scene .dtx-crosshair:before,.dtx-scene .dtx-crosshair:after{content:"";position:absolute;inset:20px;border:1px solid #c7a5ff77;transform:rotate(45deg)}
+.dtx-scene .dtx-crosshair:after{inset:45px;border-color:#e8d5a7}
+.dtx-scene .dtx-shutter{position:absolute;inset:0;background:radial-gradient(circle at center,#423064,#19112e 35%,#080d23 75%)}
+.dtx-scene .dtx-cylinder{position:absolute;left:50%;top:50%;width:500px;height:500px;margin:-250px;border:2px solid #e5c68b;border-radius:50%;background:radial-gradient(circle,transparent 0 25%,#221a38 26% 60%,#0c1027 60.5% 67%,#4d365f 67.5% 68%,transparent 68.5%);box-shadow:0 0 0 10px #111126,0 0 0 12px #c19be55e,0 0 55px #a15ef84a;opacity:0}
+.dtx-scene .dtx-cylinder:before{content:"";position:absolute;inset:29px;border:1px dashed #dcbb8955;border-radius:50%}
+.dtx-scene .dtx-chamber{position:absolute;left:calc(50% - 27px);top:calc(50% - 27px);width:54px;height:54px;background:radial-gradient(circle,#b58ed333,#0a0c20 65%);border:1px solid #d8bc88;border-radius:50%;box-shadow:inset 0 0 10px #bd87ff55}
+.dtx-scene .dtx-hub{position:absolute;inset:37%;border:2px solid #d5bfff;border-radius:50%;box-shadow:0 0 12px #aa75ff77}
+.dtx-scene .dtx-hall-side{position:absolute;top:-10%;height:120%;width:38%;background:linear-gradient(90deg,#080d26,#3a2259);border-right:3px solid #e2bbef;box-shadow:0 0 55px #0008;transform-origin:left}
+.dtx-scene .dtx-hall-side.right{right:0;transform-origin:right;background:linear-gradient(270deg,#080d26,#3a2259);border-right:0;border-left:3px solid #e2bbef}
+.dtx-scene .dtx-hall-side.left{left:0}
+.dtx-scene .dtx-hall-side:before,.dtx-scene .dtx-hall-side:after{content:"";position:absolute;inset:50px 40px;border:1px solid #d6b48d66;clip-path:polygon(0 8%,50% 0,100% 8%,100% 92%,50% 100%,0 92%)}
+.dtx-scene .dtx-hall-side:after{inset:74px 64px;border-color:#b28bec55}
+.dtx-scene .dtx-hall-lintel{position:absolute;left:0;right:0;height:95px;background:linear-gradient(#11132e,#36204a);border-bottom:2px solid #e1c48e88}
+.dtx-scene .dtx-hall-lintel.bottom{bottom:0;transform:rotate(180deg)}
+.dtx-scene .dtx-hall-lintel.top{top:0}
+.dtx-scene .dtx-edge{position:absolute;background:#d6b5ff;box-shadow:0 0 8px 2px #aa63ff,0 0 28px #a962ff;opacity:0}
+.dtx-scene .dtx-edge.horizontal{height:2px;width:100%;left:0}
+.dtx-scene .dtx-edge.vertical{width:2px;height:100%;top:0}
+.dtx-scene .dtx-prism{position:absolute;top:-30%;height:160%;width:38%;background:linear-gradient(105deg,#0c102c 0%,#3d2560 44%,#b589dc88 48%,#17132f 50%,#302044 78%,#d5bf8f88 79%,#15172f 80%);clip-path:polygon(28% 0,100% 0,72% 100%,0 100%);border-left:1px solid #ceafff;opacity:0}
+.dtx-scene .dtx-shard{position:absolute;left:50%;top:50%;width:280px;height:190px;margin:-95px 0 0 -140px;background:linear-gradient(130deg,#d2aaff99,#312444 55%,#a28add33);clip-path:polygon(50% 0,100% 80%,35% 100%,0 30%);border:1px solid #cfb3ff;opacity:0}
+.dtx-scene .dtx-pulse{position:absolute;left:50%;top:50%;width:360px;height:360px;margin:-180px;border:2px solid #d4aeff;border-radius:50%;box-shadow:0 0 22px #ae70ff77,inset 0 0 22px #ae70ff44;opacity:0}
+.dtx-scene .dtx-seal{position:absolute;left:50%;top:50%;width:330px;height:330px;margin:-165px;border:2px solid #e2c58d;border-radius:50%;box-shadow:0 0 50px #ba77ff44;opacity:0}
+.dtx-scene .dtx-seal:before{content:"";position:absolute;inset:17px;border:1px solid #debd8777;border-radius:50%}
+.dtx-scene .dtx-seal:after{content:"";position:absolute;inset:51px;border:2px solid #cba8ff;transform:rotate(45deg);box-shadow:0 0 24px #c07cfa33}
+.dtx-scene .dtx-seal-center{position:absolute;inset:85px;border:1px solid #e2c58d;transform:rotate(45deg)}
+.dtx-scene .dtx-seal-center:before,.dtx-scene .dtx-seal-center:after{content:"";position:absolute;left:50%;top:50%;width:80px;height:2px;margin-left:-40px;background:#e2c58d;transform:rotate(45deg)}
+.dtx-scene .dtx-seal-center:after{transform:rotate(-45deg)}
+.dtx-scene .dtx-tick{position:absolute;left:calc(50% - 1px);top:8px;width:2px;height:13px;background:#e2c58d;transform-origin:1px 155px}
+.dtx-scene .dtx-arc{position:absolute;inset:-20px;border:2px solid transparent;border-top-color:#d5b7ff;border-bottom-color:#d5b7ff;border-radius:50%;opacity:.8}
+.dtx-scene .dtx-opening-wing{position:absolute;top:0;height:100%;width:50%;background:linear-gradient(135deg,#0a0d24,#2b1942);border-inline:1px solid #cf9eff88}
+.dtx-scene .dtx-opening-wing.left{left:0}.dtx-scene .dtx-opening-wing.right{right:0}
+.dt-overlay.dtx-scene .dtx-filigree-scene{inset:0;z-index:auto;pointer-events:none;opacity:0}
+.dtx-scene .dtx-filigree-scene .astral-wheel{right:-150px;top:-120px;opacity:.55;color:#d7b1ff}
+.dtx-scene .dtx-filigree-scene .fontaine-lace{right:25px;opacity:.5;color:#ecd09e}
+.dtx-scene .dtx-wire{filter:drop-shadow(0 0 10px #bd71ff) drop-shadow(0 0 3px #edcaff)}
+.dtx-scene .dtx-orbit{border-top-color:#edd9ff;border-top-width:4px;box-shadow:0 -5px 34px #bd79ff55}
+.dtx-scene .dtx-blade{height:4px;box-shadow:0 0 12px 3px #d8adff,0 0 38px #b960ff}
+.dtx-scene .dtx-fleck{background:#e7ccff;filter:drop-shadow(0 0 9px #bf82ff)}
+body.plain .dt-overlay.dtx-scene{display:none!important}
+@media(max-width:700px){#stage.dt-running{overflow:visible}.dt-overlay.dtx-scene{display:none}}
+@media(prefers-reduced-motion:reduce){.dt-overlay.dtx-scene{display:none}}
+@media print{.dt-overlay.dtx-scene{display:none!important}}

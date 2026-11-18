@@ -22,3 +22,11 @@ Luego abrir `http://localhost:5173`. Controles: `→` avanzar · `←` retrocede
 - `presentacion/CONCEPTO-DISENO.md`: manual de diseño visual y de interacción.
 
 Los PDF de la norma y del curso no se incluyen en el repositorio.
+
+## Clasificación de dieléctricos
+
+Presentación web en `dielectricos/web/`, con doce diapositivas, animaciones automáticas y diseño inspirado en Clorinde.
+
+**En línea:** [Clasificación de dieléctricos](https://natch1623.github.io/Tecnologia-electrica/dielectricos/).
+
+Controles: flechas o espacio para navegar, `M` para el índice, `N` para notas y `F` para pantalla completa. En móvil, deslizar horizontalmente. No requiere instalación y funciona sin conexión desde `index.html`.
