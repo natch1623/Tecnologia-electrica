@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es" data-theme="nec">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Potencial eléctrico de un dipolo</title>
+<meta name="description" content="Presentación sobre el potencial eléctrico producido por un dipolo.">
+<link rel="stylesheet" href="plantilla/css/styles.css?v=27">
+<link rel="stylesheet" href="plantilla/css/pro.css?v=2">
+<link rel="stylesheet" href="plantilla/css/skirk.css">
+<link rel="stylesheet" href="contenido.css">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main class="stage" id="stage" data-mood="maint">
+
+  <!-- Hilo conductor: una sola línea que se transforma a lo largo de toda la exposición -->
+  <div class="thread-wrap" aria-hidden="true">
+  <svg id="thread" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="thg-route" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#a58bff"/><stop offset=".6" stop-color="#8fe3ff"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-clear" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#5ef0c8"/><stop offset=".55" stop-color="#a58bff"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-energy" gradientUnits="userSpaceOnUse" x1="1010" y1="900" x2="1769" y2="266">
+        <stop offset="0" stop-color="#5ef0c8"/><stop offset=".42" stop-color="#8fe3ff"/><stop offset=".48" stop-color="#ff4d6d"/><stop offset="1" stop-color="#ff4d6d"/>
+      </linearGradient>
+      <linearGradient id="thg-close" gradientUnits="userSpaceOnUse" x1="150" y1="0" x2="1770" y2="0">
+        <stop offset="0" stop-color="#a58bff" stop-opacity="0"/><stop offset=".3" stop-color="#a58bff"/><stop offset=".7" stop-color="#5ef0c8"/><stop offset="1" stop-color="#5ef0c8" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <svg id="thread-spark" viewBox="0 0 1920 1080"></svg>
+  </div>
+
+
+  <section class="slide hero" id="s01" data-mood="maint" data-tx="skirk-star" data-thread="hero" data-anchor="1440 540" data-title="Potencial eléctrico de un dipolo" data-who="" data-time="1:10" data-ref="Electrostática">
+    <svg class="sigil" viewBox="0 0 1100 1100" aria-hidden="true">
+      <defs>
+        <radialGradient id="sg" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#c9b8ff" stop-opacity=".42"/>
+          <stop offset=".5" stop-color="#5b3fd6" stop-opacity=".1"/>
+          <stop offset="1" stop-color="#07060f" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle class="sg-glow" cx="550" cy="550" r="520" fill="url(#sg)"/>
+      <g class="spin" fill="none" stroke="#a58bff" stroke-opacity=".42">
+        <circle class="sg-ring" style="--sd:150ms" cx="550" cy="550" r="430" stroke-dasharray="2 14"/>
+        <circle class="sg-draw" style="--sd:250ms" pathLength="1" cx="550" cy="550" r="330"/>
+        <path class="sg-draw" style="--sd:650ms" pathLength="1" d="M550 150 L600 500 L950 550 L600 600 L550 950 L500 600 L150 550 L500 500 Z" stroke-opacity=".55"/>
+      </g>
+      <g class="spin-r" fill="none" stroke="#8fe3ff" stroke-opacity=".32">
+        <circle class="sg-ring" style="--sd:450ms" cx="550" cy="550" r="270" stroke-dasharray="40 10 4 10"/>
+        <g transform="rotate(45 550 550)"><path class="sg-draw" style="--sd:950ms" pathLength="1" d="M550 300 L585 515 L800 550 L585 585 L550 800 L515 585 L300 550 L515 515 Z"/></g>
+        <circle class="sg-dot" style="--sd:1300ms" cx="550" cy="120" r="7" fill="#f4f1ff" stroke="none"/>
+        <circle class="sg-dot" style="--sd:1420ms" cx="980" cy="550" r="4" fill="#8fe3ff" stroke="none"/>
+      </g>
+      <path class="core" d="M550 470 L565 535 L630 550 L565 565 L550 630 L535 565 L470 550 L535 535 Z" fill="#f4f1ff"/>
+    </svg>
+    <p class="kicker rv">Tecnología eléctrica · Electrostática</p>
+    <h1><span class="w"><span>Potencial</span></span> <span class="w"><span>eléctrico</span></span> <br><span class="w"><span>de</span></span> <span class="w"><span>un</span></span> <span class="w"><span class="accent">dipolo</span></span> </h1>
+    <div class="meta rv"><div><b>Pregunta de apertura</b>¿Qué mide un voltímetro entre dos puntos?</div></div>
+    <div class="team rv"><span>Dirigida a David Ruiz</span><span>Erika Delgado</span></div>
+    <aside class="notes"><p>Abrir con un voltímetro. Entre dos puntos mide una diferencia de potencial. Si la punta roja está en B y la negra en A, la lectura es V<sub>B</sub> − V<sub>A</sub>. Un volt equivale a un joule por coulomb.</p></aside>
+  </section>
+
+  <section class="slide" id="s02" data-mood="maint" data-tx="skirk-route" data-thread="rest" data-anchor="1350 540" data-title="Dos cargas, un eje" data-who="" data-time="1:25" data-ref="Geometría">
+    <p class="kicker rv">Geometría del dipolo</p>
+    <h2 class="title rv">Dos cargas, <em>un eje</em></h2>
+    <div class="a copy-dip rv" style="left:150px;top:359px;width:620px">
+      <p class="lead">Las cargas −q y +q están separadas por <i>d</i>. El momento dipolar apunta de la carga negativa a la positiva.</p>
+      <p class="eq"><b>p</b> = <i>qd</i> &nbsp;<small>C·m</small></p>
+      <p class="body">Medimos <i>r</i> desde el centro O y <i>θ</i> entre <b>p</b> y la recta OP.</p>
+    </div>
+    <svg class="a dip-svg rv" style="left:827px;top:278px" width="920" height="547" viewBox="0 0 640 380" role="img" aria-label="Cargas, origen y distancias al punto P">
+      <defs><marker id="ge-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--ice)"/></marker></defs>
+      <path d="M48 252H597" class="ge-axis" marker-end="url(#ge-arrow)"/>
+      <path d="M180 252L477 65" class="ge-negative ge-dash"/>
+      <path d="M449 252L477 65" class="ge-positive ge-dash"/>
+      <path d="M315 252L477 65" class="ge-vector" marker-end="url(#ge-arrow)"/>
+      <path d="M374 252 A59 59 0 0 0 353 207" class="ge-vector"/>
+      <circle cx="315" cy="252" r="4" fill="var(--star)"/><circle cx="477" cy="65" r="5" fill="var(--star)"/>
+      <circle cx="180" cy="252" r="18" class="ge-negative ge-charge"/><circle cx="449" cy="252" r="18" class="ge-positive ge-charge"/>
+      <text x="180" y="253" class="ge-negative ge-charge-text">−</text><text x="449" y="253" class="ge-positive ge-charge-text">+</text>
+      <text x="180" y="288">−q</text><text x="449" y="288">+q</text><text x="316" y="285">O</text>
+      <text x="492" y="54">P</text><text x="602" y="276">x</text><text x="387" y="230">θ</text>
+      <text x="302" y="154" class="ge-negative">r₋</text><text x="491" y="150" class="ge-positive">r₊</text><text x="397" y="169">r</text>
+      <path d="M196 313H432" class="ge-vector" marker-end="url(#ge-arrow)"/><text x="315" y="336">p</text>
+      <path d="M180 343v11h269v-11" class="ge-axis"/><text x="315" y="370">d</text>
+    </svg>
+    <aside class="notes"><p>Ubicar el origen en el punto medio. Señalar r, r₊, r₋ y el ángulo θ. El momento dipolar p tiene magnitud qd y sentido de −q hacia +q.</p></aside>
+  </section>
+
+  <section class="slide" id="s03" data-mood="energy" data-tx="cleave" data-thread="rest" data-anchor="1350 540" data-title="El signo está en la distancia" data-who="" data-time="1:50" data-ref="Superposición">
+    <p class="kicker rv">Superposición</p>
+    <h2 class="title rv">El signo está en la <em>distancia</em></h2>
+    <div class="a copy-dip rv" style="left:150px;top:346px;width:650px">
+      <p class="lead">Los aportes de ambas cargas se suman con su signo. La carga más cercana a <i>P</i> determina el signo de <i>V</i>.</p>
+      <p class="eq dip-eq">V(P) = <span class="pos" data-term="1">kq/r₊</span> − <span class="neg" data-term="-1">kq/r₋</span></p>
+      <p class="body">k ≈ 8,99 × 10⁹ N·m²/C²<br>V(∞) = 0</p>
+    </div>
+    <div class="a dip-interaction rv" data-probe style="left:906px;top:313px;width:831px">
+      <p class="mono-lbl">Posición del punto P · q = 2 nC · d = 4 cm</p>
+      <canvas data-plot="sum" width="580" height="227" role="img" aria-label="Distancias del punto P a ambas cargas"></canvas>
+      <div class="dip-buttons" role="group" aria-label="Posición de P">
+        <button class="toggle" type="button" data-side="-1" aria-pressed="false">Lado −q</button><button class="toggle" type="button" data-side="0" aria-pressed="true">Plano mediador</button><button class="toggle" type="button" data-side="1" aria-pressed="false">Lado +q</button>
+      </div>
+      <dl class="dip-readings"><div><dt>Aporte −q</dt><dd id="negative"></dd></div><div><dt>Aporte +q</dt><dd id="positive"></dd></div></dl>
+      <output class="body" id="total" aria-live="polite"></output>
+    </div>
+    <aside class="notes"><p>Sumar los potenciales como escalares. Mover P del plano mediador a cada lado y leer cómo domina la contribución de la carga más cercana.</p></aside>
+  </section>
+
+  <section class="slide" id="s04" data-mood="dc" data-tx="skirk-orbit" data-thread="rest" data-anchor="1350 540" data-title="Potencial cero, campo presente" data-who="" data-time="1:40" data-ref="Plano mediador">
+    <p class="kicker rv">Plano mediador</p>
+    <h2 class="title rv">Potencial cero. <em>Campo presente.</em></h2>
+    <div class="a copy-dip rv" style="left:150px;top:348px;width:630px">
+      <p class="lead">En el plano mediador las dos distancias coinciden. Sus contribuciones al potencial se cancelan.</p>
+      <p class="eq">r₊ = r₋ &nbsp;⇒&nbsp; V = 0</p>
+      <p class="body">Las componentes de <b>E</b> a lo largo del plano se cancelan. Las paralelas al eje se suman y apuntan hacia el lado de −q.</p>
+    </div>
+    <figure class="a dip-figure rv" style="left:835px;top:325px;width:890px">
+      <canvas data-plot="plane" width="640" height="384" role="img" aria-label="En el plano mediador el campo neto apunta hacia la carga negativa"></canvas>
+      <figcaption class="mono-lbl">El campo apunta hacia donde disminuye V · E = −∇V</figcaption>
+    </figure>
+    <aside class="notes"><p>Mostrar que V se cancela en el plano. Dibujar la suma vectorial del campo y distinguir potencial cero de campo cero.</p></aside>
+  </section>
+
+  <section class="slide" id="s07" data-mood="energy" data-tx="skirk-gravity" data-thread="rest" data-anchor="1350 540" data-title="A gran distancia" data-who="" data-time="2:00" data-ref="Aproximación dipolar">
+    <p class="kicker rv">Aproximación lejana</p>
+    <h2 class="title rv">Lo que queda <em>a gran distancia</em></h2>
+    <div class="a copy-dip rv" style="left:150px;top:345px;width:645px">
+      <p class="lead">Cuando r ≫ d, los términos proporcionales a 1/r se cancelan porque la carga total es cero.</p>
+      <p class="eq">V ≈ kp cos θ / r²</p>
+      <p class="body">A ángulo fijo, duplicar <i>r</i> reduce <i>V</i> a aproximadamente un cuarto.</p>
+    </div>
+    <figure class="a dip-figure rv" style="left:824px;top:337px;width:925px">
+      <canvas data-plot="decay" width="640" height="335" role="img" aria-label="El cociente de potencial cae de 1 a 0,25 al duplicar la distancia"></canvas>
+      <figcaption class="mono-lbl">Ángulo fijo · V(r₀) ≠ 0 · r₀ ≫ d</figcaption>
+    </figure>
+    <aside class="notes"><p>Demostrar la cancelación de 1/r. Mantener θ fijo y mostrar la razón V(2r₀)/V(r₀) = 1/4 donde el potencial de referencia no es cero.</p></aside>
+  </section>
+
+  <section class="slide" id="s11" data-mood="dc" data-tx="skirk-boundary" data-thread="rest" data-anchor="1350 540" data-title="Mapa de potencial" data-who="" data-time="2:35" data-ref="Equipotenciales">
+    <p class="kicker rv">Laboratorio</p>
+    <h2 class="title rv">Mapa de <em>potencial</em></h2>
+    <p class="lead rv">Cambia la posición de P y compara el cálculo exacto y el lejano.</p>
+    <figure class="a dip-figure rv" data-probe style="left:150px;top:393px;width:1010px">
+      <canvas data-plot="map" width="714" height="410" role="img" aria-label="Mapa equipotencial del dipolo en centímetros. P se arrastra en la mitad superior."></canvas>
+      <figcaption class="mono-lbl">Arrastra P en la mitad superior del mapa o usa las barras.</figcaption>
+    </figure>
+    <div class="a dip-interaction lab-interaction rv" data-probe style="left:1230px;top:391px;width:525px">
+      <div class="dip-buttons" role="group" aria-label="Movimiento de P"><button class="toggle" type="button" id="manual" aria-pressed="true">Manual</button><button class="toggle" type="button" id="auto" aria-pressed="false">▷ Automático</button></div>
+      <div class="dip-range"><label for="distance">Distancia r</label><output id="distance-value" for="distance"></output><input id="distance" type="range" min=".03" max=".32" step=".01" value=".20"></div>
+      <div class="dip-range"><label for="angle">Ángulo θ</label><output id="angle-value" for="angle"></output><input id="angle" type="range" min="0" max="180" step="1" value="60"></div>
+      <dl class="dip-readings"><div><dt>Potencial exacto</dt><dd id="exact"></dd></div><div><dt>Aproximación lejana</dt><dd id="approx"></dd></div><div><dt>Diferencia absoluta</dt><dd id="difference"></dd></div></dl>
+      <div class="dip-buttons"><button class="toggle" type="button" data-angle="60">Ejemplo</button><button class="toggle" type="button" data-angle="90">Plano mediador</button></div>
+      <p class="mono-lbl">q = 2 nC · d = 4 cm</p>
+    </div>
+    <aside class="notes"><p>Arrancar con Ejemplo, activar el preset Plano mediador y pasar al lado negativo. Comparar a un ángulo fijo al aumentar r. Automático recorre el mapa y tocar las barras o arrastrar P devuelve el control manual.</p></aside>
+  </section>
+
+  <section class="slide" id="s12" data-mood="order" data-tx="skirk-series" data-thread="rest" data-anchor="1350 540" data-title="Una diferencia de 0,08 V" data-who="" data-time="2:25" data-ref="Ejemplo resuelto">
+    <p class="kicker rv">Ejemplo resuelto</p>
+    <h2 class="title rv">Una diferencia de <em>0,08 V</em></h2>
+    <div class="a copy-dip rv" style="left:150px;top:340px;width:750px">
+      <p class="lead">q = 2 nC · d = 4 cm<br>r = 20 cm · θ = 60°</p>
+      <p class="eq dip-eq">r₊ ≈ 0,19079 m<br>r₋ ≈ 0,21071 m</p>
+      <p class="body">r₊² y r₋² se obtienen con la ley del coseno.<br>p = 8 × 10⁻¹¹ C·m</p>
+    </div>
+    <dl class="a dip-result rv" style="left:990px;top:345px;width:755px">
+      <div><dt>Potencial exacto</dt><dd>8,91 <small>V</small></dd></div>
+      <div><dt>Aproximación lejana</dt><dd>8,99 <small>V</small></dd></div>
+      <div><dt>Error relativo</dt><dd>0,88 <small>%</small></dd></div>
+    </dl>
+    <aside class="notes"><p>Convertir datos a SI. Usar r±² = r² + (d/2)² ∓ rd cos θ y sustituir las distancias en el potencial exacto. Para el porcentaje de error usar los valores sin redondear.</p></aside>
+  </section>
+
+  <section class="slide closing" id="s19" data-mood="calm" data-tx="skirk-silent" data-thread="close" data-anchor="960 540" data-title="Pregunta de cierre" data-who="" data-time="0:45" data-ref="Plano mediador">
+    <p class="kicker rv">Pregunta de cierre</p>
+    <div class="idea" style="--k:0;--c:var(--violet-hi)"><span class="n">01</span><span class="t">Las dos puntas tocan el <span class="hl">plano mediador</span>.</span></div>
+    <div class="idea" style="--k:1;--c:var(--ice)"><span class="n">02</span><span class="t">¿Qué marca el <span class="c-ice">voltímetro</span>?</span></div>
+    <div class="idea" style="--k:2;--c:var(--control)"><span class="n">03</span><span class="t">¿Hacia dónde acelera una <span class="c-ctrl">carga positiva</span>?</span></div>
+    <svg class="seal" viewBox="-60 -60 120 120" aria-hidden="true">
+      <circle class="seal-ring" r="44" pathLength="1"/>
+      <circle class="seal-dash" r="54"/>
+      <path class="seal-star" pathLength="1" d="M0 -36 L5 -5 L36 0 L5 5 L0 36 L-5 5 L-36 0 L-5 -5 Z"/>
+      <path class="seal-core" d="M0 -14 L3.5 -3.5 L14 0 L3.5 3.5 L0 14 L-3.5 3.5 L-14 0 L-3.5 -3.5 Z"/>
+    </svg>
+    <svg class="a timer-ring" style="left:1549px;top:796px" width="150" height="150" viewBox="0 0 220 220" aria-label="Temporizador de treinta segundos">
+      <circle class="bg" cx="110" cy="110" r="100"/><circle class="fg" cx="110" cy="110" r="100"/><text x="110" y="110">30</text>
+    </svg>
+    <aside class="notes"><p>Dejar unos segundos para que respondan. El voltímetro marca 0 V entre puntos del plano mediador. Una carga positiva acelera en el sentido de E, opuesto a p, hacia el lado de −q. El campo depende de cómo varía V alrededor del punto.</p></aside>
+  </section>
+  <svg class="fx" id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="fxv-acc" gradientUnits="userSpaceOnUse" x1="0" y1="-40" x2="0" y2="1120">
+        <stop offset="0" style="stop-color:var(--acc);stop-opacity:0"/><stop offset=".18" style="stop-color:var(--acc)"/><stop offset=".82" style="stop-color:var(--acc)"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="fxv-star" gradientUnits="userSpaceOnUse" x1="0" y1="-40" x2="0" y2="1120">
+        <stop offset="0" stop-color="#f4f1ff" stop-opacity="0"/><stop offset=".18" stop-color="#f4f1ff"/><stop offset=".82" stop-color="#f4f1ff"/><stop offset="1" stop-color="#f4f1ff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fxh-acc" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="1960" y2="0">
+        <stop offset="0" style="stop-color:var(--acc);stop-opacity:0"/><stop offset=".15" style="stop-color:var(--acc)"/><stop offset=".85" style="stop-color:var(--acc)"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </linearGradient>
+      <linearGradient id="fxh-star" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="1960" y2="0">
+        <stop offset="0" stop-color="#f4f1ff" stop-opacity="0"/><stop offset=".15" stop-color="#f4f1ff"/><stop offset=".85" stop-color="#f4f1ff"/><stop offset="1" stop-color="#f4f1ff" stop-opacity="0"/>
+      </linearGradient>
+      <!-- Vacío abisal que asoma en las esquirlas del tajo -->
+      <pattern id="fx-void" patternUnits="userSpaceOnUse" width="280" height="280">
+        <rect width="280" height="280" fill="#080618"/><circle cx="165" cy="77" r="1.2" fill="#f4f1ff"/><circle cx="37" cy="274" r="0.6" fill="#8fe3ff"/><circle cx="29" cy="259" r="0.8" fill="#f4f1ff"/><circle cx="44" cy="222" r="1.2" fill="#f4f1ff"/><circle cx="123" cy="46" r="1.6" fill="#c9b8ff"/><circle cx="30" cy="63" r="0.8" fill="#f4f1ff"/><circle cx="203" cy="25" r="0.8" fill="#f4f1ff"/><circle cx="68" cy="148" r="1.2" fill="#f4f1ff"/><circle cx="276" cy="60" r="1.6" fill="#8fe3ff"/><circle cx="92" cy="52" r="1.6" fill="#f4f1ff"/><circle cx="190" cy="49" r="1.6" fill="#f4f1ff"/><circle cx="30" cy="105" r="1.2" fill="#c9b8ff"/><circle cx="160" cy="238" r="1.6" fill="#c9b8ff"/><circle cx="185" cy="153" r="0.8" fill="#f4f1ff"/><circle cx="124" cy="41" r="1.6" fill="#8fe3ff"/><circle cx="268" cy="253" r="1" fill="#c9b8ff"/><circle cx="147" cy="37" r="0.6" fill="#c9b8ff"/><circle cx="84" cy="175" r="0.8" fill="#c9b8ff"/><circle cx="215" cy="20" r="2.1" fill="#f4f1ff"/><circle cx="160" cy="174" r="2.1" fill="#8fe3ff"/><circle cx="254" cy="233" r="0.6" fill="#f4f1ff"/><circle cx="138" cy="242" r="2.1" fill="#f4f1ff"/>
+        <path d="M140 118 L143 137 L162 140 L143 143 L140 162 L137 143 L118 140 L137 137 Z" fill="#f4f1ff"/>
+      </pattern>
+      <radialGradient id="fx-bloom">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".22" stop-color="#f1ecff" stop-opacity=".75"/><stop offset=".55" style="stop-color:var(--acc);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--acc);stop-opacity:0"/>
+      </radialGradient>
+      <radialGradient id="fx-fire">
+        <stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset=".2" stop-color="#fff1d6" stop-opacity=".95"/><stop offset=".45" stop-color="#ffb070" stop-opacity=".7"/><stop offset=".72" stop-color="#ff4d6d" stop-opacity=".28"/><stop offset="1" stop-color="#ff4d6d" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="fx-pane" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset=".45" stop-color="#c9b8ff" stop-opacity=".16"/><stop offset="1" stop-color="#8fe3ff" stop-opacity=".4"/>
+      </linearGradient>
+      <linearGradient id="fx-pane-crisis" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset=".45" stop-color="#ffb3c1" stop-opacity=".16"/><stop offset="1" stop-color="#c9b8ff" stop-opacity=".35"/>
+      </linearGradient>
+      <linearGradient id="fx-sheen-crisis" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ff4d6d" stop-opacity=".7"/><stop offset=".5" stop-color="#2a0c1c" stop-opacity=".1"/><stop offset="1" stop-color="#a58bff" stop-opacity=".45"/>
+      </linearGradient>
+      <linearGradient id="fx-sheen" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7a5cff" stop-opacity=".75"/><stop offset=".5" stop-color="#1b1446" stop-opacity=".1"/><stop offset="1" stop-color="#8fe3ff" stop-opacity=".5"/>
+      </linearGradient>
+    </defs>
+    <g id="fx-g"></g>
+  </svg>
+  <div class="fx fx-layers" id="fx-layers" aria-hidden="true"></div>
+  <svg class="cracks" id="cracks" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <!-- Cromo -->
+  <div class="chrome">
+    <svg class="ruler" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+    <div class="brand" aria-hidden="true"><span class="sparkle">✦</span>DIPOLO ELÉCTRICO</div>
+    <button class="ref" id="c-ref" type="button" title="Ver el concepto de esta escena (L)"><span class="t"></span><span class="go" aria-hidden="true">LEER CONCEPTO ↗</span></button>
+    <div class="who" id="c-who" aria-hidden="true"></div>
+    <div class="dots" id="c-dots" aria-hidden="true"></div>
+    <div class="count" id="c-count" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i id="c-prog"></i></div>
+  </div>
+</main>
+
+<!-- Vista de presentador (se activa con ?presentador) -->
+<div class="pv" id="pv">
+  <section>
+    <div class="lbl">Diapositiva actual</div>
+    <h1 class="cur-title" id="pv-title"></h1>
+    <div class="cur-meta" id="pv-meta"></div>
+    <div class="lbl">Notas</div>
+    <div class="cur-notes" id="pv-notes"></div>
+  </section>
+  <section>
+    <div class="lbl">Tiempo total</div>
+    <div class="clock" id="pv-clock">00:00</div>
+    <div class="slide-clock" id="pv-sclock">en esta: 00:00</div>
+    <div class="lbl">Siguiente</div>
+    <div class="next" id="pv-next"></div>
+    <div class="btns">
+      <button data-cmd="prev">← Anterior</button>
+      <button data-cmd="next">Siguiente →</button>
+      <button data-cmd="reset">Reiniciar reloj</button>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="menu" role="dialog" aria-label="Índice de diapositivas">
+  <div class="panel"><h2>Índice</h2><ul class="menu-list" id="menu-list"></ul></div>
+</div>
+<div class="overlay" id="help" role="dialog" aria-label="Atajos de teclado">
+  <div class="panel">
+    <h2>Controles</h2>
+    <p><a href="Guion-dipolo.pdf" target="_blank" rel="noopener">Guion de exposición en PDF</a></p>
+    <div class="keys">
+      <kbd>→ · Espacio · Clic</kbd><span>Avanzar (primero recorre los estados de la escena)</span>
+      <kbd>← · Retroceso</kbd><span>Retroceder un estado o una diapositiva</span>
+      <kbd>Inicio · Fin</kbd><span>Primera / última</span>
+      <kbd>M</kbd><span>Índice de diapositivas</span>
+      <kbd>L · clic en la referencia</kbd><span>Lector de conceptos de esta diapositiva</span>
+      <kbd>N</kbd><span>Notas del orador en esta pantalla</span>
+      <kbd>P</kbd><span>Abrir vista de presentador en otra ventana (sincronizada)</span>
+      <kbd>F</kbd><span>Pantalla completa</span>
+      <kbd>T</kbd><span>Temporizador de 30 s (pregunta de control)</span>
+      <kbd>? · H</kbd><span>Esta ayuda</span>
+    </div>
+  </div>
+</div>
+<div class="notes-drawer" id="drawer"><div class="meta" id="d-meta"></div><div class="txt" id="d-txt"></div></div>
+<div class="hint" id="hint">→ AVANZAR · ← RETROCEDER · M ÍNDICE · L CONCEPTO · N NOTAS · P PRESENTADOR · F PANTALLA COMPLETA · ? AYUDA</div>
+
+
+<script src="plantilla/js/ambient.js"></script>
+<script src="plantilla/js/thread.js"></script>
+<script src="plantilla/js/skirk.js"></script>
+<script src="plots.js"></script>
+<script src="interaccion.js"></script>
+<script src="lector.js"></script>
+<script src="motor.js"></script>
+<script src="plantilla/js/pro.js"></script>
+</body>
+</html>
+

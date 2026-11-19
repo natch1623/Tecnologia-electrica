@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es" data-theme="nec">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista de presentador · Dipolo eléctrico</title>
+  <link rel="stylesheet" href="../shenhe/style.css">
+  <link rel="stylesheet" href="nec.css">
+  <style>
+    body { margin:0; padding:clamp(20px,5vw,52px); }
+    main { display:grid; grid-template-columns:1.45fr 1fr; gap:2.5rem; max-width:1000px; margin:auto; }
+    main section { border-top:1px solid var(--frost); padding-top:1rem; min-width:0; }
+    p { margin-bottom:1rem; }
+    .label { color:var(--violet-hi); font:.78rem var(--mono); letter-spacing:.12em; text-transform:uppercase; margin:.5rem 0; }
+    h1 { font:600 clamp(1.65rem, 4vw, 3rem)/1.1 var(--sans); margin:.75rem 0; }
+    #time { color:var(--data-ice); font:clamp(2rem,5.5vw,4rem) var(--mono); }
+    #step, #estimate { color:var(--faint); }
+    .actions { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.6rem; }
+    @media (max-width:680px) { main { grid-template-columns:1fr; gap:1rem; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section aria-label="Notas del presentador">
+      <p class="label">Diapositiva actual</p>
+      <h1 id="title">Esperando la presentación</h1>
+      <p id="estimate"></p>
+      <p class="label">Notas</p>
+      <p id="notes"></p>
+    </section>
+    <section aria-label="Tiempo y navegación">
+      <p class="label">Tiempo total</p>
+      <p id="time">00:00</p>
+      <p id="step">En esta escena · 00:00</p>
+      <p class="label">Siguiente</p>
+      <p id="next"></p>
+      <div class="menu-tools actions">
+        <button type="button" data-command="prev">← Anterior</button>
+        <button type="button" data-command="next">Siguiente →</button>
+        <button type="button" data-command="reset">Reiniciar reloj</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    const select = id => document.getElementById(id);
+    function send(type, command) { window.opener?.postMessage({type, command}, '*'); }
+    window.addEventListener('message', event => {
+      if (event.source !== window.opener || event.data?.type !== 'dipole-presenter-state') return;
+      const { title, note, estimate, upcoming, total, step } = event.data;
+      select('title').textContent = title;
+      select('estimate').textContent = 'Tiempo previsto · ' + estimate;
+      select('notes').textContent = note;
+      select('next').textContent = upcoming;
+      select('time').textContent = total;
+      select('step').textContent = 'En esta escena · ' + step;
+    });
+    for (const button of document.querySelectorAll('[data-command]')) {
+      button.addEventListener('click', () => send('dipole-presenter-command', button.dataset.command));
+    }
+    document.addEventListener('keydown', event => {
+      if (event.key === 'ArrowRight') send('dipole-presenter-command', 'next');
+      if (event.key === 'ArrowLeft') send('dipole-presenter-command', 'prev');
+    });
+    send('dipole-presenter-ready');
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+/* Extends CONCEPTO-DISENO.md: void / ice / facets, never a second colour system. */
+/* Off-screen fragments / focus changes must not scroll the full-screen deck. */
+.stage { position:fixed; }
+@supports (overflow:clip) { html,body { overflow:clip; } }
+.abyss-transition { position:absolute; inset:0; z-index:35; overflow:hidden; pointer-events:none; isolation:isolate; }
+.abyss-vfx { position:absolute; overflow:visible; pointer-events:none; z-index:2; will-change:transform,opacity; transform-origin:center; }
+.abyss-piece { position:absolute; overflow:hidden; will-change:transform,opacity; z-index:0; }
+.abyss-piece .slide { visibility:visible; opacity:1; }
+.abyss-piece .slide *, .abyss-piece .slide *::before, .abyss-piece .slide *::after { animation:none !important; transition:none !important; }
+.abyss-piece .rv { opacity:1; transform:none; filter:none; }
+.abyss-light { position:absolute; overflow:visible; pointer-events:none; will-change:transform,opacity; z-index:1; }
+.abyss-light path { fill:none; stroke-linecap:round; stroke-linejoin:bevel; }
+.abyss-halo { stroke:var(--abyss-tone,var(--ice)); stroke-width:9; opacity:.22; }
+.abyss-edge { stroke:var(--ice); stroke-width:1.7; }
+.abyss-glass .abyss-edge { fill:rgba(143,227,255,.055); stroke:var(--abyss-tone,var(--ice)); }
+.abyss-star .abyss-edge { fill:var(--star); stroke:var(--star); }
+.stage[data-mood="crisis"] .abyss-edge { stroke:var(--danger); }
+.stage[data-mood="order"] .abyss-edge { stroke:var(--control); }
+.abyss-accent { position:absolute; inset:0; width:1920px; height:1080px; pointer-events:none; overflow:hidden; opacity:.32; }
+.abyss-accent .accent-line { fill:none; stroke:var(--acc); stroke-width:1; }
+.abyss-accent .accent-gem { fill:var(--acc); stroke:none; }
+/* The title stays crisp. Stagger is capped, so dense backups don't take seconds. */
+.slide[data-abyss] .rv { filter:none; transform:translate3d(0,20px,0); }
+.slide[data-abyss].is-active .rv { filter:none; transform:none; transition:opacity .7s var(--ease-out) var(--d,0ms),transform .85s var(--ease-out) var(--d,0ms); }
+.slide[data-abyss].is-leaving .rv { filter:none; transform:none; }
+.slide[data-abyss="gates"] .gate-lbl, .slide[data-abyss="series"] .rv { transform:translate3d(22px,0,0); }
+.slide[data-abyss="echo"] .mk, .slide[data-abyss="seven"] .lk { transform:translate3d(-24px,0,0); }
+.slide[data-abyss="plume"] .monos .rv { transform:translate3d(0,28px,0); }
+.slide[data-abyss="strata"] tr.rv:nth-child(even) { transform:translate3d(-20px,0,0); }
+.slide[data-abyss="strata"] tr.rv:nth-child(odd) { transform:translate3d(20px,0,0); }
+.slide[data-abyss].is-active .rv, .slide[data-abyss].is-leaving .rv { transform:none; }
+/* Keep the complete formula on one line in the split calculation backup. */
+.slide[data-backup="R1"] .eq { font-size:32px; line-height:1.6; }
+@media (prefers-reduced-motion:reduce) {
+  .abyss-transition { display:none; }
+  .slide[data-abyss] .rv, .slide[data-abyss].is-active .rv { transform:none; filter:none; transition:opacity .18s linear; transition-delay:0s; }
+}

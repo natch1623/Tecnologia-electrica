@@ -3,6 +3,7 @@
 #   presentacion-mi815/web    → https://natch1623.github.io/Tecnologia-electrica/perfil-mi815/
 #   capacitores/web           → https://natch1623.github.io/Tecnologia-electrica/capacitores/
 #   dielectricos/web          → https://natch1623.github.io/Tecnologia-electrica/dielectricos/
+#   dipolo/nec                → https://natch1623.github.io/Tecnologia-electrica/dipolo-electrico/
 name: Publicar presentación en GitHub Pages
 
 on:
@@ -13,6 +14,7 @@ on:
       - "presentacion-mi815/web/**"
       - "capacitores/web/**"
       - "dielectricos/web/**"
+      - "dipolo/nec/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -44,6 +46,8 @@ jobs:
           cp -r capacitores/web/. _site/capacitores/
           mkdir -p _site/dielectricos
           cp -r dielectricos/web/. _site/dielectricos/
+          mkdir -p _site/dipolo-electrico
+          cp -r dipolo/nec/. _site/dipolo-electrico/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

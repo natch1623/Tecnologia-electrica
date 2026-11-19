@@ -1,0 +1,52 @@
+@font-face { font-family: Cinzel; src: url(fonts/cinzel.ttf); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: Outfit; src: url(fonts/outfit.ttf); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url(fonts/jetbrains-mono.ttf); font-display: swap; }
+
+/* Únicamente el contenido nuevo usa estas reglas. El escenario, el sigilo,
+   los controles exteriores y el movimiento proceden de la plantilla. */
+.copy-dip .lead { margin-bottom: 32px; }
+.copy-dip .eq { margin: 26px 0; }
+.dip-eq { font-size: 34px; }
+.dip-figure { margin: 0; }
+.dip-figure canvas,
+.dip-interaction canvas { display: block; width: 100%; height: auto; }
+.dip-figure figcaption { margin-top: 15px; }
+.dip-svg { overflow: visible; }
+.dip-svg text { fill: var(--star); font: 15px var(--f-mono); text-anchor: middle; }
+.dip-svg path { fill: none; }
+.dip-svg marker path { fill: var(--ice); }
+.dip-svg .ge-axis { stroke: var(--line-strong); stroke-width: 1.2; }
+.dip-svg .ge-vector { stroke: var(--ice); stroke-width: 1.7; }
+.dip-svg .ge-dash { stroke-dasharray: 5 6; stroke-width: 1.55; }
+.dip-svg .ge-charge { fill: var(--abyss); stroke-width: 1.3; }
+.dip-svg .ge-negative { stroke: var(--danger); }
+.dip-svg .ge-positive { stroke: var(--ice); }
+.dip-svg text.ge-negative { fill: #ff9ab0; stroke: none; }
+.dip-svg text.ge-positive { fill: var(--ice); stroke: none; }
+.dip-svg .ge-charge-text { font-size: 21px; dominant-baseline: central; }
+.dip-interaction .mono-lbl { margin-bottom: 14px; }
+.dip-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+.dip-buttons .toggle { padding: 11px 15px; font-size: 20px; line-height: 1.15; }
+.dip-buttons .toggle:is(:hover,[aria-pressed=true]) { background: #8fe3ff28; color: var(--ice); }
+.dip-readings { margin: 22px 0 15px; border-block: 1px solid var(--line); padding: 12px 0; }
+.dip-readings > div, .dip-result > div { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; }
+.dip-readings dt { font: 400 24px var(--f-sans); color: var(--muted); }
+.dip-readings dd { margin: 0; font: 400 24px var(--f-mono); color: var(--ice); }
+.dip-result { border-top: 1px solid var(--line-strong); }
+.dip-result > div { border-bottom: 1px solid var(--line); padding: 21px 0; }
+.dip-result dt { color: var(--muted); font: 400 25px var(--f-sans); }
+.dip-result dd { margin: 0; font: 400 63px var(--f-mono); color: var(--ice); }
+.dip-result small { font-size: 30px; }
+.dip-result > div:last-child dd { color: var(--control); }
+.lab-interaction .mono-lbl { margin-top: 19px; }
+.dip-range { display: grid; grid-template-columns: 1fr auto; gap: 8px 10px; margin-top: 18px; color: var(--muted); font: 400 22px var(--f-sans); }
+.dip-range input { width: 100%; grid-column: 1 / -1; accent-color: var(--ice); }
+.dip-range output { font-family: var(--f-mono); color: var(--ice); }
+[data-plot="map"] { touch-action: none; cursor: crosshair; border: 1px solid var(--line); }
+.pos { color: var(--ice); }
+.neg { color: #ff9ab0; }
+.emphasis { text-shadow: 0 0 15px currentColor; }
+
+/* La plantilla (pro.js) añade adornos por número de escena pensados para otra
+   exposición: aquí caerían detrás del diagrama del dipolo. */
+.slide svg.pro-layer, .slide g.pro { display: none; }
