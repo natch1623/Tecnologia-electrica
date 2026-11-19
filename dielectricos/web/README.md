@@ -37,3 +37,5 @@ Cada diapositiva tiene una combinación de fondo propia. Los modelos moleculares
 ## Transiciones orgánicas
 
 Las once transiciones y la apertura se dibujan con curvas, fibras luminosas, pliegues que se estrechan y rayos ramificados. Sustituyen la escenografía geométrica anterior. `organic.js` dibuja la luz y `transitions.js` coordina navegación, limpieza y cancelación. No se copian los gráficos científicos.
+
+La coreografía inspirada en Clorinde combina tres pulsos de disparo con una estocada, contrataques cruzados, plumas de barbas curvas y vuelos de capa con costuras doradas. Cada avance utiliza una combinación propia. Los destellos permanecen localizados; móvil y movimiento reducido conservan el cambio breve. Es una interpretación gráfica original, sin retratos ni audio.
