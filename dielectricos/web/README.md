@@ -39,3 +39,7 @@ Cada diapositiva tiene una combinación de fondo propia. Los modelos moleculares
 Las once transiciones y la apertura se dibujan con curvas, fibras luminosas, pliegues que se estrechan y rayos ramificados. Sustituyen la escenografía geométrica anterior. `organic.js` dibuja la luz y `transitions.js` coordina navegación, limpieza y cancelación. No se copian los gráficos científicos.
 
 La coreografía inspirada en Clorinde combina tres pulsos de disparo con una estocada, contrataques cruzados, plumas de barbas curvas y vuelos de capa con costuras doradas. Cada avance utiliza una combinación propia. Los destellos permanecen localizados; móvil y movimiento reducido conservan el cambio breve. Es una interpretación gráfica original, sin retratos ni audio.
+
+## Edición visual del contenido
+
+La diapositiva 2 define el dieléctrico y muestra tres características junto al modelo de cargas ligadas. Las diapositivas 4 y 5 incluyen ilustraciones moleculares de O₂ y H₂O. La 8 añade vidrio/aislador, transformador con aceite y aire entre conductores. Las explicaciones extendidas de las diapositivas simplificadas permanecen en las notas; se mantienen las doce diapositivas y los trece minutos previstos. Ilustraciones vectoriales originales en visuals.js, estilos en visuals.css.

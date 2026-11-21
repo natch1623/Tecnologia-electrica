@@ -1,0 +1,17 @@
+.slide .dv-definition{font-family:Georgia,serif;font-size:32px;line-height:1.32;max-width:1000px;margin:0 0 25px;color:#eee5fb}
+.slide .definition-layout{grid-template-columns:1fr 1.08fr;align-items:center;gap:35px}
+.slide .dv-traits li{display:grid;grid-template-columns:42px 1fr;column-gap:15px;margin:0 0 23px;padding:0;border:0}
+.dv-traits li>span{grid-row:1/3;color:#ddc48c;font-family:Georgia,serif;font-size:26px;padding-top:2px}
+.dv-traits strong{font-size:25px;font-weight:500}.dv-traits small{font-size:19px;line-height:1.4;color:#bfcada;margin-top:4px}
+.slide[data-slide="2"] .body{margin-top:28px}.slide[data-slide="2"] .ph-definition-graphic{height:280px}
+.dv-illustration{display:block;width:100%;height:155px;overflow:visible}
+.dv-molecule{display:flex;align-items:center;gap:15px;margin:12px 0 0;border-top:1px solid #cab4ed35;padding-top:12px}
+.dv-molecule .dv-illustration{width:205px;height:135px;flex:none}.dv-molecule figcaption{font-size:20px;line-height:1.4;color:#e2c995;max-width:160px}
+.slide .motion-layout .explanation li{font-size:29px;margin-bottom:20px}
+.slide[data-slide="8"] .body{margin-top:26px}.slide[data-slide="8"] .material-state h3{margin-bottom:2px}
+.material-state .dv-illustration{height:145px;margin:0 0 8px}.material-state .ph-state-graphic{height:88px;margin:0 0 4px}
+.slide .material-state p{font-size:23px;margin-bottom:12px}.slide .material-state p.ph-state-note{font-size:16px;margin-bottom:12px}.material-state .state-use{font-size:19px}
+.slide .ph-case-layout .case-list li{font-size:26px;margin-bottom:16px}.slide .ph-case-layout .case-list li:first-child{font-size:23px;margin-bottom:25px}
+body.plain .dv-definition,body.plain .dv-traits small{color:#333}body.plain .dv-molecule figcaption{color:#63512e}
+@media(max-width:700px){.slide .dv-definition{font-size:25px;margin-bottom:24px}.slide .definition-layout{grid-template-columns:1fr;gap:16px}.dv-traits strong{font-size:22px}.dv-traits small{font-size:18px}.dv-molecule .dv-illustration{width:160px}.dv-molecule figcaption{font-size:18px}.slide .motion-layout .explanation li{font-size:23px}.material-state .dv-illustration{height:175px}.material-state .ph-state-graphic{height:105px}.slide .ph-case-layout .case-list li,.slide .ph-case-layout .case-list li:first-child{font-size:21px}}
+.slide .body .dm-state{min-height:0;margin-top:10px;font-size:16px;line-height:1.35}

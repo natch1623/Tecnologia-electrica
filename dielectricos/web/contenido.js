@@ -11,19 +11,20 @@ window.DIELECTRICOS = [
     "note": "Presentar a los dos integrantes. La exposición compara primero los dieléctricos polares y no polares y luego añade otros criterios. Pregunta guía: ¿qué características permiten distinguirlos? Los nombres proceden de la imagen de asignación."
   },
   {
-    "title": "Qué caracteriza a un dieléctrico",
+    "title": "¿Qué es un dieléctrico?",
     "time": 55,
     "source": [
       "folleto",
       "iupac"
     ],
     "lines": [
-      "Baja conductividad en las condiciones de uso.",
-      "Sus cargas ligadas responden al campo eléctrico.",
-      "Esta respuesta se denomina polarización."
+      "Baja conductividad",
+      "Cargas ligadas",
+      "Se polariza con el campo"
     ],
-    "bottom": "Un dieléctrico real puede presentar pérdidas y corriente de fuga.",
-    "note": "Distinguir la redistribución de cargas ligadas del transporte libre en un metal. El modelo de aislante perfecto es una idealización. Mencionar la polarización como contexto sin desarrollar el vector P, reservado al siguiente tema del curso."
+    "bottom": "Aísla y responde al campo; un material real puede tener pérdidas y fugas.",
+    "note": "Distinguir la redistribución de cargas ligadas del transporte libre en un metal. El modelo de aislante perfecto es una idealización. Mencionar la polarización como contexto sin desarrollar el vector P, reservado al siguiente tema del curso. Desarrollo para exposición: [\"Baja conductividad en las condiciones de uso.\", \"Sus cargas ligadas responden al campo eléctrico.\", \"Esta respuesta se denomina polarización.\"].",
+    "definition": "Un material de baja conductividad que se polariza al aplicar un campo eléctrico."
   },
   {
     "title": "Criterios de clasificación",
@@ -74,9 +75,8 @@ window.DIELECTRICOS = [
       "iupac"
     ],
     "lines": [
-      "Sus moléculas carecen de dipolo permanente.",
-      "El campo induce una separación de centros de carga.",
-      "Ejemplos moleculares: O₂ y H₂."
+      "Sin dipolo permanente",
+      "El campo induce el dipolo"
     ],
     "compare": [
       [
@@ -89,7 +89,7 @@ window.DIELECTRICOS = [
       ]
     ],
     "bottom": "No polar también puede polarizarse.",
-    "note": "Comparar la distribución de carga antes y después de aplicar el campo. En el modelo introductorio, al retirar el campo desaparece el dipolo inducido. Esta descripción se refiere a moléculas y no pretende reducir todos los sólidos a ese modelo. Reservar tiempo para explicar los dos estados. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales."
+    "note": "Comparar la distribución de carga antes y después de aplicar el campo. En el modelo introductorio, al retirar el campo desaparece el dipolo inducido. Esta descripción se refiere a moléculas y no pretende reducir todos los sólidos a ese modelo. Reservar tiempo para explicar los dos estados. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales. Desarrollo para exposición: [\"Sus moléculas carecen de dipolo permanente.\", \"El campo induce una separación de centros de carga.\", \"Ejemplos moleculares: O₂ y H₂.\"]."
   },
   {
     "title": "Dieléctricos polares",
@@ -99,13 +99,12 @@ window.DIELECTRICOS = [
       "ncert"
     ],
     "lines": [
-      "Sus moléculas poseen dipolo permanente.",
-      "El campo favorece una orientación preferente.",
-      "La agitación térmica limita el orden.",
-      "Ejemplos moleculares: H₂O y HCl."
+      "Dipolo permanente",
+      "El campo favorece su orientación",
+      "El calor limita el orden"
     ],
     "bottom": "Sin campo, dipolos desordenados pueden dar un promedio nulo.",
-    "note": "El dipolo ya existe antes de aplicar el campo. En líquidos y gases polares ordinarios, orientaciones distintas pueden compensarse en promedio. El campo produce una orientación parcial. El agua se usa como ejemplo molecular, no como recomendación de aislamiento: el agua común contiene iones. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales."
+    "note": "El dipolo ya existe antes de aplicar el campo. En líquidos y gases polares ordinarios, orientaciones distintas pueden compensarse en promedio. El campo produce una orientación parcial. El agua se usa como ejemplo molecular, no como recomendación de aislamiento: el agua común contiene iones. El esquema amplía los desplazamientos y ralentiza la respuesta para hacer visible el mecanismo. No representa tiempos ni dimensiones reales. Desarrollo para exposición: [\"Sus moléculas poseen dipolo permanente.\", \"El campo favorece una orientación preferente.\", \"La agitación térmica limita el orden.\", \"Ejemplos moleculares: H₂O y HCl.\"]."
   },
   {
     "title": "Comparación principal",
@@ -225,15 +224,15 @@ window.DIELECTRICOS = [
     "columns": [
       [
         "LINEAL",
-        "La polarización es proporcional al campo en el intervalo considerado."
+        "P crece proporcionalmente con E."
       ],
       [
         "NO LINEAL",
-        "La relación deja de ser proporcional en ese intervalo."
+        "P no crece proporcionalmente con E."
       ]
     ],
     "bottom": "La clasificación necesita un intervalo de campo y una temperatura.",
-    "note": "Linealidad describe una relación entre magnitudes. En el modelo lineal e isótropo, P = ε₀χₑE, con χₑ independiente de la intensidad del campo en el intervalo considerado. No hace falta desarrollar la fórmula. Un modelo puede ser adecuado para campos moderados y dejar de serlo fuera de su intervalo."
+    "note": "Linealidad describe una relación entre magnitudes. En el modelo lineal e isótropo, P = ε₀χₑE, con χₑ independiente de la intensidad del campo en el intervalo considerado. No hace falta desarrollar la fórmula. Un modelo puede ser adecuado para campos moderados y dejar de serlo fuera de su intervalo. Desarrollo para exposición: [[\"LINEAL\", \"La polarización es proporcional al campo en el intervalo considerado.\"], [\"NO LINEAL\", \"La relación deja de ser proporcional en ese intervalo.\"]]."
   },
   {
     "title": "Dirección y posición",
@@ -245,15 +244,15 @@ window.DIELECTRICOS = [
     "columns": [
       [
         "DIRECCIÓN",
-        "Isótropo: la respuesta no depende de la dirección.\n\nAnisótropo: la respuesta depende de la dirección."
+        "Isótropo: igual respuesta al girar el campo.\n\nAnisótropo: cambia con la dirección."
       ],
       [
         "POSICIÓN",
-        "Homogéneo: mismas propiedades de un punto a otro.\n\nHeterogéneo: las propiedades varían con la posición."
+        "Homogéneo: mismas propiedades entre puntos.\n\nHeterogéneo: cambian entre regiones."
       ]
     ],
     "bottom": "Un medio puede ser homogéneo y anisótropo.",
-    "note": "Comparar girar la dirección del campo con mover el punto de observación. Un cristal uniforme puede mantener sus propiedades en todas las posiciones y responder de modo distinto según el eje. Una muestra con capas distintas es heterogénea a la escala que permite distinguirlas. Los contornos de respuesta y las regiones son esquemas cualitativos, no datos medidos ni una representación tensorial completa."
+    "note": "Comparar girar la dirección del campo con mover el punto de observación. Un cristal uniforme puede mantener sus propiedades en todas las posiciones y responder de modo distinto según el eje. Una muestra con capas distintas es heterogénea a la escala que permite distinguirlas. Los contornos de respuesta y las regiones son esquemas cualitativos, no datos medidos ni una representación tensorial completa. Desarrollo para exposición: [[\"DIRECCIÓN\", \"Isótropo: la respuesta no depende de la dirección.\\n\\nAnisótropo: la respuesta depende de la dirección.\"], [\"POSICIÓN\", \"Homogéneo: mismas propiedades de un punto a otro.\\n\\nHeterogéneo: las propiedades varían con la posición.\"]]."
   },
   {
     "title": "Ejemplo de clasificación combinada",
@@ -263,14 +262,14 @@ window.DIELECTRICOS = [
       "cambridge"
     ],
     "lines": [
-      "Modelo: vidrio amorfo uniforme, sin tensiones apreciables.",
-      "Estado físico: sólido.",
-      "Dirección: aproximadamente isótropo.",
-      "Posición: aproximadamente homogéneo.",
-      "Respuesta: aproximadamente lineal con campo moderado."
+      "Vidrio amorfo uniforme, sin tensiones",
+      "Sólido",
+      "Aproximadamente isótropo",
+      "Aproximadamente homogéneo",
+      "Aproximadamente lineal con campo moderado"
     ],
     "bottom": "Las etiquetas describen propiedades distintas de la misma muestra.",
-    "note": "Plantear el ejemplo como modelo con supuestos explícitos, no como ficha universal de todos los vidrios. Se supone composición uniforme, ausencia de capas y de tensiones que produzcan anisotropía apreciable. La linealidad se restringe al intervalo elegido. Preguntar al público si las etiquetas pueden coexistir. Respuesta: sí."
+    "note": "Plantear el ejemplo como modelo con supuestos explícitos, no como ficha universal de todos los vidrios. Se supone composición uniforme, ausencia de capas y de tensiones que produzcan anisotropía apreciable. La linealidad se restringe al intervalo elegido. Preguntar al público si las etiquetas pueden coexistir. Respuesta: sí. Desarrollo para exposición: [\"Modelo: vidrio amorfo uniforme, sin tensiones apreciables.\", \"Estado físico: sólido.\", \"Dirección: aproximadamente isótropo.\", \"Posición: aproximadamente homogéneo.\", \"Respuesta: aproximadamente lineal con campo moderado.\"]."
   },
   {
     "title": "Ideas finales y fuentes",
